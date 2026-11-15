@@ -75,11 +75,4 @@ export function NarraProvider({ children }: { children: ReactNode }) { const val
 export function useNarra() { const value = useContext(Context); if (!value) throw new Error('NarraProvider is missing'); return value; }
 export function useCopy() { const { profile } = useNarra(); return (english: string, vietnamese: string) => profile.uiLanguage === 'Tiếng Việt' ? vietnamese : english; }
 
-export function speak(text: string, locale: 'en-US' | 'en-GB' = 'en-US') {
-  if (!('speechSynthesis' in window)) return false;
-  window.speechSynthesis.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = locale; utterance.rate = .96;
-  const voices = window.speechSynthesis.getVoices().filter(v => /^en[-_]/i.test(v.lang));
-  const matching = voices.filter(v => v.lang.replace('_','-').toLowerCase() === locale.toLowerCase());
-  utterance.voice = matching.find(v => /natural|online|google|samantha|aria|jenny|daniel|libby|ryan|sonia/i.test(v.name)) ?? matching[0] ?? null;
-  window.speechSynthesis.speak(utterance); return true;
-}
+export { speak, cancelSpeech } from './speech';

@@ -1,0 +1,87 @@
+{
+  "asset": "male-rocketbox-original.glb",
+  "sourceUrl": "https://raw.githubusercontent.com/927tanmay/react-ai-voice-avatar/fc1398c2f8ba600c3676a5277684ed4f3e2731d7/assets/avatars/aarav.glb",
+  "sourceRepository": "https://github.com/927tanmay/react-ai-voice-avatar",
+  "sourceCommit": "fc1398c2f8ba600c3676a5277684ed4f3e2731d7",
+  "upstreamGeometry": "Microsoft Rocketbox Male_Adult_04",
+  "upstreamUrl": "https://github.com/microsoft/Microsoft-Rocketbox/tree/master/Assets/Avatars/Adults/Male_Adult_04",
+  "license": "MIT",
+  "licenseUrl": "https://github.com/microsoft/Microsoft-Rocketbox/blob/master/LICENSE.md",
+  "conversionProvenanceUrl": "https://github.com/927tanmay/react-ai-voice-avatar/blob/fc1398c2f8ba600c3676a5277684ed4f3e2731d7/assets/avatars/LICENSE.md",
+  "downloadedAt": "2026-11-15T18:08:15.420467+00:00",
+  "originalBytes": 4673948,
+  "originalSha256": "ebe6b1596256f314d1356cfc2f42d28203b5bf1864d0bf139845cb9d13ee6500",
+  "publicAsset": "/models/narra-tutor-male.glb",
+  "optimizedBytes": 417976,
+  "optimizedSha256": "d9fcf28b970ac110cb8fe042e49edf63682a33e00c4990a3e0f76dc188835cc5",
+  "optimizer": "@gltf-transform/cli@4.5.1",
+  "optimizationCommand": "npx --yes @gltf-transform/cli@4.5.1 optimize tools/source-models/male-rocketbox-original.glb public/models/narra-tutor-male.glb --compress meshopt --meshopt-level high --texture-compress webp --texture-size 1024 --flatten false --instance false --join false --palette false --simplify false",
+  "verification": {
+    "sameMorphNames": true,
+    "sameBoneNames": true,
+    "jointCounts": [
+      80
+    ],
+    "maxRestTransformComponentDifference": 2.0265579223632812e-06,
+    "gltfValidation": {
+      "errors": 0,
+      "warnings": [
+        "Source normal-mapped primitives lack explicit tangent attributes; Three.js generates tangent space.",
+        "Source skinned mesh is a child of Bip01."
+      ],
+      "note": "EXT_meshopt_compression internals are not supported by the glTF validator; glTF Transform optimizer decodes and writes it."
+    }
+  },
+  "textures": [
+    {
+      "name": "m006_body_normal",
+      "mimeType": "image/webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "bytes": 32898
+    },
+    {
+      "name": "m006_body_color",
+      "mimeType": "image/webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "bytes": 22448
+    },
+    {
+      "name": "m006_head_normal",
+      "mimeType": "image/webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "bytes": 9776
+    },
+    {
+      "name": "m006_head_color",
+      "mimeType": "image/webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "bytes": 16716
+    },
+    {
+      "name": "m006_opacity_color",
+      "mimeType": "image/webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "bytes": 69104
+    }
+  ],
+  "extensionsRequired": [
+    "EXT_meshopt_compression",
+    "EXT_texture_webp",
+    "KHR_mesh_quantization"
+  ]
+}

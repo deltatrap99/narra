@@ -1,0 +1,9 @@
+MPFB avatar source license
+
+- Example avatar "mpfb.glb" was created using [Blender](https://www.blender.org/) and [MPFB](https://static.makehumancommunity.org/mpfb.html) Blender extension. The avatar is licensed under [CC0](https://creativecommons.org/public-domain/cc0/).
+
+Source README: https://github.com/met4citizen/TalkingHead/blob/1563de184c19b310de4b636664d5835e2c74dbba/README.md
+Original model: https://raw.githubusercontent.com/met4citizen/TalkingHead/1563de184c19b310de4b636664d5835e2c74dbba/avatars/mpfb.glb
+CC0 1.0 Universal: https://creativecommons.org/publicdomain/zero/1.0/
+
+Narra uses the model only, not TalkingHead code or its other example assets.

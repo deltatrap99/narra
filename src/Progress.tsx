@@ -180,7 +180,7 @@ export default function Progress({ stats, words, onWriting }: Props) {
     <div className="stat-grid">{statCards.map(({ Icon, value, label, tone }) =>
       <div key={label} className={`stat-card tone-${tone}`}><Icon aria-hidden="true" /><strong>{value}</strong><span className="muted">{label}</span></div>)}</div>
     <section className="card practice-record"><h2>{tr('Practice you’ve recorded', 'Hoạt động đã ghi nhận')}</h2><div className="record-grid">
-      <div className="record-tile tone-lavender"><strong>{stats.speakingScore || '—'}</strong><p>{tr('Speaking score', 'Điểm luyện nói')}</p><span className="muted">{tr('Previous speaking record', 'Kết quả luyện nói trước đây')}</span></div>
+      <div className="record-tile tone-lavender"><strong>{stats.speakingScore || '-'}</strong><p>{tr('Speaking score', 'Điểm luyện nói')}</p><span className="muted">{tr('Previous speaking record', 'Kết quả luyện nói trước đây')}</span></div>
       <div className="record-tile tone-lavender"><strong>{stats.speakingTries}</strong><p>{tr('Speaking tries', 'Lần luyện nói')}</p><span className="muted">{words.length} {tr('saved words to practise', 'từ đã lưu để luyện tập')}</span></div>
       <div className="record-tile tone-lavender"><strong>{stats.reviews}</strong><p>{tr('Word reviews', 'Lần ôn từ')}</p><span className="muted">{mastered} {tr('words mastered', 'từ đã nắm vững')}</span></div>
       <div className="record-tile tone-lavender"><strong>{writingChecks}</strong><p>{tr('Writing practice', 'Luyện viết')}</p><span className="muted">{tr('Local reviews recorded', 'Lần xem ghi chú trên thiết bị')}</span></div>

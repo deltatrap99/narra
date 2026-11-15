@@ -6,8 +6,9 @@ import { Avatar } from './ui';
 import BuddyCoach from './BuddyCoach';
 import './lesson-uat.css';
 import './practice-polish.css';
+import TutorSpotlight from './TutorSpotlight';
 
-type Props = { onTutors: () => void; onScenario: (scenario: Scenario) => void; onCreate: () => void; onTalk: () => void };
+type Props = { onTutors: () => void; onScenario: (scenario: Scenario) => void; onCreate: () => void; onTalk: () => void; onTutorPreview: (name: string) => void };
 const modeEntries = [
   { type: 'Roleplay', vietnamese: 'Nhập vai', detail: ['A little everyday life', 'Tình huống quen thuộc'], Icon: Drama, tone: 'peach' },
   { type: 'Discussion', vietnamese: 'Thảo luận', detail: ['Let’s share a few ideas', 'Cùng chia sẻ ý tưởng'], Icon: MessagesSquare, tone: 'blue' },
@@ -29,7 +30,7 @@ const modeCoaching = {
   All: { message: ['Something familiar makes it easier to begin. How about a little café roleplay?', 'Chuyện quen thuộc sẽ dễ mở lời hơn. Mình thử nhập vai ở quán cà phê nhé?'], tip: ['Pick a conversation you can imagine having in real life.', 'Bạn cứ chọn chuyện nào thấy gần gũi với mình nhé.'], phrase: 'Could I have a latte, please?' },
 } as const;
 
-export default function Practice({ onTutors, onScenario, onCreate, onTalk }: Props) {
+export default function Practice({ onTutors, onScenario, onCreate, onTalk, onTutorPreview }: Props) {
   const tr = useCopy();
   const { profile } = useNarra();
   const [filter, setFilter] = useState<Scenario['type'] | 'All'>('Roleplay');
@@ -38,6 +39,7 @@ export default function Practice({ onTutors, onScenario, onCreate, onTalk }: Pro
   const coaching = modeCoaching[filter];
   return <div className="practice-page practice-uat">
     <div className="page-intro"><h1 className="section-title">{tr('What shall we talk about?', 'Mình nói chuyện gì hôm nay?')}</h1><p className="page-description">{tr('Pick something that feels like you. We’ll take it from there.', 'Chọn một chuyện gần gũi, rồi mình thử nói nhé.')}</p></div>
+    <TutorSpotlight compact onPreview={onTutorPreview} />
     <div className="practice-mode-grid" aria-label={tr('Speaking practice modes', 'Các hình thức luyện nói')}>{modeEntries.map(({ type, vietnamese, detail, Icon, tone }) => <button key={type} className={`practice-mode tone-${tone} ${filter === type ? 'active' : ''}`} aria-pressed={filter === type} onClick={() => setFilter(type)}><Icon size={23} /><span><strong>{tr(type, vietnamese)}</strong><small>{tr(detail[0], detail[1])}</small></span></button>)}</div>
     <BuddyCoach compact mood={filter === 'Debate' || filter === 'Interview' ? 'focus' : 'guide'} title={tr('Let’s find your first words.', 'Tớ gợi ý câu mở đầu nhé.')} message={tr(coaching.message[0], coaching.message[1])} tip={tr(coaching.tip[0], coaching.tip[1])} phrase={coaching.phrase} actionLabel={tr('Try this conversation', 'Mình thử nói nhé')} onAction={() => { if (visibleScenarios[0]) onScenario(visibleScenarios[0]); else setFilter('Roleplay'); }} />
     <div className="practice-results-heading"><h2>{activeMode ? tr(activeMode.type, activeMode.vietnamese) : tr('All conversations', 'Tất cả cuộc trò chuyện')}<span>{visibleScenarios.length}</span></h2><button className={filter === 'All' ? 'active' : ''} onClick={() => setFilter('All')} aria-pressed={filter === 'All'}>{tr('View all', 'Xem tất cả')}</button></div>

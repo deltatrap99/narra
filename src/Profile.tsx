@@ -38,7 +38,7 @@ export default function Profile({ onTutors, onWriting, onLesson, onLeague, onFri
     { Icon: Clock3, value: stats.minutes, label: tr('Minutes practised', 'Phút luyện tập') },
     { Icon: MessageCircle, value: stats.conversations, label: tr('Conversations', 'Cuộc hội thoại') },
     { Icon: Star, value: words.filter(word => word.status === 'Mastered').length, label: tr('Words mastered', 'Từ đã nắm vững') },
-    { Icon: Sparkles, value: stats.speakingScore || '—', label: tr('Speaking score', 'Điểm luyện nói') },
+    { Icon: Sparkles, value: stats.speakingScore || '-', label: tr('Speaking score', 'Điểm luyện nói') },
   ];
   return <>
     <div className="profile-page profile-overview" inert={settings}>
@@ -55,7 +55,7 @@ export default function Profile({ onTutors, onWriting, onLesson, onLeague, onFri
       </div>
       <section className="card profile-progress-summary"><div className="profile-card-heading"><h2>{tr('Your progress', 'Tiến độ của bạn')}</h2><button className="profile-details-button" onClick={() => setDetails(value => !value)} aria-expanded={details} aria-controls="profile-progress-details">{tr(details ? 'Hide details' : 'View details', details ? 'Thu gọn' : 'Xem chi tiết')}{details ? <ChevronUp size={16} /> : <ChevronDown size={16} />}</button></div><div className="profile-metrics">{metrics.map(({ Icon, value, label }) => <div key={label}><Icon size={18} /><strong>{value}</strong><span>{label}</span></div>)}</div><p className="profile-local-note">{tr('Your progress is here when you want a little nudge.', 'Khi muốn xem mình đã đi tới đâu, bạn ghé đây nhé.')}</p></section>
       {details && <section id="profile-progress-details" className="profile-progress-details" aria-label={tr('Detailed learning progress', 'Chi tiết tiến độ học tập')}><Progress stats={stats} words={words} onWriting={onWriting} /></section>}
-      <section className="card profile-current-tutor"><Avatar name={tutor.name} /><div><p className="eyebrow">{tr('YOUR AI TUTOR', 'GIA SƯ AI CỦA BẠN')}</p><h2>{tutor.name}</h2><p>{tr(tutor.accent, tutor.id === 'henry' ? 'Tiếng Anh – giọng Anh' : 'Tiếng Anh – giọng Mỹ')}</p></div><button className="profile-tutor-button" onClick={onTutors}>{tr('Choose tutor', 'Chọn gia sư')}<ChevronRight size={16} /></button></section>
+      <section className="card profile-current-tutor"><Avatar name={tutor.name} /><div><p className="eyebrow">{tr('YOUR AI TUTOR', 'GIA SƯ AI CỦA BẠN')}</p><h2>{tutor.name}</h2><p>{tr(tutor.accent, tutor.id === 'henry' ? 'Tiếng Anh, giọng Anh' : 'Tiếng Anh, giọng Mỹ')}</p></div><button className="profile-tutor-button" onClick={onTutors}>{tr('Choose tutor', 'Chọn gia sư')}<ChevronRight size={16} /></button></section>
       <CommunityShortcuts onLeague={onLeague} onFriends={onFriends} onFeed={onFeed} onAchievements={onAchievements} onAvatar={onAvatar} onPlans={onPlans}/>
       <div className="profile-footer"><img src="/brand/logo-dark.webp" alt="Narra" /><span>Your voice. Your story.</span></div>
     </div>

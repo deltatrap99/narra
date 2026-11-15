@@ -1,0 +1,7 @@
+.topbar-actions .header-arena{background:#142327;color:#f5fbf8;border:1px solid #233b40;border-radius:15px;min-width:122px;padding:8px 11px;gap:8px;box-shadow:0 2px 0 #071214;display:flex;align-items:center;text-align:left}
+.header-arena>svg:first-child{color:#a6f04c;flex:none}.header-arena>svg:last-child{color:#a1b6bb;flex:none}
+.topbar-actions .header-arena .header-arena-copy{display:flex;flex-direction:column;gap:1px;color:inherit;font-size:inherit;line-height:1.15}
+.header-arena-copy strong{font-size:12px;white-space:nowrap}.header-arena-copy small{font-size:10px;color:#b1c9cd;font-weight:700;letter-spacing:.04em}
+.header-arena:hover{transform:translateY(-1px);filter:brightness(1.12)}
+.feature-loading{position:fixed;inset:0;z-index:150;display:grid;place-items:center;background:var(--surface);color:var(--text);font-weight:800}
+@media(max-width:600px){.topbar-actions .header-arena{min-width:106px;padding:7px 8px;gap:5px}.topbar-actions .header-arena .header-arena-copy{display:flex}.header-arena-copy strong{font-size:11px}.header-arena-copy small{font-size:9px}.header-arena>svg:first-child{width:15px}.header-arena>svg:last-child{width:12px}}

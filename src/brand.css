@@ -6,3 +6,6 @@ body{background:#f8faf5}.profile-background{--background:#f1f6ee}.brand{visibili
 .app.compact .brand-mascot{width:116px;height:139px;right:1px;bottom:9px}
 .conversation-composer input{font-size:16px!important}
 .secondary-button:hover:not(:disabled),.pill-button:hover:not(:disabled){background:#f2fae9;border-color:#99c67c}.pill-button.active:hover:not(:disabled){background:#8edb37;border-color:#8edb37;color:var(--brand-ink)}
+.bottom-nav{grid-template-columns:repeat(4,1fr);width:480px}.compact .bottom-nav{width:400px}
+:root{--muted:var(--brand-muted,#657062)}
+.workout-dialog{position:fixed;inset:0;z-index:22;width:100%;max-width:100vw;height:100dvh;max-height:none;border-radius:0;margin:0;background:var(--background)}.workout-shell{max-width:680px;margin:0 auto}.workout-content{padding-bottom:124px}.workout-answer-label input{font-size:16px!important}

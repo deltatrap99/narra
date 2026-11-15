@@ -1,0 +1,291 @@
+{
+  "spreadsheet_id": "1nk9fB8L4JRfP1XATwYvyP3QIUOCOjJJRkKwuWk0d0S4",
+  "sheet": "7.1 UAT",
+  "sheet_id": 1193668019,
+  "range": "A1:M34",
+  "rows": [
+    {
+      "row": 1,
+      "values": [
+        "UAT & ĐỀ XUẤT CẢI THIỆN"
+      ]
+    },
+    {
+      "row": 2,
+      "values": [
+        "1. QUY CHUẨN UAT"
+      ]
+    },
+    {
+      "row": 3,
+      "values": [
+        "Cách thức đọc bảng test",
+        "",
+        "Mỗi dòng là một tác vụ cần kiểm tra hoặc một vấn đề có thể xử lý riêng"
+      ]
+    },
+    {
+      "row": 4,
+      "values": [
+        "Ưu tiên đề xuất",
+        "",
+        "- Ưu tiên sửa sớm: Ưu tiên cải thiện ngay trong tháng nhằm launching\n- Có thể sửa sau: Phần nâng cấp hoặc còn tốn thời gian để sửa và cải thiện thêm"
+      ]
+    },
+    {
+      "row": 5,
+      "values": [
+        "Phạm vi triển khai",
+        "",
+        "Chưa chốt / Tháng 11 / Sau tháng 11. Ghi phương án cụ thể và thứ tự 1, 2, 3… sau khi tech đánh giá effort và phụ thuộc"
+      ]
+    },
+    {
+      "row": 6,
+      "values": [
+        "Trạng thái xử lý",
+        "",
+        "- Các trạng thái chính: Chờ Tech xem → Đã chốt → Đang sửa → Chờ test lại → Đã xác nhận\n- Nếu còn lỗi, ghi build và kết quả test lại rồi chuyển về Đang sửa."
+      ]
+    },
+    {
+      "row": 7,
+      "values": [
+        "App Structure & Concept UX/UI đề xuất",
+        "",
+        "7.2 App Structure & Concept UX/UI đề xuất"
+      ]
+    },
+    {
+      "row": 8,
+      "values": []
+    },
+    {
+      "row": 9,
+      "values": [
+        "2. BẢNG TEST VÀ ĐỀ XUẤT VỚI TECH"
+      ]
+    },
+    {
+      "row": 10,
+      "values": [
+        "STT",
+        "Vị trí test trên App",
+        "Minh hoạ",
+        "Hiện trạng vấn đề",
+        "Mong muốn thay đổi",
+        "Ref mong muốn",
+        "Ưu tiên đề xuất",
+        "Phản hồi của Tech",
+        "Phạm vi",
+        "Phương án đã chốt",
+        "Trạng thái xử lý",
+        "Kết quả test lại"
+      ]
+    },
+    {
+      "row": 11,
+      "values": [
+        "1",
+        "Ngôn ngữ của App",
+        "x",
+        "Hiện tại ngôn ngữ chính của app vẫn là tiếng Anh",
+        "Nên có option thành tiếng Việt trong các phần hướng dẫn sử dụng để người Việt dễ sử dụng, thân thiện",
+        "",
+        "Có thể sửa sau"
+      ]
+    },
+    {
+      "row": 12,
+      "values": [
+        "2",
+        "Tab điều hướng",
+        "",
+        "Mở app và tìm từng tác vụ. Ảnh có 5 tab: Learn, Practice, Words, Progress, Profile\n\nCác tab hiện tại bị mix tính năng với nhau nên không tiện người dùng sử dụng App, gây rối trong quá trình sử dụng và ảnh hưởng đến trải nghiệm người dùng",
+        "Thay đổi cấu trúc thành 4 tab điều hướng cố định: Lesson, Practice, Dictionary, Profile\n--> Người học có thể chuyển tab bất cứ lúc nào khi không ở trong một phiên hội thoại",
+        "",
+        "Ưu tiên sửa sớm"
+      ]
+    },
+    {
+      "row": 13,
+      "values": [
+        "3",
+        "Flow trò chuyện với AI Tutor",
+        "",
+        "3.1 Biểu cảm của AI Tutor: Hiện khá đơ, khi nói chuyện không được tự nhiên từ voice cho tới biểu cảm",
+        "Có thể bỏ video với AI Tutor để tránh cảm giác bị giả trân khi nói chuyện hoặc nếu chỉnh được tự nhiên thì tốt\n",
+        "",
+        "Có thể sửa sau"
+      ]
+    },
+    {
+      "row": 14,
+      "values": [
+        "",
+        "",
+        "",
+        "3.2 AI không tự động bật voice khi trò chuyện\n- Như trong ảnh cột C, AI Tutor không tự động trả lời \"Welcome back!...\" mà phải ấn vào biểu tượng loa thì AI mới nói\n- Voice của AI hiện khá bị giả trân",
+        "AI phải tự động nói được khi ấn vào trò chuyện và chỉnh voice AI",
+        "",
+        "Ưu tiên sửa sớm"
+      ]
+    },
+    {
+      "row": 15,
+      "values": [
+        "",
+        "",
+        "",
+        "3.3 Nút Mic: Chưa nổi bật và vị trí chưa hợp lý vì người dùng có thể Typing câu trả lời thay vì nói",
+        "Nút Mic nên để vào vị trí giữa, làm cho nổi bật nhất, bỏ dòng Type your reply để người dùng tập trung vào việc phải nói",
+        "",
+        "Ưu tiên sửa sớm"
+      ]
+    },
+    {
+      "row": 16,
+      "values": [
+        "",
+        "",
+        "",
+        "3.4 Phần Level up Your Answer: \n- Feedback dài, nhãn đánh giá khó hiểu và trả lời bị máy móc\n\n- Có lựa chọn Say it again or Type it below? --> App luyện nói thì không nên để người dùng tự Typing câu trả lời mà sẽ cần tập trung luyện nói",
+        "- Tối ưu về giao diện phần Feedback, tối ưu tính học thuật của AI để tránh bị máy móc. Có thể chia luôn các phần feedback bao gồm các mục:\n1. It is better to say (Bản update dựa trên chính câu trả lời gốc)\n2. Explaination: Giải thích vì sao nên update như vậy\n\n- Bỏ các lựa chọn Type it below để người dùng tập trung vào nói",
+        "",
+        "Ưu tiên sửa sớm"
+      ]
+    },
+    {
+      "row": 17,
+      "values": [
+        "",
+        "",
+        "",
+        "3.4 Phần Level up Your Answer: \n- Không có feedback về phát âm và điểm số cải thiện từng câu",
+        "- Cần thêm các tiêu chí đánh giá về phát âm chi tiết và chấm sửa phát âm tương ứng",
+        "",
+        "Ưu tiên sửa sớm"
+      ]
+    },
+    {
+      "row": 18,
+      "values": [
+        "4",
+        "Tab Learn",
+        "",
+        "4.1 Nút vào bài học:\nToday’s goal nằm trên thẻ bài. Free Talk và Quick practice cùng xuất hiện nên có nhiều điểm bắt đầu cạnh tranh nhau, người dùng sẽ bị rối vì không biết nên bấm vào đâu",
+        "Đưa Start/Continue Lesson lên nổi bật nhất để người học biết bấm đâu ngay khi mở app. Test bấm một lần vào đúng bài",
+        "",
+        "Ưu tiên sửa sớm"
+      ]
+    },
+    {
+      "row": 19,
+      "values": [
+        "",
+        "",
+        "",
+        "4.2 Giao diện thanh tiến độ:\nMục tiêu ngày, streak và lịch tuần chiếm một khối riêng trước bài học",
+        "Thu gọn khối thống kê để nút vào bài nằm trong vùng nhìn đầu tiên. Đối chiếu vị trí Buddy với mockup",
+        "",
+        "Có thể sửa sau"
+      ]
+    },
+    {
+      "row": 20,
+      "values": [
+        "5",
+        "Tab Practice ",
+        "",
+        "5.1 Giao diện chung:\nĐang có khá nhiều mục cần chọn trong 1 tab từ Free Talk, chọn tutor và các thẻ kỹ năng xuất hiện trước danh sách Conversations, khiến các chế độ hội thoại chính khó tìm trong khi đây là app luyện nói thì việc luyện nói nên được focus chính",
+        "Thay đổi giao diện để tối ưu các hình thức luyện nói: Đưa Roleplay, Discussion, Debate và Interview lên trước",
+        "",
+        "Ưu tiên sửa sớm"
+      ]
+    },
+    {
+      "row": 21,
+      "values": [
+        "",
+        "",
+        "",
+        "5.2 Vị trí các tính năng phụ như Shadowing, Pronunciation, Writing Check:\nCác tính năng phụ này xuất hiện ở Practice và lối tắt Quick practice trên Learn dù Shadowing là phần luyện tập và học từ vựng nên khá rối và bị lặp lại tính năng",
+        "Chuyển tất cả các tính năng phụ này về tab Dictionary để Practice gọn hơn, tập trung vào luyện nói với Tutor",
+        "",
+        "Ưu tiên sửa sớm"
+      ]
+    },
+    {
+      "row": 22,
+      "values": [
+        "6",
+        "Tab Words",
+        "",
+        "6.1 Tên tab: \nWords hiện tại chỉ có cách học từ vựng basic, tìm từ đã học,... chưa bao gồm các hình thức ôn tập khác nhau như Shadowing,...",
+        "Đổi thành Dictionary để có thể bao trọn nhiều tính năng chuyên về học từ vựng. Sau khi đổi, kiểm tra người học vẫn tìm được từ đã lưu, mở chi tiết và bắt đầu ôn",
+        "",
+        "Có thể sửa sau"
+      ]
+    },
+    {
+      "row": 23,
+      "values": [
+        "",
+        "",
+        "",
+        "6.2 Làm rõ các tính năng trong tab:\n- Start Review, Flashcards và Say My Words cùng nằm trong một khối nên cần phân biệt tác dụng từng nút\n- Thiếu các tính năng đã được gộp vào từ tab Pratice",
+        "- Ghi rõ Start Review để ôn từ đến hạn, Flashcards để nhớ nghĩa và Say My Words để luyện nói.\n- Bổ sung các trường tính năng khác như Shadowing, Pronunciation, Writing Check vì đều là các tính năng liên quan đến Vocab",
+        "",
+        "Ưu tiên sửa sớm"
+      ]
+    },
+    {
+      "row": 24,
+      "values": [
+        "7",
+        "Tab Progress",
+        "",
+        "7.1 Progress là tab riêng, có số phút, hội thoại, từ đã nắm và điểm luyện nói. Người dùng phải sang tab riêng để xem thì khá bất tiện và nhiều thao tác",
+        "Gom số liệu chi tiết vào Profile rồi bỏ tab Progress. Sau một buổi luyện, kiểm tra còn tìm được các số liệu cũ và số phút, số hội thoại cập nhật đúng",
+        "",
+        "Có thể sửa sau"
+      ]
+    },
+    {
+      "row": 25,
+      "values": [
+        "",
+        "",
+        "",
+        "7.2 Streak và mục tiêu ngày đã xuất hiện ở Learn, bên cạnh phần thống kê trong Progress",
+        "Giữ tóm tắt ở Lesson và chi tiết ở Profile",
+        "",
+        "Có thể sửa sau"
+      ]
+    },
+    {
+      "row": 26,
+      "values": [
+        "8",
+        "Tab Profile",
+        "",
+        "8.1 Tổng quan:\nMàn hiện tại đưa Account, Learning và Conversation lên cùng trang. Tiến độ đang nằm ở tab riêng nên khá rời rạc",
+        "Ưu tiên thông tin cá nhân, mục tiêu, Study Plan, tiến độ và tutor ở trang tổng quan. Vị trí từng khối cần đối chiếu ảnh đề xuất.",
+        "",
+        "Có thể sửa sau"
+      ]
+    },
+    {
+      "row": 27,
+      "values": [
+        "",
+        "",
+        "",
+        "8.2 Phần Settings:\nLevel, goal, ngôn ngữ, tutor và tuỳ chọn hội thoại đang hiện trực tiếp trong các nhóm trên Profile",
+        "Đưa tùy chọn vào Settings, chia Learning, Reminders & Notifications, Account và More. Test đổi mục tiêu hoặc tutor rồi mở lại để kiểm tra đã lưu.",
+        "",
+        "Có thể sửa sau"
+      ]
+    }
+  ]
+}

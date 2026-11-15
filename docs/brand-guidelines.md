@@ -68,29 +68,47 @@ The exact tagline is **Your voice. Your story.** including both periods. Keep it
 
 ## Typography
 
-The board shows a rounded sans-serif direction but does not identify a font family. The original supplied wordmark remains artwork. For product text, use the project's local Nunito for expressive headings and the platform UI sans-serif stack for body copy. This is a product implementation choice, not a claim about the original logo font.
+The board shows a rounded sans-serif direction but does not identify a font family. The original supplied wordmark remains artwork. The current product pairs local **Quicksand for display/headings** with **Nunito for body copy and controls**. This pairing implements the user's later request for a warmer, more playful app; it is not a claim about the original logo font or a copy of another app's type system.
 
 ### Font stack
 
 | Role | Stack | Weight |
 | --- | --- | --- |
-| Heading | Nunito, system-ui, sans-serif | 750–900 |
-| Body | -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif | 400–650 |
+| Heading/display | Quicksand, Nunito, sans-serif | 600–700 |
+| Body/control | Nunito, sans-serif | 400–800; stronger action labels where needed |
 | Mono | ui-monospace, SFMono-Regular, Consolas, monospace | 400 |
 
-Maintain short headlines, readable line heights, and a clear hierarchy. Body text should remain at least 14 px in compact controls and 16 px in extended reading.
+Fonts are served from `public/quicksand.ttf` and `public/nunito.ttf`; both OFL notices are bundled beside them. `src/refined.css` applies the current font roles. Quicksand's available variable range is 300–700, so the display direction should use its supported bold weight rather than depend on synthetic extra-bold lettering.
+
+Maintain short headlines, readable line heights and a clear hierarchy. Body text should remain at least 14 px in compact controls and 16 px in extended reading. English learning words and examples stay English when app guidance is switched to Vietnamese.
 
 ## Imagery and components
 
-Use clean light backgrounds, tactile 3D details, subtle glass navigation, and real human imagery where it serves tutor selection. The Narra mascot is a fuzzy cyan-blue speech-bubble character with large white eyes, cobalt arms and legs, and a small cyan star tuft. It should feel encouraging and curious.
+Use clean light backgrounds, tactile 3D details, subtle glass navigation and tutor imagery where it serves selection. The Narra mascot is a fuzzy cyan-blue speech-bubble character with large white eyes, cobalt arms and legs, and a small cyan star tuft. It should feel encouraging and curious. The brief opening animation introduces Buddy and the wordmark; provide Skip, reduced-motion behavior and replay through Settings.
 
 Avoid reintroducing purple as an app theme. Source tutor photographs or reference images may contain incidental colors; use the new palette for their surrounding UI. Favor lime primary buttons with dark text, cyan conversation surfaces, orange streak accents, rounded white cards, and restrained shadows.
 
-Keep controls recognizable at all sizes. Use consistent corner radii: controls 12 px, cards 24 px, sheets 28 px, pills fully round. Use a 4 px spacing grid. Focus outlines use Green ink with a clearly visible offset.
+Keep controls recognizable at all sizes. Use consistent corner radii around controls, cards, sheets and pills. The newer motivational/avatar components use modest lower-edge shadows to suggest physical buttons; shadows must not obscure labels or become heavy decoration. Use a 4 px spacing grid. Focus outlines use Green ink with a clearly visible offset.
+
+The personalized learner avatar is an original React SVG human character with selectable hair, skin, shirt and accessories. It is separate from Narra Buddy and the reference tutor characters. Its changes are saved locally only when the learner presses Save; Cancel preserves the previous appearance.
+
+### Themes
+
+Settings exposes Light, Dark and System appearance. Light mode uses the established white/lime/cyan palette. Dark mode uses deep blue-green canvases and surfaces, light text and the same recognizable lime actions. Preserve contrast, selected states, borders and focus visibility in both themes. Validate secondary panels and native controls during device QA rather than assuming a token change covers every surface.
+
+### Current product structure
+
+The primary dock has four destinations: **Lesson, Practice, Dictionary, Profile**. Lesson emphasizes the next lesson; Practice emphasizes tutor speaking modes; Dictionary groups word review and related vocabulary exercises; Profile contains identity, goals, Study Plan, tutor, progress and Settings. The dock stays available outside a focused conversation session.
+
+XP, daily quests and badges encourage small learning steps. Community screens use explicit demo labels for fictional leagues, profiles and feed posts. Follow/cheer preferences remain on the device. Never present fictional participants, seeded reference progress or sample scores as verified real-user outcomes.
+
+The profile QR must encode the actual invitation URL rendered by the app. Copy and device sharing occur only after the learner presses the corresponding button. Do not imply that the QR publishes a synced public profile: profile data currently stays in this browser.
+
+Plus and Family are plan previews. Keep proposed features labeled coming soon, pricing unannounced, and Narra Free as the current plan. Saving interest must not appear to activate a subscription or send a real notification. No billing or payment is taken.
 
 ## Voice
 
-Write like a supportive conversation partner: short, clear, warm, and specific. Encourage trying, make the next step easy, and respect the learner's pace. Avoid inflated claims about fluency or scores.
+Write like a supportive conversation partner: short, clear, warm and specific. Encourage trying, make the next step easy and respect the learner's pace. Avoid inflated claims about fluency or scores. Browser speech capture and playback are functional where supported, but tutor replies and learning suggestions are sample scripts. Do not describe them as live AI or invent phoneme/CEFR scores from typing or speech-recognition confidence.
 
 Examples:
 
@@ -104,7 +122,7 @@ Keep existing English lesson content when the learning task calls for English. P
 
 Run `node tools/sync-brand-tokens.mjs` after editing palette values in this document. It reads the table values above and writes both `assets/design-tokens.json` and `assets/design-tokens.css`. The JSON records primitive, semantic, and component roles. The script verifies key text contrast pairs.
 
-The product owner applies these tokens to app source styles. Generated token artifacts must stay synchronized with this document.
+The product owner applies these tokens to app source styles. Generated color artifacts should stay synchronized with this document. The token helper emits Quicksand heading and Nunito body roles in both generated artifacts; `src/refined.css` applies them throughout the interface.
 
 ## Provenance
 

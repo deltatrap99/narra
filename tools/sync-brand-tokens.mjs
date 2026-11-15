@@ -38,7 +38,7 @@ const tokens = {
     color: Object.fromEntries(Object.entries(colors).map(([name, value]) => [name, token(value)])),
     radius: { control: token('12px', 'dimension'), card: token('24px', 'dimension'), sheet: token('28px', 'dimension'), pill: token('999px', 'dimension') },
     spacing: { unit: token('4px', 'dimension') },
-    font: { heading: token('Nunito, system-ui, sans-serif', 'fontFamily'), body: token('-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif', 'fontFamily') }
+    font: { heading: token('Quicksand, Nunito, system-ui, sans-serif', 'fontFamily'), body: token('Nunito, system-ui, sans-serif', 'fontFamily') }
   },
   semantic: { color: semantic },
   component: {
@@ -60,8 +60,8 @@ const css = [
   '  --radius-sheet: 28px;',
   '  --radius-pill: 999px;',
   '  --spacing-unit: 4px;',
-  '  --font-heading: Nunito, system-ui, sans-serif;',
-  '  --font-body: -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif;',
+  '  --font-heading: Quicksand, Nunito, system-ui, sans-serif;',
+  '  --font-body: Nunito, system-ui, sans-serif;',
   '}', ''
 ].join('\n');
 function luminance(hex) {

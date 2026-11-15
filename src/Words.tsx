@@ -1,134 +1,63 @@
 import { useState, type FormEvent } from 'react';
-import { ChevronRight, Ellipsis, Layers3, Mic, Trash2, Volume2 } from 'lucide-react';
+import { ArrowRight, AudioLines, BookOpen, ChevronRight, Ellipsis, FileSearch, Headphones, Layers3, Mic, Search, Sparkles, Trash2, Volume2 } from 'lucide-react';
 import { initialWords, type Word, type WordStatus } from './data';
-import { speak, useNarra } from './state';
+import { speak, useCopy, useNarra } from './state';
 import { Art, Empty, Modal } from './ui';
+import './dictionary-uat.css';
+import BuddyCoach from './BuddyCoach';
 
-const collections = [
-  { name: 'Everyday essentials', art: 'house' },
-  { name: 'Travel smart', art: 'plane' },
-  { name: 'Work & career', art: 'briefcase' },
-];
-
+type Translate = (english: string, vietnamese: string) => string;
+type DictionaryProps = { onReview: (collection?: string) => void; onPronunciation: () => void; onShadowing: () => void; onReadAloud: () => void; onWriting: () => void };
+const collections = [{ name: 'Everyday essentials', art: 'house' }, { name: 'Travel smart', art: 'plane' }, { name: 'Work & career', art: 'briefcase' }];
 const careerWords: Word[] = [
   { id: 'career-feedback', word: 'feedback', definition: 'comments that help someone improve', example: 'Thank you for the helpful feedback.', status: 'New', collection: 'Work & career', due: true },
   { id: 'career-collaborate', word: 'collaborate', definition: 'to work together', example: 'We collaborate on new ideas.', status: 'New', collection: 'Work & career', due: true },
   { id: 'career-deadline', word: 'deadline', definition: 'the latest time by which something must be done', example: 'The deadline for this project is Friday.', status: 'New', collection: 'Work & career', due: true },
 ];
 
-function Status({ value }: { value: WordStatus }) {
-  return <span className={`word-status status-${value.toLowerCase()}`}>{value}</span>;
-}
+function collectionLabel(name: string, tr: Translate) { return name === 'Everyday essentials' ? tr(name, 'Từ vựng hằng ngày') : name === 'Travel smart' ? tr(name, 'Du lịch tự tin') : name === 'Work & career' ? tr(name, 'Công việc & sự nghiệp') : name === 'My words' ? tr(name, 'Từ đã lưu') : name; }
+function statusLabel(status: string, tr: Translate) { return status === 'All' ? tr('All', 'Tất cả') : status === 'New' ? tr('New', 'Mới') : status === 'Learning' ? tr('Learning', 'Đang học') : tr('Mastered', 'Đã nắm'); }
+function Status({ value }: { value: WordStatus }) { const tr = useCopy(); return <span className={`word-status status-${value.toLowerCase()}`}>{statusLabel(value, tr)}</span>; }
 
-export default function Words({ onReview, onPronunciation }: { onReview: (collection?: string) => void; onPronunciation: () => void }) {
-  const { words, setWords, stats, notify } = useNarra();
-  const [filter, setFilter] = useState('All');
-  const [dueOnly, setDueOnly] = useState(false);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [options, setOptions] = useState<string | null>(null);
-  const [confirmRemove, setConfirmRemove] = useState(false);
-  const selectedWord = words.find(word => word.id === selectedId);
-  const filteredWords = words.filter(word => (filter === 'All' || word.status === filter) && (!dueOnly || word.due));
-
-  function addCollection(name: string) {
-    const source = name === 'Work & career' ? careerWords : initialWords.filter(word => word.collection === name);
-    setWords(current => [...current, ...source.filter(word => !current.some(saved => saved.word.toLowerCase() === word.word.toLowerCase()))]);
-    notify(`${name} added to your words.`);
-  }
-
+export default function Words({ onReview, onPronunciation, onShadowing, onReadAloud, onWriting }: DictionaryProps) {
+  const { words, setWords, stats, notify } = useNarra(); const tr = useCopy();
+  const [filter, setFilter] = useState('All'); const [query, setQuery] = useState(''); const [dueOnly, setDueOnly] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null); const [options, setOptions] = useState<string | null>(null); const [confirmRemove, setConfirmRemove] = useState(false);
+  const dayWord = words.find(word => word.word === 'reservation') ?? initialWords.find(word => word.word === 'reservation')!;
+  const selectedWord = words.find(word => word.id === selectedId) ?? (selectedId === dayWord.id ? dayWord : undefined);
+  const search = query.trim().toLocaleLowerCase();
+  const filteredWords = words.filter(word => (filter === 'All' || word.status === filter) && (!dueOnly || word.due) && (!search || `${word.word} ${word.definition}`.toLocaleLowerCase().includes(search)));
+  const due = words.filter(word => word.due).length;
+  function addCollection(name: string) { const source = name === 'Work & career' ? careerWords : initialWords.filter(word => word.collection === name); setWords(current => [...current, ...source.filter(word => !current.some(saved => saved.word.toLowerCase() === word.word.toLowerCase()))]); notify(tr(`${name} added to your words.`, `Đã thêm bộ ${collectionLabel(name, tr)} vào từ đã lưu.`)); }
   function closeOptions() { setOptions(null); setConfirmRemove(false); }
 
-  return <div className="words-page">
-    <section className="word-overview"><h1>Words</h1><div className="word-metrics"><div><strong>{words.length}</strong><span>words</span></div><div><strong>{words.filter(w => w.status === 'Learning').length}</strong><span>learning</span></div><div><strong>{words.filter(w => w.status === 'Mastered').length}</strong><span>mastered</span></div></div><h2>{words.filter(w => w.due).length} words ready for review</h2><p>Recall + listen + use in a sentence. A little practice makes each new word your own.</p></section>
-    <div className="review-actions">
-      <p>{stats.reviews} word {stats.reviews === 1 ? 'review' : 'reviews'} recorded</p>
-      <button className="primary-button" onClick={() => onReview('due')}>Start due-word workout</button>
-      <hr />
-      <button className="primary-button" onClick={() => onReview()}><Layers3 size={25} />Review flashcards</button>
-      <button className="secondary-button" onClick={onPronunciation}><Mic size={25} />Practise pronunciation</button>
-    </div>
-
-    <h2 className="section-label">Collections</h2>
-    <div className="card collections-card">
-      {collections.map(collection => {
-        const count = words.filter(word => word.collection === collection.name).length;
-        return <div className="collection-row" key={collection.name}>
-          <Art name={collection.art} className="collection-art" />
-          <div className="collection-text"><h3>{collection.name}</h3><p className="muted">{count || 3} words</p></div>
-          {count > 0 ? <>
-            <button className="pill-button" onClick={() => onReview(collection.name)}>Review</button>
-            <button className="icon-button" aria-label={`Options for ${collection.name}`} onClick={() => setOptions(collection.name)}><Ellipsis size={23} /></button>
-          </> : <button className="primary-button collection-add" onClick={() => addCollection(collection.name)}>Add</button>}
-        </div>;
-      })}
-    </div>
-
-    <h2 className="section-label">My words</h2>
-    <div className="card words-card">
-      <div className="segmented" aria-label="Filter words by learning status">
-        {['All', 'New', 'Learning', 'Mastered'].map(status => <button key={status} className={`segment ${filter === status ? 'active' : ''}`} aria-pressed={filter === status} onClick={() => setFilter(status)}>{status}</button>)}
-      </div>
-      <div className="toggle-row"><span>Due for review only</span><button type="button" role="switch" aria-checked={dueOnly} aria-label="Due for review only" className={`switch ${dueOnly ? 'on' : ''}`} onClick={() => setDueOnly(value => !value)}><span /></button></div>
-      {filteredWords.length > 0 ? filteredWords.map(word => <button className="word-row" key={word.id} onClick={() => setSelectedId(word.id)}>
-        <span className="word-copy"><strong>{word.word}</strong><span className="muted">{word.definition}</span></span>
-        <Status value={word.status} /><ChevronRight size={21} aria-hidden="true" />
-      </button>) : <Empty title={dueOnly ? 'You’re all caught up' : `No ${filter === 'All' ? 'saved' : filter.toLowerCase()} words yet`}>
-        {dueOnly ? 'Your next review will be ready soon. Turn off the filter to see all your words.' : 'Add a word with the + button, or explore another learning status.'}
-      </Empty>}
-    </div>
-
+  return <div className="words-page dictionary-page">
+    <section className="word-overview"><h1>{tr('Dictionary', 'Từ vựng')}</h1><p>{tr('Found a word you like? Save it here. We’ll remember its meaning and try saying it together.', 'Gặp từ nào hay, bạn lưu vào đây nhé. Mình cùng nhớ nghĩa rồi thử nói thành tiếng.')}</p><div className="word-metrics"><div><strong>{words.length}</strong><span>{tr('saved words', 'từ đã lưu')}</span></div><div><strong>{due}</strong><span>{tr('due for review', 'từ đến hạn ôn')}</span></div><div><strong>{words.filter(word => word.status === 'Mastered').length}</strong><span>{tr('mastered', 'từ đã nắm')}</span></div></div></section>
+    <section className="dictionary-study-grid" aria-label={tr('Choose how to practise your words', 'Chọn cách luyện từ vựng')}>
+      <button className="dictionary-study-card dictionary-review" onClick={() => onReview('due')}><span className="dictionary-study-icon"><BookOpen size={23} /></span><span><strong>{tr('Start Review', 'Ôn từ đến hạn')}</strong><small>{tr('Recall and use words that are due for review.', 'Gợi nhớ và sử dụng những từ đã đến hạn ôn.')}</small></span><ArrowRight size={19} /></button>
+      <button className="dictionary-study-card dictionary-flashcards" onClick={() => onReview()}><span className="dictionary-study-icon"><Layers3 size={23} /></span><span><strong>{tr('Flashcards', 'Thẻ ghi nhớ')}</strong><small>{tr('Flip a card to remember the word’s meaning.', 'Lật thẻ để ghi nhớ nghĩa của từng từ.')}</small></span><ArrowRight size={19} /></button>
+      <button className="dictionary-study-card dictionary-say" onClick={onPronunciation}><span className="dictionary-study-icon"><Mic size={23} /></span><span><strong>{tr('Say My Words', 'Luyện nói từ đã lưu')}</strong><small>{tr('Listen, say saved words aloud, and hear yourself.', 'Nghe mẫu, nói từ đã lưu và nghe lại bản ghi.')}</small></span><ArrowRight size={19} /></button>
+    </section>
+    <p className="dictionary-review-count">{tr(`${stats.reviews} word reviews recorded`, `Đã ghi nhận ${stats.reviews} lượt ôn từ`)}</p>
+    <BuddyCoach compact mood={due ? 'guide' : 'cheer'} title={tr('A word, then a little story.', 'Một từ thôi, rồi mình thử nói nhé.')} message={due ? tr(`${due} words are ready to revisit. Pick one with me, then try it in your own sentence.`, `Có ${due} từ mình có thể ôn lại rồi. Bạn chọn một từ cùng tớ, rồi thử nói theo cách của bạn nhé.`) : tr('No words are waiting for review right now. Shall we pick one you like and say it out loud?', 'Chưa có từ nào đến hạn ôn đâu. Mình chọn một từ bạn thích rồi thử nói thành tiếng nhé?')} tip={tr('Not sure where to start? Start Review helps you recall due words. Flashcards lets you peek at meanings. Say My Words gives you a chance to hear yourself.', 'Bạn chưa biết chọn mục nào? Ôn từ đến hạn để nhớ lại từ cũ; Thẻ ghi nhớ để xem nghĩa; còn Luyện nói từ đã lưu là lúc mình nghe giọng của chính bạn.')} phrase={dayWord.example || undefined} actionLabel={due ? tr('Review due words', 'Ôn từ đến hạn') : tr('Say my saved words', 'Luyện nói từ đã lưu')} onAction={() => due ? onReview('due') : onPronunciation()} />
+    <section className="dictionary-extra"><h2>{tr('A little more word practice', 'Mình thử thêm một chút nhé')}</h2><div className="dictionary-extra-grid"><button onClick={onShadowing}><Headphones size={22} /><span><strong>{tr('Shadowing', 'Nghe và nhắc lại')}</strong><small>{tr('Listen closely and repeat useful phrases.', 'Nghe kỹ và nhắc lại những câu hữu ích.')}</small></span><ChevronRight size={17} /></button><button onClick={onReadAloud}><AudioLines size={22} /><span><strong>{tr('Pronunciation', 'Luyện phát âm')}</strong><small>{tr('Read a phrase aloud and compare recordings.', 'Đọc thành tiếng và so sánh với mẫu.')}</small></span><ChevronRight size={17} /></button><button onClick={onWriting}><FileSearch size={22} /><span><strong>{tr('Writing Check', 'Kiểm tra bài viết')}</strong><small>{tr('Use 30+ words in a short piece of writing.', 'Dùng ít nhất 30 từ trong một đoạn viết ngắn.')}</small></span><ChevronRight size={17} /></button></div></section>
+    <button className="dictionary-day-card" onClick={() => setSelectedId(dayWord.id)}><div><span className="eyebrow"><Sparkles size={14} />{tr('Word of the day', 'Từ vựng hôm nay')}</span><h2>{dayWord.word}</h2><p>{dayWord.definition}</p></div><ChevronRight size={24} /></button>
+    <h2 className="section-label">{tr('Collections', 'Bộ từ vựng')}</h2><div className="card collections-card">{collections.map(collection => { const count = words.filter(word => word.collection === collection.name).length; return <div className="collection-row" key={collection.name}><Art name={collection.art} className="collection-art" /><div className="collection-text"><h3>{collectionLabel(collection.name, tr)}</h3><p className="muted">{tr(`${count || 3} words`, `${count || 3} từ`)}</p></div>{count > 0 ? <><button className="pill-button" onClick={() => onReview(collection.name)}>{tr('Review', 'Ôn tập')}</button><button className="icon-button" aria-label={tr(`Options for ${collection.name}`, `Tùy chọn bộ ${collectionLabel(collection.name, tr)}`)} onClick={() => setOptions(collection.name)}><Ellipsis size={23} /></button></> : <button className="primary-button collection-add" onClick={() => addCollection(collection.name)}>{tr('Add', 'Thêm')}</button>}</div>; })}</div>
+    <h2 className="section-label">{tr('My words', 'Từ đã lưu')}</h2><div className="card words-card"><label className="dictionary-search"><Search size={19} /><span className="sr-only">{tr('Search saved words', 'Tìm từ đã lưu')}</span><input type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder={tr('Search a word or its meaning…', 'Tìm từ hoặc nghĩa của từ…')} /></label><div className="segmented" aria-label={tr('Filter words by learning status', 'Lọc từ theo trạng thái học')}>{['All', 'New', 'Learning', 'Mastered'].map(status => <button key={status} className={`segment ${filter === status ? 'active' : ''}`} aria-pressed={filter === status} onClick={() => setFilter(status)}>{statusLabel(status, tr)}</button>)}</div><div className="toggle-row"><span>{tr('Due for review only', 'Chỉ hiện từ đến hạn ôn')}</span><button type="button" role="switch" aria-checked={dueOnly} aria-label={tr('Due for review only', 'Chỉ hiện từ đến hạn ôn')} className={`switch ${dueOnly ? 'on' : ''}`} onClick={() => setDueOnly(value => !value)}><span /></button></div>{filteredWords.length ? filteredWords.map(word => <button className="word-row" key={word.id} onClick={() => setSelectedId(word.id)}><span className="word-copy"><strong>{word.word}</strong><span className="muted">{word.definition}</span></span><Status value={word.status} /><ChevronRight size={21} aria-hidden="true" /></button>) : <><Empty title={search ? tr('No matching words', 'Chưa tìm thấy từ phù hợp') : dueOnly ? tr('You’re all caught up', 'Bạn đã ôn hết từ đến hạn') : tr('No words in this view yet', 'Chưa có từ ở mục này')}>{tr('Nothing here just yet. Try another word or change the filters. You can save a new discovery with +.', 'Chỗ này chưa có từ nào nè. Bạn thử tìm từ khác hoặc đổi bộ lọc nhé. Gặp từ mới thì mình bấm + để lưu.')}</Empty><button className="text-button dictionary-clear-filters" onClick={() => { setQuery(''); setFilter('All'); setDueOnly(false); }}>{tr('Show all saved words', 'Hiện tất cả từ đã lưu')}</button></>}</div>
     {selectedWord && <WordDetails word={selectedWord} onClose={() => setSelectedId(null)} />}
-    {options && <Modal title={options} onClose={closeOptions}>
-      {confirmRemove ? <>
-        <p>Remove the saved words in this collection? You can add the collection again later.</p>
-        <div className="form-actions"><button className="pill-button" onClick={() => setConfirmRemove(false)}>Keep collection</button><button className="primary-button danger-button" onClick={() => { setWords(current => current.filter(word => word.collection !== options)); notify(`${options} removed.`); closeOptions(); }}>Remove collection</button></div>
-      </> : <>
-        <p className="muted">{words.filter(word => word.collection === options).length} words in your collection.</p>
-        <div className="form-actions"><button className="primary-button" onClick={() => { onReview(options); closeOptions(); }}><Layers3 size={20} />Review collection</button><button className="text-button danger-text" onClick={() => setConfirmRemove(true)}><Trash2 size={18} />Remove collection</button></div>
-      </>}
-    </Modal>}
+    {options && <Modal title={collectionLabel(options, tr)} onClose={closeOptions}>{confirmRemove ? <><p>{tr('Remove the saved words in this collection? You can add the collection again later.', 'Xóa các từ đã lưu trong bộ này? Bạn có thể thêm lại bộ từ sau.')}</p><div className="form-actions"><button className="pill-button" onClick={() => setConfirmRemove(false)}>{tr('Keep collection', 'Giữ bộ từ')}</button><button className="primary-button danger-button" onClick={() => { setWords(current => current.filter(word => word.collection !== options)); notify(tr('Collection removed.', 'Đã xóa bộ từ.')); closeOptions(); }}>{tr('Remove collection', 'Xóa bộ từ')}</button></div></> : <><p className="muted">{tr(`${words.filter(word => word.collection === options).length} words in your collection.`, `Bộ từ có ${words.filter(word => word.collection === options).length} từ đã lưu.`)}</p><div className="form-actions"><button className="primary-button" onClick={() => { onReview(options); closeOptions(); }}><Layers3 size={20} />{tr('Review collection', 'Ôn bộ từ')}</button><button className="text-button danger-text" onClick={() => setConfirmRemove(true)}><Trash2 size={18} />{tr('Remove collection', 'Xóa bộ từ')}</button></div></>}</Modal>}
   </div>;
 }
 
 function WordDetails({ word, onClose }: { word: Word; onClose: () => void }) {
-  const { setWords, notify } = useNarra();
-  const [confirmDelete, setConfirmDelete] = useState(false);
-  return <Modal title="Your word" onClose={onClose}>
-    <div className="detail-word"><h3>{word.word}</h3><button className="icon-button" aria-label={`Listen to ${word.word}`} onClick={() => { if (!speak(word.word)) notify('Speech playback is not supported in this browser.'); }}><Volume2 size={25} /></button></div>
-    <p>{word.definition}</p>
-    {word.example && <blockquote className="example">“{word.example}”</blockquote>}
-    <p className="muted">Collection · {word.collection}</p>
-    <label className="form-field">Learning status<select value={word.status} onChange={event => { const status = event.currentTarget.value as WordStatus; setWords(current => current.map(saved => saved.id === word.id ? { ...saved, status, due: status !== 'Mastered' } : saved)); notify(`Marked as ${status.toLowerCase()}.`); }}><option>New</option><option>Learning</option><option>Mastered</option></select></label>
-    <div className="form-actions"><button className="primary-button" onClick={onClose}>Done</button>{confirmDelete ? <><p className="muted">Delete this word from your saved list?</p><button className="text-button danger-text" onClick={() => { setWords(current => current.filter(saved => saved.id !== word.id)); notify('Word deleted.'); onClose(); }}><Trash2 size={18} />Yes, delete word</button><button className="text-button" onClick={() => setConfirmDelete(false)}>Keep word</button></> : <button className="text-button danger-text" onClick={() => setConfirmDelete(true)}><Trash2 size={18} />Delete word</button>}</div>
-  </Modal>;
+  const { words, setWords, notify } = useNarra(); const tr = useCopy(); const [confirmDelete, setConfirmDelete] = useState(false);
+  const isSaved = words.some(saved => saved.id === word.id);
+  return <Modal title={tr('Your word', 'Chi tiết từ')} onClose={onClose}><div className="detail-word"><h3>{word.word}</h3><button className="icon-button" aria-label={tr(`Listen to ${word.word}`, `Nghe từ ${word.word}`)} onClick={() => { if (!speak(word.word)) notify(tr('Speech playback is not supported in this browser.', 'Trình duyệt chưa hỗ trợ đọc mẫu.')); }}><Volume2 size={25} /></button></div><p>{word.definition}</p>{word.example && <blockquote className="example">“{word.example}”</blockquote>}<p className="muted">{tr('Collection', 'Bộ từ')} · {collectionLabel(word.collection, tr)}</p>{isSaved ? <label className="form-field">{tr('Learning status', 'Trạng thái học')}<select value={word.status} onChange={event => { const status = event.currentTarget.value as WordStatus; setWords(current => current.map(saved => saved.id === word.id ? { ...saved, status, due: status !== 'Mastered' } : saved)); notify(tr('Learning status updated.', 'Đã cập nhật trạng thái học.')); }}>{(['New', 'Learning', 'Mastered'] as WordStatus[]).map(status => <option value={status} key={status}>{statusLabel(status, tr)}</option>)}</select></label> : <button className="primary-button full-width" onClick={() => { setWords(current => current.some(saved => saved.word.toLowerCase() === word.word.toLowerCase()) ? current : [...current, { ...word, status: 'New', due: true }]); notify(tr('Word added to your Dictionary.', 'Đã thêm từ vào Từ vựng.')); }}>{tr('Save this word', 'Lưu từ này')}</button>}<div className="form-actions"><button className="primary-button" onClick={onClose}>{tr('Done', 'Xong')}</button>{isSaved && (confirmDelete ? <><p className="muted">{tr('Delete this word from your saved list?', 'Xóa từ này khỏi danh sách đã lưu?')}</p><button className="text-button danger-text" onClick={() => { setWords(current => current.filter(saved => saved.id !== word.id)); notify(tr('Word deleted.', 'Đã xóa từ.')); onClose(); }}><Trash2 size={18} />{tr('Yes, delete word', 'Đồng ý xóa từ')}</button><button className="text-button" onClick={() => setConfirmDelete(false)}>{tr('Keep word', 'Giữ từ')}</button></> : <button className="text-button danger-text" onClick={() => setConfirmDelete(true)}><Trash2 size={18} />{tr('Delete word', 'Xóa từ')}</button>)}</div></Modal>;
 }
 
 export function AddWordDialog({ onClose }: { onClose: () => void }) {
-  const { words, setWords, notify } = useNarra();
-  const [word, setWord] = useState('');
-  const [definition, setDefinition] = useState('');
-  const [example, setExample] = useState('');
-  const [collection, setCollection] = useState('My words');
-  const [error, setError] = useState('');
-
-  function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const cleanWord = word.trim(); const cleanDefinition = definition.trim();
-    if (!cleanWord || !cleanDefinition) { setError('Add a word and its meaning to continue.'); return; }
-    if (words.some(saved => saved.word.toLowerCase() === cleanWord.toLowerCase())) { setError('This word is already in your saved words.'); return; }
-    setWords(current => [...current, { id: `custom-${crypto.randomUUID()}`, word: cleanWord, definition: cleanDefinition, example: example.trim(), status: 'New', collection, due: true }]);
-    notify(`“${cleanWord}” added to your words.`); onClose();
-  }
-
-  return <Modal title="Add a word" onClose={onClose}>
-    <p className="muted">Keep a new discovery close. Make it part of your English.</p>
-    <form onSubmit={submit}>
-      <label className="form-field">Word or phrase<input value={word} onChange={event => { setWord(event.target.value); setError(''); }} placeholder="e.g. serendipity" required maxLength={80} autoComplete="off" /></label>
-      <label className="form-field">Meaning<textarea value={definition} onChange={event => { setDefinition(event.target.value); setError(''); }} placeholder="What does it mean?" required maxLength={300} rows={3} /></label>
-      <label className="form-field">Example sentence <span className="muted">(optional)</span><textarea value={example} onChange={event => setExample(event.target.value)} placeholder="Use it in a sentence…" maxLength={500} rows={2} /></label>
-      <label className="form-field">Collection<select value={collection} onChange={event => setCollection(event.target.value)}><option>My words</option>{collections.map(item => <option key={item.name}>{item.name}</option>)}</select></label>
-      {error && <p role="alert" className="form-error">{error}</p>}
-      <div className="form-actions"><button type="submit" className="primary-button">Add word</button><button type="button" className="text-button" onClick={onClose}>Cancel</button></div>
-    </form>
-  </Modal>;
+  const { words, setWords, notify } = useNarra(); const tr = useCopy();
+  const [word, setWord] = useState(''); const [definition, setDefinition] = useState(''); const [example, setExample] = useState(''); const [collection, setCollection] = useState('My words'); const [error, setError] = useState('');
+  function submit(event: FormEvent<HTMLFormElement>) { event.preventDefault(); const cleanWord = word.trim(); const cleanDefinition = definition.trim(); if (!cleanWord || !cleanDefinition) { setError(tr('Add a word and its meaning to continue.', 'Nhập từ và ý nghĩa để tiếp tục.')); return; } if (words.some(saved => saved.word.toLowerCase() === cleanWord.toLowerCase())) { setError(tr('This word is already in your saved words.', 'Từ này đã có trong danh sách đã lưu.')); return; } setWords(current => [...current, { id: `custom-${crypto.randomUUID()}`, word: cleanWord, definition: cleanDefinition, example: example.trim(), status: 'New', collection, due: true }]); notify(tr(`“${cleanWord}” added to your words.`, `Đã lưu từ “${cleanWord}”.`)); onClose(); }
+  return <Modal title={tr('Add a word', 'Thêm từ mới')} onClose={onClose}><p className="muted">{tr('A new word caught your eye? Let’s keep it here so you can try it in a conversation later.', 'Bạn vừa gặp một từ hay à? Mình lưu lại để thử dùng trong một cuộc trò chuyện nhé.')}</p><form onSubmit={submit}><label className="form-field">{tr('Word or phrase', 'Từ hoặc cụm từ')}<input value={word} onChange={event => { setWord(event.target.value); setError(''); }} placeholder="e.g. serendipity" required maxLength={80} autoComplete="off" /></label><label className="form-field">{tr('Meaning', 'Ý nghĩa')}<textarea value={definition} onChange={event => { setDefinition(event.target.value); setError(''); }} placeholder={tr('What does it mean?', 'Từ này có nghĩa là gì?')} required maxLength={300} rows={3} /></label><label className="form-field">{tr('Example sentence', 'Câu ví dụ')} <span className="muted">{tr('(optional)', '(không bắt buộc)')}</span><textarea value={example} onChange={event => setExample(event.target.value)} placeholder={tr('Use it in a sentence…', 'Dùng từ trong một câu…')} maxLength={500} rows={2} /></label><label className="form-field">{tr('Collection', 'Bộ từ')}<select value={collection} onChange={event => setCollection(event.target.value)}><option value="My words">{collectionLabel('My words', tr)}</option>{collections.map(item => <option value={item.name} key={item.name}>{collectionLabel(item.name, tr)}</option>)}</select></label>{error && <p role="alert" className="form-error">{error}</p>}<div className="form-actions"><button type="submit" className="primary-button">{tr('Add word', 'Lưu từ')}</button><button type="button" className="text-button" onClick={onClose}>{tr('Cancel', 'Hủy')}</button></div></form></Modal>;
 }

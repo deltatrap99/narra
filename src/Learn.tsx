@@ -1,47 +1,58 @@
 import { useState } from 'react';
-import { Check, ChevronRight, Flame, GitFork, List, LockKeyhole, Mic, Play, Sparkles, Sun } from 'lucide-react';
+import { Check, Clock3, Flame, GitFork, List, LockKeyhole, Play } from 'lucide-react';
 import { chapters, type Lesson } from './data';
-import { activityStreak, localDateKey, useNarra } from './state';
-import { Art, Avatar } from './ui';
+import { activityStreak, localDateKey, useCopy, useNarra } from './state';
 import PathGraph from './PathGraph';
+import './lesson-uat.css';
+import { DailyQuests, MotivationStrip } from './Motivation';
+import BuddyCoach from './BuddyCoach';
 
-export default function Learn({ onGoal, onLesson, onTalk, onWord }: { onGoal: () => void; onLesson: (lesson: Lesson) => void; onTalk: () => void; onWord: () => void }) {
+type Props = { onGoal: () => void; onLesson: (lesson: Lesson) => void; onTalk: () => void; onWord: () => void; onPractice: () => void; onOpenLeague: () => void; onOpenAchievements: () => void };
+
+export default function Learn({ onGoal, onLesson, onWord, onPractice, onOpenLeague, onOpenAchievements }: Props) {
   const { profile, stats, notify } = useNarra();
+  const tr = useCopy();
   const [view, setView] = useState<'List' | 'Graph'>('List');
-  const allLessons = chapters.flatMap(c => c.lessons);
-  const next = allLessons.find(l => !stats.completed.includes(l.id)) ?? allLessons[0];
-  const nextChapter = chapters.find(c => c.lessons.some(l => l.id === next.id))!;
-  const nextDescription = next.id === 'everyday-2' ? 'Talk about the habits that make you feel good.' : next.id === 'everyday-3' ? 'Order a coffee and make a little small talk.' : nextChapter.description;
-  const today = new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'Asia/Bangkok' }).format(new Date());
-  const todayKey = localDateKey();
-  const minutesToday = stats.activity.filter(a => a.date === todayKey).reduce((n, a) => n + a.minutes, 0);
+  const allLessons = chapters.flatMap(chapter => chapter.lessons);
+  const next = allLessons.find(lesson => !stats.completed.includes(lesson.id)) ?? allLessons[0];
+  const nextChapter = chapters.find(chapter => chapter.lessons.some(lesson => lesson.id === next.id))!;
+  const unitIndex = chapters.indexOf(nextChapter);
+  const doneInUnit = nextChapter.lessons.filter(lesson => stats.completed.includes(lesson.id)).length;
+  const completedCount = allLessons.filter(lesson => stats.completed.includes(lesson.id)).length;
+  const minutesToday = stats.activity.filter(activity => activity.date === localDateKey()).reduce((sum, activity) => sum + activity.minutes, 0);
   const streak = activityStreak(stats.activity);
-  function openLesson(lesson: Lesson, available: boolean) { if (available || stats.completed.includes(lesson.id)) onLesson(lesson); else notify('Complete the previous lesson to unlock this one.'); }
-  return <div className="learn-page">
-    <section className="greeting"><p className="date-line">{today}</p><div className="greeting-title"><h1>Good to see you, {profile.name}</h1><Sun className="greeting-sun" strokeWidth={1.6} /></div><p className="page-description">A little closer to the English-speaking you.</p></section>
-    <div className="home-top-grid">
-      <section className="card daily-goal" aria-label="Today's learning goal">
-        <div className="goal-ring" style={{ '--progress': `${Math.min(100, minutesToday / profile.dailyGoal * 100)}%` } as React.CSSProperties}><div><strong>{minutesToday}</strong><span>of {profile.dailyGoal} min</span></div></div>
-        <div><h2>Today’s goal</h2><p className="streak-line"><Flame size={22} fill="currentColor" /> {streak}-day streak</p><button className="text-button" onClick={onGoal}>Change goal</button></div>
-      </section>
-      <section className={`continue-card tone-${nextChapter.tone}`}>
-        <div className="continue-copy"><p className="eyebrow purple">Continue · {nextChapter.title}</p><h2>{next.title}</h2><p>{nextDescription}</p><button className="primary-button" onClick={() => onLesson(next)}><Play size={18} fill="currentColor" /> Start lesson</button></div><img src="/brand/mascot.webp" alt="" className="art hero-plant brand-mascot" />
-      </section>
-    </div>
-    <div className="home-support-grid">
-      <button className="card tutor-card" onClick={onTalk}><Avatar name={profile.tutor} /><div><h2>Talk with {profile.tutor}</h2><p>{profile.tutor === 'Skye' ? 'Your biggest cheerleader. Turn everyday conversations into little wins.' : 'Find your voice with relaxed conversations and a little extra encouragement.'}</p></div><span className="mic-circle"><Mic size={25} /></span></button>
-      <button className="word-of-day tone-yellow" onClick={onWord}><p className="eyebrow">Word of the day</p><h2>reservation</h2><p>an arrangement to keep a place for you</p><p className="muted">“I have a reservation for two nights.”</p></button>
-    </div>
+  const recent = allLessons.filter(lesson => stats.completed.includes(lesson.id)).slice(-2).reverse();
+  const description = next.id === 'everyday-2'
+    ? tr('Talk about the habits that make you feel good.', 'Trò chuyện về những thói quen giúp bạn cảm thấy tốt hơn.')
+    : next.id === 'everyday-3' ? tr('Order a coffee and make a little small talk.', 'Gọi một ly cà phê và bắt đầu cuộc trò chuyện ngắn.')
+      : tr('A short conversation. One little step forward.', 'Một cuộc trò chuyện ngắn. Thêm một bước tiến nhỏ.');
+  function openLesson(lesson: Lesson, available: boolean) {
+    if (available || stats.completed.includes(lesson.id)) onLesson(lesson);
+    else notify(tr('One little step first: finish the previous lesson, then this one will open.', 'Bạn học xong bài trước nhé, rồi mình sẽ mở được bài này.'));
+  }
+  return <div className="learn-page lesson-uat">
+    <header className="lesson-greeting"><p className="eyebrow">{tr('Your next little win', 'Bước tiến nhỏ tiếp theo')}</p><h1>{tr('Let’s keep going', 'Cùng học tiếp nhé')}, {profile.name}.</h1></header>
+    <section className="lesson-focus-card" aria-labelledby="next-lesson-title">
+      <div className="lesson-focus-top"><div className="lesson-focus-copy"><p className="lesson-unit-label">{tr('Unit', 'Chủ đề')} {String(unitIndex + 1).padStart(2, '0')} · {nextChapter.title}</p><h2 id="next-lesson-title">{next.title}</h2><p className="lesson-focus-description">{description}</p><span className="lesson-focus-meta"><Clock3 size={15} />{next.minutes} {tr('min', 'phút')}<span aria-hidden="true">·</span>{profile.level}<span aria-hidden="true">·</span>{tr('Speaking lesson', 'Bài luyện nói')}</span></div><img src="/brand/mascot.webp" alt="" className="lesson-buddy" /></div>
+      <button className="lesson-focus-cta primary-button" onClick={() => onLesson(next)}><Play size={19} fill="currentColor" />{doneInUnit ? tr('Continue lesson', 'Học tiếp bài này') : tr('Start lesson', 'Bắt đầu bài học')}</button>
+      <div className="lesson-unit-progress"><span>{tr('This unit', 'Chủ đề này')}</span><div className="progress-track" role="progressbar" aria-label={tr('Current unit progress', 'Tiến độ chủ đề hiện tại')} aria-valuemin={0} aria-valuemax={nextChapter.lessons.length} aria-valuenow={doneInUnit}><span style={{ width: `${doneInUnit / nextChapter.lessons.length * 100}%` }} /></div><strong>{doneInUnit}/{nextChapter.lessons.length} {tr('complete', 'đã hoàn thành')}</strong></div>
+    </section>
+    <div className="lesson-daily-strip" aria-label={tr('Your daily progress', 'Tiến độ hôm nay')}><span><Clock3 size={16} /><strong>{minutesToday}/{profile.dailyGoal}</strong> {tr('min today', 'phút hôm nay')}</span><span><Flame size={17} /><strong>{streak}</strong> {tr('day streak', 'ngày liên tiếp')}</span><button onClick={onGoal}>{tr('Change goal', 'Đổi mục tiêu')}</button></div>
+    <BuddyCoach compact mood={minutesToday >= profile.dailyGoal ? 'cheer' : 'guide'} title={tr('A little practice, with Buddy.', 'Cùng tớ nói một chút nhé?')} message={minutesToday >= profile.dailyGoal ? tr(`You’ve made ${minutesToday} minutes for English today. If you’d like one more little step, “${next.title}” is ready for you.`, `Bạn đã dành ${minutesToday} phút cho tiếng Anh hôm nay rồi. Nếu muốn học thêm một chút, “${next.title}” đang chờ mình nè.`) : tr(`No need to get it perfect. Let’s start “${next.title}” with one short sentence.`, `Chưa cần hoàn hảo đâu. Mình bắt đầu “${next.title}” bằng một câu ngắn nhé.`)} tip={tr('Listen once, then tap the big mic and tell the tutor one little thing. If you get stuck, replay the example and try again. There’s no rush.', 'Bạn nghe mẫu một lần, rồi chạm micro lớn và nói một ý nhỏ thôi. Nếu bí từ, mình nghe lại rồi thử tiếp nhé. Không cần vội.')} phrase={next.id === 'everyday-2' ? 'I usually start my day with a cup of coffee.' : undefined} actionLabel={tr('Open this lesson', 'Mở bài học này')} onAction={() => onLesson(next)} />
+    <MotivationStrip onOpenLeague={onOpenLeague} onOpenAchievements={onOpenAchievements}/>
+    <DailyQuests onLesson={() => onLesson(next)} onDictionary={onWord} onPractice={onPractice}/>
+    {recent.length > 0 && <section className="lesson-recent"><h2>{tr('Keep it fresh', 'Ôn lại một chút')}</h2><div>{recent.map(lesson => <button key={lesson.id} onClick={() => onLesson(lesson)}><span className="lesson-recent-check"><Check size={15} /></span><span>{lesson.title}</span><small>{tr('Revisit', 'Ôn lại')}</small></button>)}</div></section>}
     <section className="learning-path" id="learning-path">
-      <div className="page-intro"><h2 className="section-title">Your path</h2><p className="page-description">Explore the lessons at your own pace.</p></div>
-      <div className="path-progress"><div className="progress-track"><span style={{ width: `${stats.completed.length / allLessons.length * 100}%` }} /></div><span>{stats.completed.length} of {allLessons.length} complete</span></div>
-      <div className="view-row"><span className="eyebrow muted">View</span><div className="view-options"><button className={`pill-button ${view === 'List' ? 'active' : ''}`} onClick={() => setView('List')} aria-pressed={view === 'List'}><List size={19} />List</button><button className={`pill-button ${view === 'Graph' ? 'active' : ''}`} onClick={() => setView('Graph')} aria-pressed={view === 'Graph'}><GitFork size={19} />Graph</button></div></div>
-      <button className="up-next tone-lavender" onClick={() => onLesson(next)}><Sparkles size={23} fill="currentColor" /><span>Up next: {next.title}</span><strong>Continue</strong><ChevronRight size={20} className="mobile-chevron" /></button>
+      <div className="page-intro"><h2 className="section-title">{tr('Your learning path', 'Lộ trình bài học')}</h2><p className="page-description">{tr('Pick a lesson. We’ll take it one little conversation at a time.', 'Bạn chọn một bài nhé. Mình cứ thử từng cuộc trò chuyện nhỏ thôi.')}</p></div>
+      <div className="path-progress"><div className="progress-track"><span style={{ width: `${completedCount / allLessons.length * 100}%` }} /></div><span>{completedCount}/{allLessons.length} {tr('complete', 'đã hoàn thành')}</span></div>
+      <div className="view-row"><span className="eyebrow muted">{tr('View', 'Hiển thị')}</span><div className="view-options"><button className={`pill-button ${view === 'List' ? 'active' : ''}`} onClick={() => setView('List')} aria-pressed={view === 'List'}><List size={19} />{tr('List', 'Danh sách')}</button><button className={`pill-button ${view === 'Graph' ? 'active' : ''}`} onClick={() => setView('Graph')} aria-pressed={view === 'Graph'}><GitFork size={19} />{tr('Graph', 'Sơ đồ')}</button></div></div>
       {view === 'List' ? <div className="chapters-grid">{chapters.map(chapter => {
-        const done = chapter.lessons.filter(l => stats.completed.includes(l.id)).length;
-        return <section className="card chapter-card" key={chapter.id}><div className="chapter-heading"><div><h3>{chapter.title}</h3><p>{chapter.description}</p></div><span className={`chapter-count tone-${chapter.tone}`}>{done}/3</span></div><div className="lesson-list">{chapter.lessons.map((lesson, i) => {
-          const completed = stats.completed.includes(lesson.id); const available = i === 0 || stats.completed.includes(chapter.lessons[i - 1].id); const current = lesson.id === next.id;
-          return <button key={lesson.id} className={`lesson-row tone-${chapter.tone} ${completed ? 'completed' : ''} ${current ? 'current' : ''} ${!available ? 'locked' : ''}`} onClick={() => openLesson(lesson, available)} aria-disabled={!available && !completed} aria-label={`${lesson.title}, ${lesson.minutes} minutes${!available && !completed ? ', locked' : ''}`}><span className={`lesson-symbol ${completed ? 'done' : ''}`}>{completed ? <Check size={18} /> : available ? <Play size={13} fill="currentColor" /> : <LockKeyhole size={21} />}</span><span className="lesson-name">{lesson.title}</span><span className="lesson-minutes">{lesson.minutes} min</span></button>;
+        const done = chapter.lessons.filter(lesson => stats.completed.includes(lesson.id)).length;
+        return <section className="card chapter-card" key={chapter.id}><div className="chapter-heading"><div><h3>{chapter.title}</h3><p>{chapter.description}</p></div><span className={`chapter-count tone-${chapter.tone}`}>{done}/{chapter.lessons.length}</span></div><div className="lesson-list">{chapter.lessons.map((lesson, index) => {
+          const completed = stats.completed.includes(lesson.id);
+          const available = index === 0 || stats.completed.includes(chapter.lessons[index - 1].id);
+          const current = lesson.id === next.id;
+          return <button key={lesson.id} className={`lesson-row tone-${chapter.tone} ${completed ? 'completed' : ''} ${current ? 'current' : ''} ${!available ? 'locked' : ''}`} onClick={() => openLesson(lesson, available)} aria-disabled={!available && !completed} aria-label={`${lesson.title}, ${lesson.minutes} ${tr('minutes', 'phút')}${!available && !completed ? tr(', locked', ', chưa mở khóa') : ''}`}><span className={`lesson-symbol ${completed ? 'done' : ''}`}>{completed ? <Check size={18} /> : available ? <Play size={13} fill="currentColor" /> : <LockKeyhole size={21} />}</span><span className="lesson-name">{lesson.title}</span><span className="lesson-minutes">{lesson.minutes} {tr('min', 'phút')}</span></button>;
         })}</div></section>;
       })}</div> : <PathGraph chapters={chapters} completed={stats.completed} nextId={next.id} onLesson={openLesson} />}
     </section>

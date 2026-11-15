@@ -1,19 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, Mic, Play, Square, Volume2, X } from 'lucide-react';
-import { speak, useNarra } from './state';
+import { ArrowLeft, ArrowRight, Mic, Square, Volume2 } from 'lucide-react';
+import { speak, useCopy, useNarra } from './state';
 import { Empty } from './ui';
 import './subpages.css';
 
 type PracticeCounts = Record<string, number>;
 export default function MyWords({ onClose }: { onClose: () => void }) {
-  const { words, setStats, logActivity, notify } = useNarra();
-  const [index, setIndex] = useState(0); const [sentence, setSentence] = useState(false); const [recording, setRecording] = useState(false); const [pending, setPending] = useState(false); const [audio, setAudio] = useState(''); const [error, setError] = useState(''); const [sample, setSample] = useState(false);
+  const { words, setStats, logActivity, notify } = useNarra(); const tr = useCopy();
+  const [index, setIndex] = useState(0); const [sentence, setSentence] = useState(false); const [recording, setRecording] = useState(false); const [pending, setPending] = useState(false); const [audio, setAudio] = useState(''); const [error, setError] = useState('');
   const [counts, setCounts] = useState<PracticeCounts>(() => { try { const value = JSON.parse(localStorage.getItem('narra-word-speaking-v1') ?? '{}'); return value && typeof value === 'object' && !Array.isArray(value) ? Object.fromEntries(Object.entries(value).filter(([, v]) => typeof v === 'number' && Number.isFinite(v) && v >= 0)) as PracticeCounts : {}; } catch { return {}; } });
   const recorder = useRef<MediaRecorder | null>(null); const stream = useRef<MediaStream | null>(null); const audioRef = useRef<HTMLAudioElement>(null); const url = useRef(''); const generation = useRef(0); const busy = useRef(false); const timer = useRef<number | null>(null); const back = useRef<HTMLButtonElement>(null);
   const word = words[index % Math.max(1, words.length)]; const phrase = word ? sentence && word.example ? word.example : word.word : '';
   useEffect(() => { back.current?.focus({ preventScroll: true }); return () => { generation.current++; if (timer.current !== null) clearTimeout(timer.current); if (recorder.current) { recorder.current.onstop = null; recorder.current.ondataavailable = null; recorder.current.onerror = null; if (recorder.current.state !== 'inactive') recorder.current.stop(); } stream.current?.getTracks().forEach(t => t.stop()); audioRef.current?.pause(); if (url.current) URL.revokeObjectURL(url.current); window.speechSynthesis?.cancel(); }; }, []);
   useEffect(() => { try { localStorage.setItem('narra-word-speaking-v1', JSON.stringify(counts)); } catch { /* Practice remains available without storage. */ } }, [counts]);
-  function clearAudio() { audioRef.current?.pause(); if (url.current) URL.revokeObjectURL(url.current); url.current = ''; setAudio(''); setSample(false); setError(''); window.speechSynthesis?.cancel(); }
+  function clearAudio() { audioRef.current?.pause(); if (url.current) URL.revokeObjectURL(url.current); url.current = ''; setAudio(''); setError(''); window.speechSynthesis?.cancel(); }
   function stopRecording() {
     const active = recorder.current;
     if (!active || active.state !== 'recording') return;
@@ -25,7 +25,7 @@ export default function MyWords({ onClose }: { onClose: () => void }) {
   async function record() {
     if (busy.current || !word) return;
     if (recording) { stopRecording(); return; }
-    if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) { setError('This browser cannot record audio. You can still listen to the phrase and practise aloud.'); return; }
+    if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) { setError(tr('This browser cannot record audio. You can still listen to the phrase and practise aloud.', 'Trình duyệt chưa hỗ trợ ghi âm. Bạn vẫn có thể nghe mẫu và đọc thành tiếng.')); return; }
     const request = generation.current; busy.current = true; setPending(true); clearAudio();
     let acquired: MediaStream | null = null;
     try {
@@ -47,7 +47,7 @@ export default function MyWords({ onClose }: { onClose: () => void }) {
           setCounts(counts => ({ ...counts, [wordId]: (counts[wordId] ?? 0) + 1 }));
           setStats(stats => ({ ...stats, speakingTries: stats.speakingTries + 1 }));
           logActivity(`Say my words · ${label}`, 1);
-        } else setError('No audio was captured. Try another recording.');
+        } else setError(tr('No audio was captured. Try another recording.', 'Chưa nghe được bạn rồi. Mình thử ghi âm lại nhé?'));
       };
       rec.onerror = () => {
         rec.onstop = null; rec.ondataavailable = null;
@@ -57,7 +57,7 @@ export default function MyWords({ onClose }: { onClose: () => void }) {
         if (timer.current !== null) { clearTimeout(timer.current); timer.current = null; }
         recorder.current = null; stream.current = null; busy.current = false;
         setRecording(false); setPending(false);
-        setError('Recording stopped unexpectedly. Please try again.');
+        setError(tr('Recording stopped unexpectedly. Please try again.', 'Bản ghi vừa bị ngắt. Bạn thử lại một lần nữa nhé.'));
       };
       recorder.current = rec; rec.start(); setRecording(true); busy.current = false;
       timer.current = window.setTimeout(stopRecording, 30000);
@@ -68,10 +68,21 @@ export default function MyWords({ onClose }: { onClose: () => void }) {
         if (active) { active.onstop = null; active.ondataavailable = null; active.onerror = null; if (active.state !== 'inactive') active.stop(); }
         recorder.current = null; stream.current = null;
         if (timer.current !== null) { clearTimeout(timer.current); timer.current = null; }
-        setError('Allow microphone access in your browser to record. You can also listen and practise aloud.');
+        setError(tr('Allow microphone access in your browser to record. You can also listen and practise aloud.', 'Cho phép trình duyệt dùng mic để ghi âm. Bạn cũng có thể nghe mẫu và đọc thành tiếng.'));
         setRecording(false); busy.current = false;
       }
     } finally { if (generation.current === request) setPending(false); }
   }
-  return <section className="app-subpage speaking-subpage" aria-label="My Words pronunciation"><header className="subpage-header"><button ref={back} className="device-button" aria-label="Back to words" onClick={onClose}><ArrowLeft size={22} /></button><h1>My Words</h1><span className="subpage-header-spacer" /></header><div className="subpage-content speaking-content"><div className="speaking-intro"><h2>Say my words</h2><p>Listen, practise, and hear yourself grow. Every try is added to your progress.</p></div>{!word ? <Empty title="A little vocabulary first">Add a word to start your speaking practice.</Empty> : <><div className="segmented"><button className={`segment ${!sentence ? 'active' : ''}`} disabled={recording || pending} onClick={() => { clearAudio(); setSentence(false); }}>The word</button><button className={`segment ${sentence ? 'active' : ''}`} disabled={recording || pending || !word.example} onClick={() => { clearAudio(); setSentence(true); }}>Example sentence</button></div><div className="say-card"><p className="eyebrow">Say this · My words</p><h3>{phrase}</h3><p className="say-definition">{word.definition}</p><div className="say-actions"><button className="pill-button" disabled={recording || pending} onClick={() => { audioRef.current?.pause(); if (!speak(phrase)) notify('Audio playback is unavailable in this browser'); }}><Volume2 size={16} />Listen</button><button className="pill-button" disabled={recording || pending} onClick={() => { clearAudio(); setIndex(i => (i + 1) % words.length); }}><ArrowRight size={16} />Next</button></div></div><div className="word-record-area"><button className={`word-record-button ${recording ? 'recording' : ''}`} disabled={pending} onClick={record} aria-label={recording ? 'Stop word recording' : pending ? 'Waiting for microphone' : 'Record this word'}>{recording ? <Square size={29} fill="currentColor" /> : <Mic size={36} />}</button><p>{pending ? recording ? 'Saving your recording…' : 'Waiting for microphone access…' : recording ? 'Recording… tap again to stop' : sentence ? 'Tap, read the example aloud, tap again (max 30 s)' : 'Tap, say the word, tap again'}</p>{error && <p className="inline-error" role="alert">{error}</p>}{audio && <div className="word-audio"><audio ref={element => { if (element) audioRef.current = element; }} src={audio} controls onPlay={() => window.speechSynthesis?.cancel()} /><p>Your recording stays on this device. Listen and compare with the example.</p></div>}</div><div className="word-practice-summary"><p className="eyebrow">Your practice with “{word.word}”</p><div><span><strong>{counts[word.id] ?? 0}</strong>Tries</span><span><strong>—</strong>Best</span><span><strong>—</strong>Last</span></div><p>{counts[word.id] ? 'Every little try is a step forward.' : 'Record yourself to start tracking this word.'}</p></div><button className="sample-feedback-button" onClick={() => setSample(s => !s)}>{sample ? 'Hide example feedback' : 'Preview example feedback'}<ArrowRight size={15} /></button>{sample && <section className="speech-feedback card"><div className="speech-feedback-head"><strong>76</strong><span>/100 · about C1</span><span className="sample-badge">Sample</span></div><div className="speech-score-grid"><span><strong>59</strong>Pronunciation</span><span><strong>91</strong>Fluency</span><span><strong>78</strong>Reading</span></div><p>Read 89% · accurate 67% · 213 words/min</p><div className="speech-word-chips">{'Thank you for the helpful feedback'.split(' ').map((w, i) => <span className={['orange', 'pink', 'orange', 'green', 'pink', 'green'][i]} key={`${w}-${i}`}>{w}</span>)}</div><p>You said: “Thank you for the half phone feedback.”</p><ul><li>“you” sounded like /ɪ/ instead of /juː/. Focus on /j/.</li><li>“helpful” sounded like “half”. Focus on /ɛ/.</li><li>You read quite fast. Slow down so each word has room.</li></ul><p className="preview-note">Example feedback recreated from the reference video. Live speech scoring is not connected; this sample is not an assessment of your recording.</p></section>}<p className="speaking-privacy">Your voice, your pace. Recordings are local; speech scoring needs a connected service.</p></>}</div></section>;
+  return <section className="app-subpage speaking-subpage" aria-label={tr('Say My Words', 'Luyện nói từ đã lưu')}>
+    <header className="subpage-header"><button ref={back} className="device-button" aria-label={tr('Back to Dictionary', 'Quay lại Từ vựng')} onClick={onClose}><ArrowLeft size={22} /></button><h1>{tr('Say My Words', 'Luyện nói từ đã lưu')}</h1><span className="subpage-header-spacer" /></header>
+    <div className="subpage-content speaking-content"><div className="speaking-intro"><h2>{tr('Let’s make these words feel familiar.', 'Mình tập nói những từ này nhé.')}</h2><p>{tr('Pick a word, hear the example, then have a go. Listen back — there’s no rush to get it perfect.', 'Chọn một từ, nghe mẫu rồi thử nói nhé. Mình nghe lại một chút — chưa cần hoàn hảo đâu.')}</p></div>
+      {!word ? <Empty title={tr('A little vocabulary first', 'Hãy lưu một từ trước nhé')}>{tr('Add a word in Dictionary to start your speaking practice.', 'Thêm từ trong Từ vựng để bắt đầu luyện nói.')}</Empty> : <>
+        <div className="segmented" aria-label={tr('Choose what to read', 'Chọn nội dung đọc')}><button className={'segment '+(!sentence ? 'active' : '')} disabled={recording || pending} onClick={() => { clearAudio(); setSentence(false); }}>{tr('The word', 'Từ vựng')}</button><button className={'segment '+(sentence ? 'active' : '')} disabled={recording || pending || !word.example} onClick={() => { clearAudio(); setSentence(true); }}>{tr('Example sentence', 'Câu ví dụ')}</button></div>
+        <div className="say-card"><p className="eyebrow">{tr('Say this · Saved words', 'Đọc thành tiếng · Từ đã lưu')}</p><h3>{phrase}</h3><p className="say-definition">{word.definition}</p><div className="say-actions"><button className="pill-button" disabled={recording || pending} onClick={() => { audioRef.current?.pause(); if (!speak(phrase)) notify(tr('Audio playback is unavailable in this browser', 'Trình duyệt chưa hỗ trợ đọc mẫu')); }}><Volume2 size={16} />{tr('Listen', 'Nghe mẫu')}</button><button className="pill-button" disabled={recording || pending} onClick={() => { clearAudio(); setIndex(index => (index + 1) % words.length); }}><ArrowRight size={16} />{tr('Next word', 'Từ tiếp theo')}</button></div></div>
+        <div className="word-record-area"><button className={'word-record-button '+(recording ? 'recording' : '')} disabled={pending} onClick={record} aria-label={pending ? tr('Waiting for microphone', 'Đang chờ mic') : recording ? tr('Stop word recording', 'Dừng ghi âm') : tr('Record this word', 'Ghi âm từ này')}>{recording ? <Square size={29} fill="currentColor" /> : <Mic size={36} />}</button><p role="status">{pending ? recording ? tr('Saving your recording…', 'Đang lưu bản ghi…') : tr('Waiting for microphone access…', 'Đang chờ quyền truy cập mic…') : recording ? tr('Recording… tap again to stop', 'Đang ghi âm… bấm lần nữa để dừng') : sentence ? tr('Tap, read the example aloud, then tap again to stop (max 30 s).', 'Bấm mic, đọc câu ví dụ rồi bấm lần nữa để dừng (tối đa 30 giây).') : tr('Tap the mic, say the word, then tap again to stop.', 'Bấm mic, đọc từ rồi bấm lần nữa để dừng.')}</p>{error && <p className="inline-error" role="alert">{error}</p>}{audio && <div className="word-audio"><audio ref={element => { if (element) audioRef.current = element; }} src={audio} controls onPlay={() => window.speechSynthesis?.cancel()} /><p>{tr('Listen to your recording and compare with the example.', 'Cùng nghe lại nào. Có âm nào bạn muốn thử thêm một lần không?')}</p></div>}</div>
+        <div className="word-practice-summary"><p className="eyebrow">{tr('Your practice with “'+word.word+'”', 'Bạn đã luyện từ “'+word.word+'”')}</p><div className="word-practice-actual"><strong>{counts[word.id] ?? 0}</strong><span>{tr('recorded attempts', 'lượt ghi âm đã hoàn thành')}</span></div><p>{counts[word.id] ? tr('Your completed recordings are counted in your progress.', 'Lượt luyện này đã được lưu rồi. Mỗi lần bạn cất tiếng đều là một bước tiến.') : tr('Record yourself to start tracking this word.', 'Sẵn sàng thì bấm mic nhé. Mình bắt đầu với một từ thôi.')}</p></div>
+        <p className="speaking-privacy">{tr('Your number of tries is saved on this device. Audio is available while this practice screen is open. No pronunciation score is estimated from your recording.', 'Số lượt luyện được lưu trên thiết bị. Bạn có thể nghe bản ghi khi màn luyện tập còn mở. Ứng dụng không tự ước lượng điểm phát âm từ bản ghi.')}</p>
+      </>}
+    </div>
+  </section>;
 }

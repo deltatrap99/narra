@@ -32,6 +32,6 @@
   --radius-sheet: 28px;
   --radius-pill: 999px;
   --spacing-unit: 4px;
-  --font-heading: Nunito, system-ui, sans-serif;
-  --font-body: -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif;
+  --font-heading: Quicksand, Nunito, system-ui, sans-serif;
+  --font-body: Nunito, system-ui, sans-serif;
 }

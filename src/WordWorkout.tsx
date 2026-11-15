@@ -1,16 +1,26 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { Check, Headphones, RotateCcw, Sparkles, Trophy, Volume2 } from 'lucide-react';
 import type { Word } from './data';
-import { speak, useNarra } from './state';
+import BuddyCoach from './BuddyCoach';
+import './buddy-learning.css';
+import { speak, useCopy, useNarra } from './state';
 import './word-workout.css';
 
 type Mode = 'Recall' | 'Listening' | 'In context';
 type Attempt = { word: Word; correct: boolean; revealed: boolean };
 const modes: Mode[] = ['Recall', 'Listening', 'In context'];
 const modeDescriptions: Record<Mode, string> = {
-  Recall: 'Read the meaning. Recall the English word or phrase without peeking.',
-  Listening: 'Listen to the word. Type what you hear without peeking.',
-  'In context': 'Read the sentence. Fill in the missing English word or phrase.',
+  Recall: 'Take a look at the meaning. Which English word comes to mind?',
+  Listening: 'Let’s listen once, then try writing what you hear.',
+  'In context': 'Read the whole sentence, then try the missing word or phrase.',
+};
+function modeLabel(mode: Mode, tr: (english: string, vietnamese: string) => string) {
+  return mode === 'Recall' ? tr('Recall', 'Gợi nhớ') : mode === 'Listening' ? tr('Listening', 'Nghe từ') : tr('In context', 'Trong ngữ cảnh');
+}
+const modeDescriptionsVi: Record<Mode, string> = {
+  Recall: 'Mình đọc nghĩa trước nhé. Bạn nhớ ra từ tiếng Anh nào không?',
+  Listening: 'Cùng nghe từ này rồi thử viết lại nhé.',
+  'In context': 'Mình đọc cả câu rồi thử điền từ còn thiếu nhé.',
 };
 
 export function normalizeWorkoutAnswer(value: string) {
@@ -20,8 +30,15 @@ export function normalizeWorkoutAnswer(value: string) {
 
 function clozeFor(word: Word) {
   const escaped = word.word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const pattern = new RegExp(escaped, 'i');
-  return pattern.test(word.example) ? word.example.replace(pattern, '________') : `________: ${word.definition}`;
+  const pattern = new RegExp(`(?<![\\p{L}\\p{N}_’'])${escaped}(?![\\p{L}\\p{N}_’'])`, 'giu');
+  const sentence = word.example.replace(pattern, '________');
+  return sentence !== word.example ? sentence : `________: ${word.definition}`;
+}
+
+function buddyWorkoutTip(mode: Mode, wordCount: number, tr: (en: string, vi: string) => string) {
+  if (mode === 'Listening') return tr('Replay once. Listen for the first sound and the stressed part, then try the spelling. You can listen again before checking.', 'Nghe lại một lần. Chú ý âm đầu và phần được nhấn, rồi thử viết từ. Bạn có thể nghe thêm trước khi kiểm tra.');
+  if (mode === 'In context') return tr(`Read both sides of the gap. Which meaning fits the whole sentence? Your answer has ${wordCount} word${wordCount === 1 ? '' : 's'}.`, `Đọc cả hai phía chỗ trống. Ý nghĩa nào phù hợp với cả câu? Câu trả lời gồm ${wordCount} từ.`);
+  return tr(`Picture a situation where you would use this meaning. Try recalling the English before peeking. Your answer has ${wordCount} word${wordCount === 1 ? '' : 's'}.`, `Hình dung một tình huống dùng ý nghĩa này. Thử nhớ lại tiếng Anh trước khi xem đáp án. Câu trả lời gồm ${wordCount} từ.`);
 }
 
 function wordType(word: Word) {
@@ -33,16 +50,18 @@ function wordType(word: Word) {
 }
 
 function Feedback({ attempt, onHear }: { attempt: Attempt; onHear: () => void }) {
+  const tr = useCopy();
   return <section className={`workout-feedback ${attempt.correct ? 'is-correct' : 'is-missed'}`} role="status">
-    <h3>{attempt.correct ? <Check size={20} /> : <RotateCcw size={20} />}{attempt.correct ? 'That’s right — you remembered it!' : 'Not quite — learn from this one'}</h3>
+    <h3>{attempt.correct ? <Check size={20} /> : <RotateCcw size={20} />}{attempt.correct ? tr('That’s it. You remembered this one.', 'Đúng rồi, bạn nhớ từ này rồi.') : tr('Not this one yet. Let’s try another way.', 'Từ này chưa khớp. Mình thử cách khác nhé.')}</h3>
     <strong>{attempt.word.word}</strong><p>{attempt.word.definition}</p><p className="workout-example">{attempt.word.example}</p>
-    <button className="workout-text-button" onClick={onHear} type="button"><Volume2 size={19} />Hear the example</button>
-    <p className="workout-saved-note">{attempt.correct ? 'Saved to your review history.' : 'Marked for another review. You can retry it after this workout.'}</p>
+    <p className="workout-saved-note">{attempt.correct ? tr('Saved to your review history.', 'Đã lưu vào lịch sử ôn tập.') : tr('Marked for another review. You can retry it after this workout.', 'Đã đánh dấu để ôn lại. Bạn có thể luyện lại sau lượt này.')}</p>
+    <div className="workout-feedback-buddy"><BuddyCoach compact title={tr(attempt.correct ? 'Try a sentence of your own' : 'Let’s hear it together', attempt.correct ? 'Mình thử đặt một câu nhé' : 'Mình cùng nghe lại nhé')} message={tr(attempt.correct ? 'You’ve got the word. How would you use it in your day?' : 'Let’s read the meaning, hear the example, and say it once together.', attempt.correct ? 'Bạn nhớ từ này rồi. Nếu dùng trong ngày của bạn thì câu sẽ thế nào nhỉ?' : 'Mình đọc nghĩa, nghe câu ví dụ rồi thử nói lại một lần nhé.')} tip={tr('Connect the word to something you do, know, or plan to try. A personal example gives you another way to remember it.', 'Gắn từ này với một điều bạn làm, biết hoặc muốn thử. Ví dụ của riêng bạn giúp bạn có thêm cách ghi nhớ.')} actionLabel={tr('Listen to the example', 'Nghe câu ví dụ')} onAction={onHear} mood={attempt.correct ? 'cheer' : 'focus'} /></div>
   </section>;
 }
 
 export default function WordWorkout({ onClose }: { onClose: () => void }) {
   const { words, setWords, setStats, logActivity, notify } = useNarra();
+  const tr = useCopy();
   const [deck, setDeck] = useState<Word[]>(() => words.filter(word => word.due).slice(0, 10));
   const [mode, setMode] = useState<Mode>('Recall');
   const [phase, setPhase] = useState<'intro' | 'question' | 'complete'>('intro');
@@ -62,7 +81,7 @@ export default function WordWorkout({ onClose }: { onClose: () => void }) {
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null;
     const oldOverflow = document.body.style.overflow;
-    dialogRef.current?.showModal();
+    dialogRef.current?.show();
     document.body.style.overflow = 'hidden';
     return () => { document.body.style.overflow = oldOverflow; previous?.focus(); window.speechSynthesis?.cancel(); };
   }, []);
@@ -70,7 +89,7 @@ export default function WordWorkout({ onClose }: { onClose: () => void }) {
     if (phase === 'question' && !feedback) inputRef.current?.focus({ preventScroll: true });
     contentRef.current?.scrollTo({ top: 0 });
   }, [phase, index]);
-  function hear(text: string) { if (!speak(text)) notify('Speech playback is unavailable in this browser.'); }
+  function hear(text: string) { if (!speak(text)) notify(tr('Speech playback is unavailable in this browser.', 'Trình duyệt chưa hỗ trợ đọc mẫu.')); }
   function start() { if (deck.length) setPhase('question'); }
   function checkAnswer(revealed = false) {
     if (!word || feedback || (!revealed && !answer.trim())) return;
@@ -108,27 +127,30 @@ export default function WordWorkout({ onClose }: { onClose: () => void }) {
   return <dialog ref={dialogRef} className="workout-dialog" aria-labelledby="workout-title"
     onCancel={event => { event.preventDefault(); onClose(); }}>
     <div className="workout-shell">
-      <header className="workout-header"><button className="workout-close" onClick={onClose}>Close</button><h1 id="workout-title">Word workout</h1><span aria-hidden="true" /></header>
+      <header className="workout-header"><button className="workout-close" onClick={onClose}>{tr('Close', 'Đóng')}</button><h1 id="workout-title">{tr('Word workout', 'Ôn từ đến hạn')}</h1><span aria-hidden="true" /></header>
       <div className="workout-content" ref={contentRef}>
         {phase === 'intro' && <section className="workout-intro">
-          <h2>Remember it. Use it.</h2><p>A focused workout of up to 10 words. Each answer is saved to your review history, even if you leave early.</p>
-          <div className="workout-segments" aria-label="Workout mode">{modes.map(item => <button key={item} className={mode === item ? 'active' : ''} aria-pressed={mode === item} onClick={() => setMode(item)}>{item}</button>)}</div>
-          <div className="workout-explanation"><strong>{modeDescriptions[mode]}</strong><p>{deck.length} eligible {deck.length === 1 ? 'word' : 'words'} · answers ignore case and outer punctuation, but spelling matters.</p></div>
-          {deck.length ? <button className="workout-primary" onClick={start}>Start workout</button> : <div className="workout-empty"><Sparkles size={32} /><h3>{words.length ? 'You’re all caught up' : 'Your next word is waiting'}</h3><p>{words.length ? 'No words are due for review. Keep exploring or add a new discovery.' : 'Add a word to your collection to start a workout.'}</p><button className="workout-primary" onClick={onClose}>Back to Words</button></div>}
+          <h2>{tr('Let’s give these words another try.', 'Mình gặp lại những từ này nhé.')}</h2><p>{tr('Up to 10 words, one at a time. Your answers are saved as we go, so you can stop when you need.', 'Mình ôn tối đa 10 từ, từng từ một nhé. Mỗi câu trả lời được lưu ngay nên bạn có thể dừng khi cần.')}</p>
+          <div className="workout-segments" aria-label={tr('Workout mode', 'Hình thức ôn tập')}>{modes.map(item => <button key={item} className={mode === item ? 'active' : ''} aria-pressed={mode === item} onClick={() => setMode(item)}>{modeLabel(item, tr)}</button>)}</div>
+          <div className="workout-explanation"><strong>{tr(modeDescriptions[mode], modeDescriptionsVi[mode])}</strong><p>{tr(`${deck.length} eligible words · answers ignore case and outer punctuation, but spelling matters.`, `${deck.length} từ đến hạn · không phân biệt hoa/thường và dấu câu ở hai đầu, nhưng cần viết đúng chính tả.`)}</p></div>
+          {deck.length > 0 && <div className="workout-intro-buddy"><BuddyCoach compact message={tr('Take a little pause. Let’s see what comes back before we peek.', 'Mình dừng một chút để nhớ lại trước khi xem đáp án nhé.')} tip={tr(mode === 'Listening' ? 'Listen once without typing, then replay and write what you hear.' : mode === 'In context' ? 'Read the whole sentence first. Think about the meaning the missing word needs to express.' : 'Read the meaning, picture a real example, and try the English word before revealing it.', mode === 'Listening' ? 'Nghe một lần mà chưa gõ, rồi nghe lại và viết điều bạn nghe được.' : mode === 'In context' ? 'Đọc cả câu trước. Nghĩ về ý nghĩa mà từ còn thiếu cần diễn đạt.' : 'Đọc ý nghĩa, hình dung một ví dụ thật và thử nhớ từ tiếng Anh trước khi mở đáp án.')} mood="guide" /></div>}
+          {deck.length ? <button className="workout-primary" onClick={start}>{tr('Start workout', 'Bắt đầu ôn')}</button> : <div className="workout-empty"><Sparkles size={32} /><h3>{words.length ? tr('You’re all caught up', 'Bạn đã ôn hết từ đến hạn') : tr('Your next word is waiting', 'Bắt đầu với một từ mới')}</h3><p>{words.length ? tr('No words are due for review. Keep exploring or add a new discovery.', 'Chưa có từ đến hạn ôn. Hãy khám phá thêm hoặc lưu một từ mới.') : tr('Add a word to your collection to start a workout.', 'Thêm một từ vào bộ từ vựng để bắt đầu ôn.')}</p><button className="workout-primary" onClick={onClose}>{tr('Back to Dictionary', 'Quay lại Từ vựng')}</button></div>}
         </section>}
         {phase === 'question' && word && <form className="workout-question" onSubmit={submit}>
-          <div className="workout-progress-label"><span>{index + 1} of {deck.length}</span><span>{mode}</span></div>
-          <div className="workout-progress" role="progressbar" aria-label="Words reviewed" aria-valuemin={0} aria-valuemax={deck.length} aria-valuenow={index + Number(!!feedback)}><span style={{ width: `${(index + Number(!!feedback)) / deck.length * 100}%` }} /></div>
-          <div className="workout-prompt">{mode === 'Listening' ? <><Headphones size={30} /><h2>Listen. What do you hear?</h2><button type="button" className="workout-listen" onClick={() => hear(word.word)}><Volume2 size={20} />Play word</button></> : <><h2>{mode === 'Recall' ? word.definition : clozeFor(word)}</h2><span>{mode === 'In context' ? 'complete the sentence' : wordType(word)}</span></>}</div>
-          <label className="workout-answer-label"><span className="workout-sr-only">Your English answer</span><input ref={inputRef} value={answer} onChange={event => setAnswer(event.target.value)} placeholder="Type the English word or phrase" disabled={!!feedback} autoComplete="off" autoCorrect="off" spellCheck={false} aria-describedby="workout-answer-help" /></label>
-          {!feedback && <button type="button" id="workout-answer-help" className="workout-show" onClick={() => checkAnswer(true)}>I don’t remember — show me</button>}
+          <div className="workout-progress-label"><span>{tr(`${index + 1} of ${deck.length}`, `${index + 1} / ${deck.length}`)}</span><span>{modeLabel(mode, tr)}</span></div>
+          <div className="workout-progress" role="progressbar" aria-label={tr('Words reviewed', 'Số từ đã ôn')} aria-valuemin={0} aria-valuemax={deck.length} aria-valuenow={index + Number(!!feedback)}><span style={{ width: `${(index + Number(!!feedback)) / deck.length * 100}%` }} /></div>
+          <div className="workout-prompt">{mode === 'Listening' ? <><Headphones size={30} /><h2>{tr('Let’s listen. What did you hear?', 'Mình nghe thử nhé. Bạn nghe được từ gì?')}</h2><button type="button" className="workout-listen" onClick={() => hear(word.word)}><Volume2 size={20} />{tr('Play word', 'Nghe từ')}</button></> : <><h2>{mode === 'Recall' ? word.definition : clozeFor(word)}</h2><span>{mode === 'In context' ? tr('complete the sentence', 'hoàn thành câu') : tr(wordType(word), wordType(word) === 'noun' ? 'danh từ' : wordType(word) === 'adjective' ? 'tính từ' : wordType(word) === 'phrase' ? 'cụm từ' : 'từ vựng')}</span></>}</div>
+          {!feedback && <div className="workout-question-buddy"><BuddyCoach compact key={mode+'-'+word.id} message={tr('One little clue, then it’s your turn.', 'Mình thử một gợi ý rồi đến lượt bạn nhé.')} tip={buddyWorkoutTip(mode, word.word.trim().split(/\s+/).length, tr)} actionLabel={tr(mode === 'Listening' ? 'Replay the word' : 'Try my answer', mode === 'Listening' ? 'Nghe lại từ' : 'Thử trả lời')} onAction={() => { if (mode === 'Listening') hear(word.word); else inputRef.current?.focus(); }} mood="focus" /></div>}
+          <label className="workout-answer-label"><span className="workout-sr-only">{tr('Your English answer', 'Câu trả lời bằng tiếng Anh')}</span><input ref={inputRef} value={answer} onChange={event => setAnswer(event.target.value)} placeholder={tr('Type the English word or phrase', 'Nhập từ hoặc cụm từ tiếng Anh')} disabled={!!feedback} autoComplete="off" autoCorrect="off" spellCheck={false} aria-describedby="workout-answer-help" /></label>
+          {!feedback && <button type="button" id="workout-answer-help" className="workout-show" onClick={() => checkAnswer(true)}>{tr('Show me the answer', 'Cho mình xem đáp án')}</button>}
           {feedback && <Feedback attempt={feedback} onHear={() => hear(word.example)} />}
-          <div className="workout-bottom"><button className="workout-primary" type="submit" disabled={!feedback && !answer.trim()}>{feedback ? index + 1 === deck.length ? 'Finish workout' : 'Next word' : 'Check answer'}</button></div>
+          <div className="workout-bottom"><button className="workout-primary" type="submit" disabled={!feedback && !answer.trim()}>{feedback ? index + 1 === deck.length ? tr('Finish workout', 'Hoàn thành lượt ôn') : tr('Next word', 'Từ tiếp theo') : tr('Check answer', 'Kiểm tra đáp án')}</button></div>
         </form>}
-        {phase === 'complete' && <section className="workout-complete"><span className="workout-trophy"><Trophy size={35} /></span><h2>Workout complete</h2><p>A little closer to making these words yours.</p>
-          <div className="workout-score"><strong>{correct}<span> / {deck.length}</span></strong><span>correct answers</span></div>
-          {missed.length ? <><h3>Words to keep practising</h3><div className="workout-missed-list">{missed.map(item => <div key={item.id}><strong>{item.word}</strong><span>{item.definition}</span></div>)}</div><button className="workout-primary" onClick={retry}><RotateCcw size={18} />Retry missed words</button></> : <div className="workout-all-correct"><Check size={22} /><span>You remembered every word. Well done!</span></div>}
-          <button className={`workout-primary ${missed.length ? 'workout-secondary' : ''}`} onClick={onClose}>Done</button>
+        {phase === 'complete' && <section className="workout-complete"><span className="workout-trophy"><Trophy size={35} /></span><h2>{tr('That’s this round done.', 'Mình xong lượt này rồi.')}</h2><p>{tr('A little closer to making these words yours.', 'Thêm một bước để sử dụng những từ này tự tin hơn.')}</p>
+          <div className="workout-score"><strong>{correct}<span> / {deck.length}</span></strong><span>{tr('words recalled', 'từ nhớ đúng')}</span></div>
+          <div className="workout-complete-buddy"><BuddyCoach compact title={tr('A little progress, together', 'Mình vừa tiến thêm một chút rồi')} message={tr(`You recalled ${correct} of ${deck.length} words in this round. Every answer is in your review history.`, `Bạn đã nhớ đúng ${correct} trên ${deck.length} từ trong lượt này. Từng câu trả lời đã được lưu vào lịch sử ôn.`)} tip={missed.length ? tr(`${missed.length} word${missed.length === 1 ? ' is' : 's are'} marked for another review. Use Retry below, then make a personal sentence with one of them.`, `${missed.length} từ đã được đánh dấu để ôn thêm. Chọn ôn lại bên dưới rồi đặt một câu của riêng bạn với một từ.`) : tr('Try using one of these words in your next conversation. Remembering is the first step; using it makes the next connection.', 'Thử dùng một từ vừa ôn trong cuộc trò chuyện tiếp theo. Ghi nhớ là bước đầu; sử dụng sẽ giúp bạn kết nối thêm với từ.')} mood={missed.length ? 'focus' : 'cheer'} /></div>
+          {missed.length ? <><h3>{tr('Words to keep practising', 'Những từ cần luyện thêm')}</h3><div className="workout-missed-list">{missed.map(item => <div key={item.id}><strong>{item.word}</strong><span>{item.definition}</span></div>)}</div><button className="workout-primary" onClick={retry}><RotateCcw size={18} />{tr('Retry missed words', 'Ôn lại từ chưa nhớ')}</button></> : <div className="workout-all-correct"><Check size={22} /><span>{tr('You remembered every word. Well done!', 'Bạn đã nhớ tất cả các từ. Làm tốt lắm!')}</span></div>}
+          <button className={`workout-primary ${missed.length ? 'workout-secondary' : ''}`} onClick={onClose}>{tr('Done', 'Xong')}</button>
         </section>}
       </div>
     </div>

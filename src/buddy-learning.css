@@ -1,0 +1,18 @@
+.lesson-prep-buddy .buddy-coach{margin:0 0 20px}
+.lesson-prep-phrases[tabindex="-1"]{scroll-margin-top:18px}
+.lesson-prep-phrases[tabindex="-1"]:focus{outline:2px solid var(--brand-green-ink,#32661a);outline-offset:7px;border-radius:4px}
+.workout-intro-buddy .buddy-coach{margin:0 0 20px}
+.workout-question-buddy .buddy-coach{margin:0 0 17px;box-shadow:none}
+.workout-feedback-buddy .buddy-coach{margin:17px 0 0;box-shadow:none}
+.workout-complete-buddy .buddy-coach{margin:19px 0 22px}
+.workout-feedback-buddy .buddy-coach-copy>h2,.workout-intro-buddy .buddy-coach-copy>h2{font-size:17px;line-height:1.35;letter-spacing:-.3px;font-weight:800;margin:0 0 5px}
+.workout-question-buddy .buddy-coach-compact .buddy-coach-portrait{width:58px;min-width:58px}
+.conversation-start-buddy{margin:16px 0 5px;min-width:0}
+.conversation-start-buddy .buddy-coach{margin:0;box-shadow:none;border-radius:17px;padding:14px}
+.conversation-start-buddy .buddy-coach-compact .buddy-coach-portrait{width:55px;min-width:55px}
+.conversation-start-buddy .buddy-coach-copy>h2{font-size:17px}
+.conversation-start-buddy .buddy-coach-controls{gap:7px 12px}
+.conversation-feedback-buddy .buddy-coach{margin:20px 0 0;box-shadow:none}
+.conversation-feedback-buddy .buddy-coach-phrase>p{font-size:16px;line-height:1.6}
+@media(max-width:600px){.workout-question-buddy .buddy-coach{padding:14px 13px}.workout-question-buddy .buddy-coach-compact .buddy-coach-portrait{width:52px;min-width:52px}.conversation-start-buddy .buddy-coach-compact .buddy-coach-portrait{width:48px;min-width:48px}.conversation-start-buddy .buddy-coach{padding:13px 12px}.conversation-start-buddy .buddy-coach-controls>button{font-size:14px}.lesson-prep-buddy .buddy-coach{margin-bottom:20px}}
+@media(prefers-reduced-motion:reduce){.lesson-prep-phrases[tabindex="-1"]{scroll-behavior:auto}}

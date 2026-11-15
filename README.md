@@ -1,6 +1,8 @@
 # Narra
 
-A responsive, interactive recreation of the supplied English-learning app screenshots and both walkthrough videos, updated to the supplied Narra Option 1 brand identity. Built with React, TypeScript, Vite and Lucide.
+A responsive English-learning app prototype built from the supplied screenshots, walkthrough videos, Narra brand board and UAT sheet. The current app uses four tabs—**Lesson, Practice, Dictionary and Profile**—with English/Vietnamese guidance, rounded Quicksand headings, Nunito body text and the Narra lime/cyan identity.
+
+Built with React, TypeScript, Vite, Lucide and `qrcode`. Learning and community state is saved in this browser; this is not a connected account or live AI tutoring service.
 
 ## Run locally
 
@@ -9,39 +11,47 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5174. `npm run build` typechecks and creates a production build in `dist/`.
+Open [the local app](http://localhost:5174). `npm run build` runs TypeScript and creates the production build in `dist/`.
 
-## Included
+## Current experience
 
-- Learn: daily goals, the 20 chapters / 60 lesson titles verified from video, list and winding graph views, locked progression, and a three-question sample lesson.
-- Practice: category filters, full-screen chat / avatar views, local conversation drafts, Hint / Translate / Feedback / Save word / Level up, the four video tutors (Skye, Henry, Camila, Dwayne), custom topics, writing practice notes and listen-and-type shadowing.
-- Words: seven starting reference words, three addable career words from video, collections, adding / deleting words, status and due filters, text-to-speech and flashcards. The Word workout has Recall, Listening and In context modes, deterministic typed answer checking, missed-word retry and saved progress.
-- Say my words: word / sentence tabs, device-local recording and playback, saved attempt counts and an explicitly labeled example feedback panel matching the second video.
-- Progress: recorded practice, a selectable 34-province Vietnam map, sample comparison figures, weekly chart, November 2026 calendar and activity log.
-- Profile: saved name, level, learning goal, language, daily target and tutor preferences.
+- **Lesson:** a prominent Start/Continue action, lesson preparation, a 20-unit/60-lesson list or winding path, sequential lesson locks, a compact daily goal/streak strip, daily quests and local XP. The first screen prioritizes the next lesson over statistics.
+- **Practice:** Roleplay, Discussion, Debate and Interview scenarios, Free Talk, custom topics and the four reference tutors: Skye, Henry, Camila and Dwayne. Conversations have a prominent central mic, a transcript/audio view, automatic tutor speech when sound is enabled, hints, translations, concise language suggestions and word saving. A keyboard alternative is available for accessibility and unsupported speech recognition.
+- **Dictionary:** distinct Start Review, Flashcards and Say My Words entries with explanations; saved-word search, collections, details, adding/deleting words and status/due filters; functional Word of the Day details; Shadowing, Pronunciation and Writing Check. The due-word workout has Recall, Listening and In context modes, deterministic answer checking and missed-word retry. Writing notes require at least 30 words.
+- **Profile:** identity, editable custom avatar, daily target, Study Plan, current tutor and detailed practice history. The former Progress tab is available here, including the weekly chart, activity log, calendar and demo province map. Settings groups learning preferences, reminder/notification preferences, account information, app language and Light/Dark/System appearance.
+- **Motivation and community previews:** local XP/levels and daily quests, achievements derived from local learning state, a demo league with fictional learners, sample friends to follow/unfollow, and a fictional feed with locally saved cheers. Local activity can also appear in your own feed section. These screens do not contact real learners or publish posts.
+- **Personal touches:** a brief Buddy launch animation with Skip, reduced-motion support and replay from Settings; an avatar studio with hair, skin, shirt and accessory choices; and a genuine QR code for the profile-preview invitation URL, with copy and device-native sharing where supported.
+- **A learning buddy:** contextual Buddy guidance helps choose a conversation, prepare an opener, try a review strategy, retry after feedback and choose the next step. Hints expand on request and English examples can be played aloud. The visible VI/EN control in the header switches guidance immediately and persists the choice. [Buddy voice notes](docs/buddy-voice.md) keep the tone friendly and practical.
+- **Plan previews:** Narra Free remains the current plan. Plus/Family show proposed features and unannounced pricing. “Notify me” only saves plan interest on this device; it does not subscribe, email, charge or activate a paid plan.
 
-Profile, word lists and progress persist in browser localStorage. No accounts, analytics, external AI service or cloud database are connected. Conversation replies and lesson questions are explicitly labeled samples. Writing notes use local counts and simple feedback; recordings are not assigned artificial pronunciation scores. The 80 speaking score, 11 minutes and other starting values recreate the screenshot sample state.
+The four-tab dock remains available on ordinary app pages and subpages. A conversation is a focused session. Dialogs use normal keyboard focus behavior and the launch screen can be skipped.
 
-The app is mobile-first with 20px side margins and the five-tab floating glass dock. Desktop uses the same visual system with responsive columns. The phone button on Learn also offers a compact app preview.
+## What is real, local or simulated
 
-## Brand identity
+Browser speech recognition captures English transcripts when the browser supports `SpeechRecognition`/`webkitSpeechRecognition`; text-to-speech uses installed browser voices. Microphone permission, speech-service availability and autoplay policies vary by device. A browser may use its vendor’s network service for recognition—this feature is not an offline or entirely on-device speech-processing guarantee.
 
-The exact supplied wordmark / speech-bubble “a” glyph is extracted into `public/brand/`. The primary palette is black, lime `#9CE943`, orange `#FF6E0B` and cyan `#6DD9FF`; lime controls use black text and ordinary links use an accessible derived dark green. The blue fuzzy 3D mascot is recreated from the brand board. Tagline: “Your voice. Your story.”
+Say My Words and Pronunciation can record and play back microphone audio with `MediaRecorder`. Recordings are temporary object URLs while that practice screen remains open. Attempt counts and progress are saved locally; audio is not uploaded by the app or retained as a cloud recording.
 
-Brand source of truth: `docs/brand-guidelines.md`. Token artifacts: `assets/design-tokens.json` and `assets/design-tokens.css`, imported into the app. Run `node tools/sync-brand-tokens.mjs` after editing the source brand documentation.
+Tutor responses, hints, translations and language suggestions are deterministic samples. The app does not run a live language model, evaluate phonemes, or assign a pronunciation score from recognition confidence or typed text. Conversation detail can show observed turn duration and transcript-based words per minute; those are not pronunciation or proficiency scores. Writing Check reports counts and simple local practice notes, without an AI grade or estimated level.
 
-## Reference and asset notes
+Initial progress includes reference sample values such as 11 minutes and one conversation. These seeded values can affect the initial XP/achievement display; they are not measurements collected from a new learner. Fictional league users, feed posts and province comparison figures are labeled as demo content. A profile QR encodes a real invitation URL, but public profile identity, cross-device friend requests, authentication, cloud sync, social messaging, push notifications, scheduled reminders and payments are not connected.
 
-Visible reference text is preserved in `src/data.ts`; the supplemental videos supplied the complete chapter order, lesson names and tutor identities. Source Skye, Henry, Camila and Dwayne crops are in `public/assets/`. Skye’s shirt is rebranded Narra. The six original 3D illustrations / tutor portrait were initially recreated with built-in image generation because screenshot attachment paths were absent. Actual source illustration crops were subsequently extracted from video as `*-reference.webp`. All generation prompts are in `tools/asset-prompts.md`; the supplied brand board and sampled video frames are retained under `tools/` for source review.
+## Storage
 
-The Nunito display font is supplied locally from the [Google Fonts repository](https://github.com/google/fonts/tree/main/ofl/nunito), licensed under OFL. Body text uses the system font. Province geometries come from [TaliaCao/Vietnam-Shape-Map](https://github.com/TaliaCao/Vietnam-Shape-Map), MIT licensed; its notice is bundled in `public/assets/vietnam-map-LICENSE.txt`. Map comparisons are clearly marked demo data.
+Validated `localStorage` records preserve learning preferences, words, progress, conversation drafts, avatar appearance, local social choices and plan interest. The intro’s once-per-session flag uses `sessionStorage`. Clearing browser storage resets this device’s state. There is no account database, analytics integration or cross-device synchronization.
 
-## Verification
+## Visual system and assets
 
-- Production TypeScript check and Vite build pass.
-- All five tabs checked at 320, 768, 1024 and 1440px: no document-level horizontal overflow and no missing image assets.
-- Browser journeys verified: word creation and persistence after reload, status filtering, deleting the test word, flashcard reveal / mastery, practice category filters, saving a writing practice, daily-goal update, lesson completion / unlock, province selection and ranking, calendar activity, and profile preference persistence.
-- Additional video journeys verified: tutor selection, contextual café reply, conversation Hint / Use this reply / Translate / Feedback / Save word, avatar view, conversation finish; ten-word workout with a correct answer and missed words, result score, retry and cloze mode; word/sentence pronunciation tabs and labeled sample feedback.
-- Microphone recording requires browser permission and compatible hardware. Its permission / disposal lifecycle was reviewed; real microphone input was not requested during browser QA.
+The supplied wordmark and speech-bubble “a” artwork live in `public/brand/`; the tagline is **Your voice. Your story.** The primary palette is lime `#9CE943`, cyan `#6DD9FF`, orange `#FF6E0B`, black and light surfaces. Lime controls use dark text, with a readable derived green for small accents. Dark appearance uses deep blue-green surfaces while retaining the same brand accents.
 
-Hosted as an owner-private Site. Deployment configuration is in `.openai/hosting.json`.
+Quicksand is the display font; Nunito is the body/control font. Both are served locally, with their OFL notices in `public/quicksand-OFL.txt` and `public/nunito-OFL.txt`. The original wordmark remains artwork rather than a replacement typeface. Source and generated visual assets are documented in [brand guidelines](docs/brand-guidelines.md), `public/brand/asset-provenance.json` and `tools/asset-prompts.md`.
+
+The chapter order, lesson names and tutor identities are recorded in `src/data.ts`. Reference assets and sampled walkthrough frames are retained under `tools/` and `public/assets/`. Province geometry comes from [TaliaCao/Vietnam-Shape-Map](https://github.com/TaliaCao/Vietnam-Shape-Map); its MIT notice is bundled in `public/assets/vietnam-map-LICENSE.txt`.
+
+## Verification and remaining validation
+
+The current integrated TypeScript check and Vite production build pass. Implementation coverage for source UAT rows 11–27 is tracked in [the UAT resolution notes](docs/uat-resolution.md); the source snapshot is `docs/uat-source.json`.
+
+The final browser pass covered responsive layouts, intro/replay/skip, Vietnamese guidance, local quests/XP, social choices, avatar persistence, plan previews, QR generation/copy and light/dark contrast. See [the observed QA results](docs/qa-2026-11-16.md) and final screenshots under `tools/qa/`. This is not a stakeholder UAT sign-off. Real microphone recognition, audio quality, permission prompts, autoplay, physical QR scanning and native device sharing still require compatible hardware and browser verification. No real microphone test is claimed here.
+
+The requested hosting target is Vercel. `vercel.json` selects Vite, `npm run build` and the `dist/` output. The repository production branch is intended to trigger Vercel builds. `.openai/hosting.json` retains the earlier workspace Site identity; that Site is not the requested publication target.

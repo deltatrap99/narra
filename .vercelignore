@@ -1,0 +1,7 @@
+.git
+.sites-runtime
+.openai
+node_modules
+tools
+docs
+*.tsbuildinfo

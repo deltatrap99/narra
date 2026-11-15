@@ -5,6 +5,7 @@ import { getLexiconEntry, lookupDictionary, normalizeWord, type DictionaryLookup
 import { cancelSpeech, speak, useSpeechPlayback, type SpeechLocale } from './speech';
 import { useCopy, useNarra } from './state';
 import { Modal } from './ui';
+import BuddyAvatar from './BuddyAvatar';
 import './word-details.css';
 
 const speechParts: Record<string, [string, string]> = { noun: ['noun', 'danh từ'], verb: ['verb', 'động từ'], adjective: ['adjective', 'tính từ'], adverb: ['adverb', 'trạng từ'], idiom: ['idiom', 'thành ngữ'], 'phrasal verb': ['phrasal verb', 'cụm động từ'], interjection: ['interjection', 'thán từ'], preposition: ['preposition', 'giới từ'] };
@@ -65,6 +66,8 @@ export default function WordDetails({ word, onClose }: { word: Word; onClose: ()
         <div><div className="wd-overline"><BookOpen size={15} />{tr('Your word, in context', 'Từ của bạn, trong ngữ cảnh')}</div><h3 lang="en">{word.word}</h3><div className="wd-badges">{entry && <span className="wd-pos">{posLabel(entry.partOfSpeech)}</span>}{entry?.grammar && <span>{tr(entry.grammar, entry.grammarVi ?? entry.grammar)}</span>}{saved && <span className="wd-saved"><Check size={13} />{tr('Saved', 'Đã lưu')}</span>}</div></div>
         <button type="button" className={`wd-word-audio ${playing && playback.text === word.word ? 'is-playing' : ''}`} aria-label={playing && playback.text === word.word ? tr('Stop pronunciation', 'Dừng đọc từ') : tr(`Listen to ${word.word}`, `Nghe từ ${word.word}`)} onClick={() => listen(word.word)}>{playing && playback.text === word.word ? <Square size={23} /> : <Volume2 size={25} />}</button>
       </header>
+
+      <aside className="buddy-word-note"><BuddyAvatar mood={playing || lookupState === 'loading' ? 'focus' : lookupState === 'error' || lookupState === 'not-found' ? 'encourage' : 'curious'} size={44} motion={!playing && lookupState !== 'loading'} /><p>{playing ? tr('Listen for the rhythm, then give the word a try. We can take it one little phrase at a time.', 'Mình nghe nhịp của từ trước, rồi bạn thử đọc lại nhé. Cứ từng cụm ngắn một thôi.') : lookupState === 'error' || lookupState === 'not-found' ? tr('Your saved notes are still here. We can try the dictionary again in a little while.', 'Ghi chú bạn lưu vẫn ở đây nè. Mình thử tra lại sau một chút nhé.') : tr('Hear it once, then try it in your own sentence. That’s how this word becomes yours.', 'Nghe mẫu một lần, rồi thử đặt từ vào một câu của bạn nhé. Như vậy từ mới sẽ gần gũi hơn đó.')}</p></aside>
 
       {entry && <section className="wd-pronunciation" aria-label={tr('Pronunciation and stress', 'Phiên âm và trọng âm')}>
         <div className="wd-pronunciation-lines">{([{ key: 'uk', label: 'UK', locale: 'en-GB' }, { key: 'us', label: 'US', locale: 'en-US' }] as const).map(accent => entry[accent.key] && <button type="button" key={accent.key} onClick={() => listen(word.word, accent.locale)} aria-label={tr(`Listen in ${accent.label} English`, `Nghe giọng ${accent.label}`)}><span>{accent.label}</span><span className="wd-ipa" lang="en">/{entry[accent.key]}/</span><Volume2 size={17} /></button>)}</div>

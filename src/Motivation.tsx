@@ -4,6 +4,7 @@ import { ArrowRight, BookOpen, Check, CheckCheck, Clock3, Flame, Medal, Mic, New
 import { usePlayer, type DailyMission } from './game';
 import { activityStreak, useCopy, useNarra } from './state';
 import './motivation.css';
+import BuddyAvatar from './BuddyAvatar';
 
 export function MotivationStrip({ onOpenLeague, onOpenAchievements }: { onOpenLeague: () => void; onOpenAchievements: () => void }) {
   const tr = useCopy();
@@ -41,8 +42,10 @@ export function DailyQuests({ onLesson, onDictionary, onPractice }: { onLesson: 
   const { dailyMissions } = usePlayer();
   const completed = dailyMissions.filter(mission => mission.progress >= mission.target).length;
   const totalXP = dailyMissions.reduce((sum, mission) => sum + mission.xp, 0);
+  const allComplete = dailyMissions.length > 0 && completed === dailyMissions.length;
+  const hasProgress = dailyMissions.some(mission => mission.progress > 0);
   return <section className="daily-quests" aria-labelledby="daily-quests-title">
-    <div className="daily-quests-heading"><div><span className="motivation-eyebrow"><Sparkles size={12} />{tr('A little, every day', 'Mỗi ngày, một chút')}</span><h2 id="daily-quests-title">{tr('Your daily wins', 'Niềm vui nhỏ hôm nay')}</h2></div><span className="daily-quests-count" aria-label={tr(`${completed} of ${dailyMissions.length} quests complete`, `Đã xong ${completed} trên ${dailyMissions.length} nhiệm vụ`)}>{completed === dailyMissions.length ? <Check size={19} /> : `${completed}/${dailyMissions.length}`}</span></div>
+    <div className="daily-quests-heading"><div><span className="motivation-eyebrow"><Sparkles size={12} />{tr('A little, every day', 'Mỗi ngày, một chút')}</span><h2 id="daily-quests-title">{tr('Your daily wins', 'Niềm vui nhỏ hôm nay')}</h2></div><div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}><BuddyAvatar mood={allComplete ? 'celebrate' : hasProgress ? 'encourage' : 'welcome'} size={50} /><span className="daily-quests-count" aria-label={tr(`${completed} of ${dailyMissions.length} quests complete`, `Đã xong ${completed} trên ${dailyMissions.length} nhiệm vụ`)}>{allComplete ? <Check size={19} /> : `${completed}/${dailyMissions.length}`}</span></div></div>
     <div className="daily-quests-list">{dailyMissions.map(mission => <MissionRow key={mission.id} mission={mission} onAction={mission.id === 'say-practice' ? onPractice : mission.id === 'review-words' ? onDictionary : onLesson} />)}</div>
     <p className="daily-quests-footer"><span><Zap size={12} fill="currentColor" />{completed === dailyMissions.length ? tr('All done. That’s a good day.', 'Xong cả rồi. Hôm nay thật tuyệt!') : tr(`Up to ${totalXP} XP in little steps`, `Thêm đến ${totalXP} XP từ những bước nhỏ`)}</span><span>{tr('You’ve got this.', 'Bạn làm được mà.')}</span></p>
   </section>;

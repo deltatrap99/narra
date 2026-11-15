@@ -1,0 +1,166 @@
+{
+  "brand": "Original Narra Option 1",
+  "createdAt": "2026-11-15T18:45:54.820004+00:00",
+  "generation": "OpenAI built-in image_gen, identity-preserving reference edits",
+  "reference": "/brand/mascot.webp",
+  "prompts": "tools/option1-mood-prompts.md",
+  "sourceStorage": "Original generated PNGs remain in Codex generated_images outside the repository. Only selected optimized WebP assets are included.",
+  "processing": "Preserve alpha, trim transparent excess, normalize onto shared1024x1024 canvas/baseliney956, optimizedWebPquality93/method5",
+  "assets": {
+    "focus": {
+      "file": "mood-focus.webp",
+      "sourceGenerationId": "exec-0457db7a-dc1d-4312-a0cb-cd7636647444",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "sourceDimensions": [
+        1254,
+        1254
+      ],
+      "sourceContentBounds": [
+        127,
+        42,
+        1015,
+        1184
+      ],
+      "visibleBounds": [
+        162,
+        56,
+        862,
+        956
+      ],
+      "baseline": 956,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "bytes": 195804,
+      "sha256": "4824bade42f8a5526674b0dcd6299e2064f199939310b7d29de47f834db67385"
+    },
+    "curious": {
+      "file": "mood-curious.webp",
+      "sourceGenerationId": "exec-52832afb-5b18-40cc-a2f3-2256ce53c7a0",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "sourceDimensions": [
+        1254,
+        1254
+      ],
+      "sourceContentBounds": [
+        134,
+        40,
+        1084,
+        1182
+      ],
+      "visibleBounds": [
+        137,
+        56,
+        886,
+        956
+      ],
+      "baseline": 956,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "bytes": 226188,
+      "sha256": "610047e14170c11c8ac340531dfe0e8e7b975689737fa2df8214f3008a1692dc"
+    },
+    "encourage": {
+      "file": "mood-encourage.webp",
+      "sourceGenerationId": "exec-2d736178-1e97-4cf8-8707-44a72225838f",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "sourceDimensions": [
+        1254,
+        1254
+      ],
+      "sourceContentBounds": [
+        131,
+        48,
+        1219,
+        1178
+      ],
+      "visibleBounds": [
+        78,
+        56,
+        945,
+        956
+      ],
+      "baseline": 956,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "bytes": 232434,
+      "sha256": "bede780b25400c7f7716236e1f8ee6eb416cb387f0d3b8bae462279e8d205983"
+    },
+    "celebrate": {
+      "file": "mood-celebrate.webp",
+      "sourceGenerationId": "exec-e49f66a5-b3e8-443e-a4dc-679dae8080a9",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "sourceDimensions": [
+        1254,
+        1254
+      ],
+      "sourceContentBounds": [
+        40,
+        53,
+        1212,
+        1202
+      ],
+      "visibleBounds": [
+        62,
+        74,
+        962,
+        956
+      ],
+      "baseline": 956,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "bytes": 215436,
+      "sha256": "50d18f4bf2c2d14ef97929a68acc5854f8f4fe424fc09969b4635078bfe87b54"
+    },
+    "proud": {
+      "file": "mood-proud.webp",
+      "sourceGenerationId": "exec-cf690ea8-b282-4408-ae3d-ca1aec413db9",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "sourceDimensions": [
+        1254,
+        1254
+      ],
+      "sourceContentBounds": [
+        133,
+        52,
+        1018,
+        1182
+      ],
+      "visibleBounds": [
+        159,
+        56,
+        864,
+        956
+      ],
+      "baseline": 956,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "bytes": 198798,
+      "sha256": "5363dab90004f0e215657d7e98aa0113e2ccb1f3fdc276b44d59ae1f1c0de59d"
+    }
+  }
+}

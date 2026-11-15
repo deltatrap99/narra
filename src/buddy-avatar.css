@@ -1,0 +1,28 @@
+/* Zero-specificity base keeps established hero/coach dimensions intact. */
+:where(.buddy-avatar) { display: block; width: 96px; height: 96px; max-width: 100%; flex-shrink: 0; object-fit: contain; user-select: none; pointer-events: none; transform-origin: 50% 82%; }
+.buddy-avatar[data-buddy-mood="welcome"] { animation: buddy-welcome 1.8s ease-in-out 2; }
+.buddy-avatar[data-buddy-mood="focus"] { animation: buddy-focus 5s ease-in-out infinite; }
+.buddy-avatar[data-buddy-mood="curious"] { animation: buddy-curious 2s ease-in-out 2; }
+.buddy-avatar[data-buddy-mood="encourage"] { animation: buddy-encourage 1.6s ease-in-out 2; }
+.buddy-avatar[data-buddy-mood="celebrate"] { animation: buddy-celebrate .75s ease-in-out 3; }
+.buddy-avatar[data-buddy-mood="proud"] { animation: buddy-proud 1.8s ease-in-out 2; }
+.buddy-avatar[data-buddy-motion="still"] { animation: none !important; transform: none !important; transition: none !important; }
+.buddy-avatar-placeholder { position: relative; border-radius: 42% 46% 45% 35%; background: var(--brand-cyan, #6dd9ff); aspect-ratio: 1; }
+.buddy-avatar-placeholder > i { position: absolute; top: 34%; left: 25%; width: 22%; height: 29%; background: #fff; border-radius: 50%; }
+.buddy-avatar-placeholder > i + i { left: 51%; }
+.buddy-avatar-placeholder > i::after { content: ''; position: absolute; width: 40%; height: 50%; right: 18%; top: 31%; background: #14052f; border-radius: 50%; }
+.buddy-avatar-placeholder::after { content: ''; position: absolute; left: 37%; top: 67%; width: 25%; height: 10%; border-bottom: 2px solid #14052f; border-radius: 50%; }
+
+/* A single helpful word-detail touchpoint, kept out of the audio button's way. */
+.buddy-word-note { display: flex; align-items: center; gap: 12px; padding: 12px 14px; margin: 0 0 20px; border: 1px solid var(--line); border-radius: 15px; background: color-mix(in srgb, var(--blue) 55%, var(--surface)); }
+.buddy-word-note > p { margin: 0; min-width: 0; font-size: 14px; line-height: 1.6; color: var(--text); }
+.buddy-word-note > .buddy-avatar { flex: 0 0 44px; }
+
+@keyframes buddy-welcome { 0%, 100% { transform: translateY(0) rotate(0); } 35% { transform: translateY(-3px) rotate(-2deg); } 65% { transform: translateY(-1px) rotate(2deg); } }
+@keyframes buddy-focus { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.012); } }
+@keyframes buddy-curious { 0%, 100% { transform: rotate(0); } 45%, 62% { transform: rotate(-3deg) translateY(-1px); } }
+@keyframes buddy-encourage { 0%, 100% { transform: translateY(0); } 35% { transform: translateY(2px) rotate(1deg); } 65% { transform: translateY(-2px); } }
+@keyframes buddy-celebrate { 0%, 100% { transform: translateY(0) rotate(0); } 45% { transform: translateY(-6px) rotate(-3deg); } 70% { transform: translateY(-2px) rotate(2deg); } }
+@keyframes buddy-proud { 0%, 100% { transform: translateY(0) scale(1); } 45%, 60% { transform: translateY(-3px) scale(1.025); } }
+@media(max-width:600px) { .buddy-word-note { gap: 10px; padding: 11px 12px; } }
+@media(prefers-reduced-motion:reduce) { .buddy-avatar { animation: none !important; transform: none !important; transition: none !important; } }

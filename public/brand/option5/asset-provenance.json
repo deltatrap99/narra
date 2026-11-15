@@ -133,5 +133,158 @@
     "orange": "#FE611A",
     "lavender": "#947AFF",
     "deepPurple": "#0F0132"
+  },
+  "moodSprites": {
+    "generation": "OpenAI built-in image_gen, identity-preserving reference edits",
+    "primaryReference": "/brand/option5/excited.webp",
+    "secondaryReference": "User supplied caterpillar emotion reference board",
+    "prompts": "tools/option5-mood-prompts.md",
+    "assets": {
+      "focus": {
+        "file": "mood-focus.webp",
+        "sourceFile": "exec-56a1d57c-65bd-46a6-b532-aad5b1c89ce0.png",
+        "dimensions": [
+          1024,
+          1024
+        ],
+        "sourceDimensions": [
+          1254,
+          1254
+        ],
+        "sourceContentBounds": [
+          173,
+          67,
+          1125,
+          1183
+        ],
+        "contentDimensions": [
+          768,
+          900
+        ],
+        "baseline": 956,
+        "alphaRange": [
+          0,
+          255
+        ],
+        "bytes": 116458,
+        "sha256": "a8de6a7774b7176e0de5bd773b0c881dd3c6c7837d0f9883cd15104e13745a41"
+      },
+      "curious": {
+        "file": "mood-curious.webp",
+        "sourceFile": "exec-bcd452a2-538c-4024-865b-7d5f27f4596d.png",
+        "dimensions": [
+          1024,
+          1024
+        ],
+        "sourceDimensions": [
+          1254,
+          1254
+        ],
+        "sourceContentBounds": [
+          226,
+          67,
+          1029,
+          1175
+        ],
+        "contentDimensions": [
+          652,
+          900
+        ],
+        "baseline": 956,
+        "alphaRange": [
+          0,
+          255
+        ],
+        "bytes": 114114,
+        "sha256": "81deb8cf78a8c244d956968495a488bfa5c6d765fbdb09c791223e789db08278"
+      },
+      "encourage": {
+        "file": "mood-encourage.webp",
+        "sourceFile": "exec-cfd0305b-9709-44e0-bbb4-8eccab766acf.png",
+        "dimensions": [
+          1024,
+          1024
+        ],
+        "sourceDimensions": [
+          1254,
+          1254
+        ],
+        "sourceContentBounds": [
+          182,
+          50,
+          1044,
+          1204
+        ],
+        "contentDimensions": [
+          672,
+          900
+        ],
+        "baseline": 956,
+        "alphaRange": [
+          0,
+          255
+        ],
+        "bytes": 118436,
+        "sha256": "9e9e090bfc9605188ee0d49c5c05e0421821a67ef08744f3209f5f505807ecd6"
+      },
+      "celebrate": {
+        "file": "mood-celebrate.webp",
+        "sourceFile": "exec-3db72477-f6a3-4639-85b8-a26f570d9bcc.png",
+        "dimensions": [
+          1024,
+          1024
+        ],
+        "sourceDimensions": [
+          1254,
+          1254
+        ],
+        "sourceContentBounds": [
+          221,
+          66,
+          1036,
+          1176
+        ],
+        "contentDimensions": [
+          661,
+          900
+        ],
+        "baseline": 956,
+        "alphaRange": [
+          0,
+          255
+        ],
+        "bytes": 111462,
+        "sha256": "18d0473363522b31010bbed773046ba41515a30276c78213e8c2d56a4104838a"
+      },
+      "proud": {
+        "file": "mood-proud.webp",
+        "sourceFile": "exec-67069ca4-3d7a-48b5-84ca-7056a81b30c4.png",
+        "dimensions": [
+          1024,
+          1024
+        ],
+        "sourceDimensions": [
+          1254,
+          1254
+        ],
+        "sourceContentBounds": [
+          219,
+          67,
+          1035,
+          1175
+        ],
+        "contentDimensions": [
+          663,
+          900
+        ],
+        "baseline": 956,
+        "alphaRange": [
+          0,
+          255
+        ],
+        "bytes": 122930,
+        "sha256": "93df4fe327a8e5d118ecb2b4de4812193cdcf699348b5a81e89d0b26908a350a"
+      }
+    }
   }
 }

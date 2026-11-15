@@ -72,7 +72,7 @@ export default function App() {
     {toast && <div className="toast" role="status"><Check size={18} />{toast}</div>}
     {overlay?.kind === 'goal' && <GoalDialog onClose={close} />}
     {overlay?.kind === 'lesson' && <LessonPreparation lesson={overlay.lesson} onClose={close} onStart={() => setOverlay({ kind: 'lesson-speaking', lesson: overlay.lesson })} />}
-    {overlay?.kind === 'lesson-speaking' && <Conversation scenario={lessonScenario(overlay.lesson)} lesson={overlay.lesson} onClose={close} onNextLesson={() => nextLesson(overlay.lesson)} onReview={() => { close(); navigate('Dictionary'); }} />}
+    {overlay?.kind === 'lesson-speaking' && <Conversation scenario={lessonScenario(overlay.lesson)} lesson={overlay.lesson} onClose={close} onNextLesson={overlay.lesson.id === chapters.at(-1)?.lessons.at(-1)?.id ? undefined : () => nextLesson(overlay.lesson)} onReview={() => { close(); navigate('Dictionary'); }} />}
     {overlay?.kind === 'tutors' && <div inert={tutorPreview !== null}><Tutors onClose={() => { if (!tutorPreview) close(); }} onTalk={talk} onPreview={setTutorPreview} /></div>}
     {overlay?.kind === 'word-pronunciation' && <MyWords onClose={close} />}
     {overlay?.kind === 'workout' && <WordWorkout onClose={close} />}

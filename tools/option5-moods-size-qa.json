@@ -1,0 +1,168 @@
+{
+  "preview": "tools/option5-moods-size-qa.png",
+  "sizes": [
+    64,
+    96
+  ],
+  "backgrounds": [
+    "#FFFFFF",
+    "#0F0132"
+  ],
+  "spriteGeometry": {
+    "crawl.webp": {
+      "canvas": [
+        1024,
+        1024
+      ],
+      "visibleBoundsAlphaAbove32": [
+        62,
+        378,
+        962,
+        956
+      ],
+      "normalizedBounds": [
+        0.0605,
+        0.3691,
+        0.9395,
+        0.9336
+      ],
+      "baseline": 956
+    },
+    "excited.webp": {
+      "canvas": [
+        1024,
+        1024
+      ],
+      "visibleBoundsAlphaAbove32": [
+        188,
+        56,
+        836,
+        956
+      ],
+      "normalizedBounds": [
+        0.1836,
+        0.0547,
+        0.8164,
+        0.9336
+      ],
+      "baseline": 956
+    },
+    "wink.webp": {
+      "canvas": [
+        1024,
+        1024
+      ],
+      "visibleBoundsAlphaAbove32": [
+        178,
+        56,
+        846,
+        956
+      ],
+      "normalizedBounds": [
+        0.1738,
+        0.0547,
+        0.8262,
+        0.9336
+      ],
+      "baseline": 956
+    },
+    "mood-focus.webp": {
+      "canvas": [
+        1024,
+        1024
+      ],
+      "visibleBoundsAlphaAbove32": [
+        128,
+        56,
+        896,
+        956
+      ],
+      "normalizedBounds": [
+        0.125,
+        0.0547,
+        0.875,
+        0.9336
+      ],
+      "baseline": 956
+    },
+    "mood-curious.webp": {
+      "canvas": [
+        1024,
+        1024
+      ],
+      "visibleBoundsAlphaAbove32": [
+        186,
+        56,
+        838,
+        956
+      ],
+      "normalizedBounds": [
+        0.1816,
+        0.0547,
+        0.8184,
+        0.9336
+      ],
+      "baseline": 956
+    },
+    "mood-encourage.webp": {
+      "canvas": [
+        1024,
+        1024
+      ],
+      "visibleBoundsAlphaAbove32": [
+        176,
+        56,
+        848,
+        956
+      ],
+      "normalizedBounds": [
+        0.1719,
+        0.0547,
+        0.8281,
+        0.9336
+      ],
+      "baseline": 956
+    },
+    "mood-celebrate.webp": {
+      "canvas": [
+        1024,
+        1024
+      ],
+      "visibleBoundsAlphaAbove32": [
+        181,
+        56,
+        842,
+        956
+      ],
+      "normalizedBounds": [
+        0.1768,
+        0.0547,
+        0.8223,
+        0.9336
+      ],
+      "baseline": 956
+    },
+    "mood-proud.webp": {
+      "canvas": [
+        1024,
+        1024
+      ],
+      "visibleBoundsAlphaAbove32": [
+        180,
+        56,
+        843,
+        956
+      ],
+      "normalizedBounds": [
+        0.1758,
+        0.0547,
+        0.8232,
+        0.9336
+      ],
+      "baseline": 956
+    }
+  },
+  "crawlDirection": "Head right / tail left; direction of travel should be +X",
+  "roadmapAnchor": "Use lower-center of content at approximately canvas pixel (512,956), i.e. 50% X / 93.36% Y. Transparent square includes substantial top padding in the crawl pose.",
+  "mirrorCaution": "A CSS scaleX(-1) also mirrors the N ear-cup emblem. Keep art unflipped while moving left if preserving readable branding is preferred; leftward travel will look like a playful reverse crawl."
+}

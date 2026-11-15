@@ -65,3 +65,9 @@ The current integrated TypeScript check and Vite production build pass. The chal
 Earlier browser passes covered responsive layouts, intro/replay/skip, Vietnamese guidance, local quests/XP, social choices, avatar persistence, plan previews, QR generation/copy and light/dark contrast. Their evidence is preserved in [the QA log](docs/qa-2026-11-16.md) and screenshots under `tools/qa/`. The latest 3D calls, tutor demos, richer dictionary, Arena highlights and shared rooms still need the forthcoming integrated live-browser/deployed-API pass. No live two-browser room, private Blob persistence, real mic/camera permission, voice quality or physical QR/native-share result is claimed here. This is not a stakeholder UAT sign-off.
 
 The requested hosting target is Vercel. `vercel.json` selects Vite, `npm run build` and the `dist/` output. The repository production branch is intended to trigger Vercel builds. `.openai/hosting.json` retains the earlier workspace Site identity; that Site is not the requested publication target.
+
+## Two brand versions
+
+The original lime/cyan version and the additional Option 5 ribbon identity share the same lessons and features. Build Option 5 with `VITE_BRAND_VARIANT=option5`; without it, the original identity remains active. Local visual review can use `/?brand=option5`. Logo, icon and Buddy paths are selected centrally in `src/brand-variant.ts`. The new caterpillar greeting crawls from left to right, turns toward the learner, winks, then reveals the exact slogan `Your voice, your story`. It lasts 3.5 seconds, offers Skip/Escape and has a 400ms reduced-motion alternative. Theme and VI/EN preferences continue to work in both versions.
+
+Each deployment keeps browser learning data under its own origin. Separate private Blob stores and signing secrets serve invitation rooms for their respective hostnames.

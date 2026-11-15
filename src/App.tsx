@@ -19,9 +19,11 @@ import { usePlayer } from './game';
 import LanguageSwitch from './LanguageSwitch';
 import { CreateDialog, FlashcardsDialog, GoalDialog, SpeakingDialog, WritingDialog } from './Sessions';
 import './header-arena.css';
+import { brandAsset, brandVariant, isOption5 } from './brand-variant';
 
 const TutorPreview = lazy(() => import('./TutorPreview'));
 const ChallengeRoom = lazy(() => import('./ChallengeRoom'));
+const Option5LaunchScreen = lazy(() => import('./Option5LaunchScreen'));
 
 type CommunitySection = 'league' | 'friends' | 'feed' | 'achievements';
 type Overlay = { kind: 'goal' | 'tutors' | 'pronunciation' | 'word-pronunciation' | 'workout' | 'shadowing' | 'writing' | 'create' | 'add' | 'talk' | 'avatar' | 'plans' | 'share' } | { kind: 'lesson' | 'lesson-speaking'; lesson: Lesson } | { kind: 'scenario'; scenario: Scenario } | { kind: 'flashcards'; collection?: string } | { kind: 'community'; section: CommunitySection };
@@ -44,8 +46,8 @@ export default function App() {
   const communityTrigger = useRef<HTMLElement | null>(null);
   const openCommunityExtra = (kind: 'share' | 'plans') => { communityTrigger.current = document.activeElement as HTMLElement | null; setCommunityExtra(kind); };
   const closeCommunityExtra = () => { setCommunityExtra(null); requestAnimationFrame(() => { if (communityTrigger.current?.isConnected) communityTrigger.current.focus({ preventScroll: true }); }); };
-  const [launching, setLaunching] = useState(() => { try { return sessionStorage.getItem('narra-launch-v2') !== 'seen'; } catch { return true; } });
-  const finishLaunch = useCallback(() => { try { sessionStorage.setItem('narra-launch-v2', 'seen'); } catch { /* Opening remains available without storage. */ } setLaunching(false); }, []);
+  const [launching, setLaunching] = useState(() => { try { return sessionStorage.getItem('narra-launch-v3:'+brandVariant) !== 'seen'; } catch { return true; } });
+  const finishLaunch = useCallback(() => { try { sessionStorage.setItem('narra-launch-v3:'+brandVariant, 'seen'); } catch { /* Opening remains available without storage. */ } setLaunching(false); }, []);
   const [dark, setDark] = useState(() => profile.theme === 'dark' || profile.theme === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
   useEffect(() => { document.documentElement.lang = profile.uiLanguage === 'Tiếng Việt' ? 'vi' : 'en'; }, [profile.uiLanguage]);
   useEffect(() => { const media = matchMedia('(prefers-color-scheme: dark)'); const apply = () => { const next = profile.theme === 'dark' || profile.theme === 'system' && media.matches; setDark(next); document.documentElement.dataset.theme = next ? 'dark' : 'light'; document.documentElement.style.colorScheme = next ? 'dark' : 'light'; }; apply(); media.addEventListener('change', apply); return () => media.removeEventListener('change', apply); }, [profile.theme]);
@@ -58,7 +60,7 @@ export default function App() {
   function nextLesson(lesson: Lesson) { const all = chapters.flatMap(c => c.lessons); const next = all[all.findIndex(l => l.id === lesson.id) + 1]; if (next) setOverlay({ kind: 'lesson', lesson: next }); else close(); }
   return <><div className={`app app-refined ${tab === 'Profile' ? 'profile-background' : ''}`} inert={launching}>
     <a className="skip-link" href="#main">Skip to content</a>
-    <header className="topbar" inert={subpage || tutorPreview !== null || challenge !== null}><div className="topbar-inner"><button className="brand" onClick={() => navigate('Lesson')} aria-label="Narra home"><img src={`/brand/logo-${dark ? 'light' : 'dark'}.webp`} alt="Narra" /></button><span className="topbar-title">{labels[tab]}</span><div className="topbar-actions"><LanguageSwitch />{tab === 'Dictionary' ? <button className="device-button purple" aria-label={tr('Add a word', 'Thêm từ mới')} onClick={() => setOverlay({ kind: 'add' })}><Plus size={26} /></button> : <button className="header-xp header-arena" onClick={() => community('league')} aria-label={tr(`Open Narra Arena, achievements and speaking challenges. ${xp} learning XP.`, `Mở đấu trường Narra, thành tích và thách đấu nói. ${xp} XP học tập.`)} title={tr('View progress, friends and speaking challenges', 'Xem tiến bộ, bạn bè và thách đấu nói')}><Zap size={17}/><span className="header-arena-copy"><strong>{tr('Arena', 'Đấu trường')}</strong><small>{xp} XP</small></span><ChevronRight size={15}/></button>}</div></div></header>
+    <header className="topbar" inert={subpage || tutorPreview !== null || challenge !== null}><div className="topbar-inner"><button className="brand" onClick={() => navigate('Lesson')} aria-label="Narra home"><img src={brandAsset(`logo-${dark ? 'light' : 'dark'}.webp`)} alt="Narra" /></button><span className="topbar-title">{labels[tab]}</span><div className="topbar-actions"><LanguageSwitch />{tab === 'Dictionary' ? <button className="device-button purple" aria-label={tr('Add a word', 'Thêm từ mới')} onClick={() => setOverlay({ kind: 'add' })}><Plus size={26} /></button> : <button className="header-xp header-arena" onClick={() => community('league')} aria-label={tr(`Open Narra Arena, achievements and speaking challenges. ${xp} learning XP.`, `Mở đấu trường Narra, thành tích và thách đấu nói. ${xp} XP học tập.`)} title={tr('View progress, friends and speaking challenges', 'Xem tiến bộ, bạn bè và thách đấu nói')}><Zap size={17}/><span className="header-arena-copy"><strong>{tr('Arena', 'Đấu trường')}</strong><small>{xp} XP</small></span><ChevronRight size={15}/></button>}</div></div></header>
     <main id="main" className="main-content" key={tab} inert={subpage || tutorPreview !== null || challenge !== null}>
       {tab === 'Lesson' && <Learn onTutorPreview={setTutorPreview} onGoal={() => setOverlay({ kind: 'goal' })} onLesson={lesson => setOverlay({ kind: 'lesson', lesson })} onTalk={talk} onWord={() => navigate('Dictionary')} onPractice={() => navigate('Practice')} onOpenLeague={() => community('league')} onOpenAchievements={() => community('achievements')} />}
       {tab === 'Practice' && <Practice onTutorPreview={setTutorPreview} onTutors={() => setOverlay({ kind: 'tutors' })} onScenario={scenario => setOverlay({ kind: 'scenario', scenario })} onCreate={() => setOverlay({ kind: 'create' })} onTalk={talk} />}
@@ -89,5 +91,5 @@ export default function App() {
     {communityExtra === 'plans' && <PlansPanel onClose={closeCommunityExtra} />}
     {tutorPreview && <Suspense fallback={<div className="feature-loading" role="status">{tr('Getting your tutor ready…', 'Gia sư đang đến nè…')}</div>}><TutorPreview name={tutorPreview} onClose={() => setTutorPreview(null)} onTalk={() => { setProfile({ ...profile, tutor: tutorPreview }); setTutorPreview(null); talk(); }} /></Suspense>}
     {challenge && <Suspense fallback={<div className="feature-loading" role="status">{tr('Opening your challenge…', 'Tớ đang mở thử thách…')}</div>}><ChallengeRoom roomId={challenge.roomId} friend={challenge.friend} onClose={closeChallenge} /></Suspense>}
-  </div>{launching && <LaunchScreen onDone={finishLaunch} />}</>;
+  </div>{launching && (isOption5 ? <Suspense fallback={<div className="feature-loading" role="status">Narra</div>}><Option5LaunchScreen onDone={finishLaunch}/></Suspense> : <LaunchScreen onDone={finishLaunch} />)}</>;
 }

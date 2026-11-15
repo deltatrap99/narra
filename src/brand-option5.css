@@ -1,0 +1,304 @@
+/* Option 5 is an opt-in skin. Keep every selector under this HTML attribute.
+   Legacy lime/green token names remain aliases so existing features keep working. */
+html[data-brand="option5"] {
+  --o5-violet: #5a24c9;
+  --o5-violet-hover: #4920a6;
+  --o5-lilac: #9a7bff;
+  --o5-orange: #ff661d;
+  --o5-pink: #f2a2cd;
+  --o5-ink: #14052f;
+  --o5-muted: #6d607e;
+  --o5-paper: #f7f3fe;
+  --o5-surface: #ffffff;
+  --o5-soft: #eee7fc;
+  --o5-rose: #fcebf5;
+  --o5-warm: #fff0e7;
+  --o5-line: #e3d8f2;
+  --o5-glass: #ffffffe0;
+  --o5-link: #5a24c9;
+  --o5-shadow: 0 5px 20px #34105c07;
+  --soft-shadow: 0 5px 0 #9a7bff0b, 0 12px 28px #34105c06;
+  --surface-depth: inset 0 1px 0 #ffffff40, 0 4px 20px #34105c07;
+  --dark-cyan: var(--o5-link);
+  --brand-lime: var(--o5-violet);
+  --brand-cyan: var(--o5-lilac);
+  --brand-orange: var(--o5-orange);
+  --brand-ink: var(--o5-ink);
+  --brand-green-ink: var(--o5-link);
+  --brand-muted: var(--o5-muted);
+  --purple: var(--o5-link);
+  --purple-deep: var(--o5-violet-hover);
+  --background: var(--o5-paper);
+  --surface: var(--o5-surface);
+  --text: var(--o5-ink);
+  --muted: var(--o5-muted);
+  --line: var(--o5-line);
+  --lavender: var(--o5-soft);
+  --green: var(--o5-soft);
+  --blue: #edeaff;
+  --peach: var(--o5-warm);
+  --yellow: #fff4dc;
+  --pink: var(--o5-rose);
+  background: var(--background);
+  color: var(--text);
+  accent-color: var(--o5-violet);
+}
+html[data-brand="option5"][data-theme="dark"] {
+  --o5-ink: #f8f1ff;
+  --o5-muted: #c4b4d3;
+  --o5-paper: #140b22;
+  --o5-surface: #211431;
+  --o5-soft: #302044;
+  --o5-rose: #3b223c;
+  --o5-warm: #3c261f;
+  --o5-line: #493557;
+  --o5-glass: #211431ed;
+  --o5-link: #c9b5ff;
+  --o5-shadow: 0 6px 23px #05020e20;
+  --soft-shadow: 0 5px 0 #09031430;
+  --surface-depth: inset 0 1px 0 #ffffff06, 0 5px 18px #05020e20;
+  --blue: #2c2446;
+  --yellow: #382e20;
+}
+
+/* Canvas, navigation and shared controls. */
+html[data-brand="option5"] body { background: var(--background); color: var(--text); }
+html[data-brand="option5"] .app-refined {
+  background: radial-gradient(ellipse 720px 430px at 8% 0, #cbb8ff20, transparent 75%), radial-gradient(ellipse 550px 380px at 100% 12%, #ffbfda1c, transparent 78%), var(--background);
+}
+html[data-brand="option5"] .profile-background { --background: var(--o5-paper); }
+html[data-brand="option5"] :is(.topbar, .subpage-header, .settings-page-header, .player-extra-header, .tutor-preview-header) {
+  background: color-mix(in srgb, var(--background) 88%, transparent);
+  border-color: var(--line);
+}
+html[data-brand="option5"] :is(.topbar-title, .device-button, .profile-settings-button, .profile-share-button) { background: var(--o5-glass); color: var(--text); border-color: var(--line); box-shadow: 0 2px 0 #5a24c908; }
+html[data-brand="option5"] .topbar-title { color: var(--o5-link); }
+html[data-brand="option5"] .bottom-nav { background: var(--o5-glass); border-color: var(--line); box-shadow: 0 9px 30px #36135814, inset 0 1px 0 #ffffff45; }
+html[data-brand="option5"] .bottom-nav::before { background: var(--o5-violet); box-shadow: 0 3px 8px #5a24c928; }
+html[data-brand="option5"] .nav-item { color: var(--muted); }
+html[data-brand="option5"] .nav-item.active { background: transparent; color: #fff; }
+html[data-brand="option5"] .nav-item.active .icon-cutout { fill: var(--o5-violet); }
+html[data-brand="option5"] :is(.primary-button, .player-extra-primary, .workout-primary, .challenge-primary, .arena-primary, .dictionary-review, .collection-add, .mic-circle, .record-button, .word-record-button, .wd-word-audio, .chat-input .icon-button, .conversation-composer > button, .conversation-use-reply) {
+  background: var(--o5-violet);
+  color: #fff;
+  border-color: var(--o5-violet);
+  box-shadow: 0 3px 0 #40178f1c;
+}
+html[data-brand="option5"] :is(.primary-button, .player-extra-primary, .workout-primary, .challenge-primary, .arena-primary, .wd-word-audio):hover:not(:disabled) { background: var(--o5-violet-hover); border-color: var(--o5-violet-hover); color: #fff; box-shadow: 0 4px 13px #5a24c921; }
+html[data-brand="option5"] :is(.primary-button.danger-button, .danger-button) { background: var(--o5-rose); color: #aa2853; border-color: color-mix(in srgb, #cb4874 30%, var(--line)); box-shadow: none; }
+html[data-brand="option5"] :is(.secondary-button, .pill-button, .chip, .workout-secondary, .challenge-secondary) { background: var(--surface); color: var(--text); border-color: var(--line); }
+html[data-brand="option5"] :is(.secondary-button, .pill-button, .chip, .workout-secondary, .challenge-secondary):hover:not(:disabled) { background: var(--lavender); color: var(--o5-link); border-color: color-mix(in srgb, var(--o5-lilac) 60%, var(--line)); }
+html[data-brand="option5"] :is(.pill-button.active, .chip.active, .pill-button.active:hover, .chip.active:hover, .tutor-profile-actions .chosen, .language-switch > button[aria-pressed="true"], .player-level-pill) { background: var(--o5-violet); color: #fff; border-color: var(--o5-violet); }
+html[data-brand="option5"] :is(.text-button, .account-action, .profile-subtle-link, .profile-plan-bottom > button, .typing-practice summary, .dictionary-clear-filters) { color: var(--o5-link); }
+html[data-brand="option5"] :is(.card, .modal, .chapter-card, .collections-card, .words-card, .say-card, .profile-activity-card, .profile-progress-summary, .narra-settings-card, .player-plan-card) { background: var(--surface); color: var(--text); border-color: var(--line); box-shadow: var(--o5-shadow); }
+html[data-brand="option5"] :is(.app-subpage, .settings-page, .player-extra-page, .workout-dialog, .challenge-dialog, .narra-conversation, dialog.tutor-preview-page) { background: var(--background); color: var(--text); }
+html[data-brand="option5"] :is(input, textarea, select, .form-field input, .form-field textarea, .form-field select, .narra-setting-row input, .narra-setting-select select, .settings-page input, .settings-page select) { background: var(--surface); color: var(--text); border-color: var(--line); caret-color: var(--o5-link); }
+html[data-brand="option5"] :is(input, textarea)::placeholder { color: var(--muted); opacity: .8; }
+html[data-brand="option5"] :is(.segmented, .workout-segments, .wd-example-tabs, .language-switch) { background: var(--lavender); border-color: var(--line); }
+html[data-brand="option5"] :is(.segment, .workout-segments > button, .wd-example-tabs > button) { color: var(--muted); }
+html[data-brand="option5"] :is(.segment.active, .workout-segments > button.active, .wd-example-tabs > button.active) { background: var(--surface); color: var(--o5-link); box-shadow: 0 2px 6px #3513590b; }
+html[data-brand="option5"] .switch.on { background: var(--o5-violet); }
+html[data-brand="option5"] :is(button, a, summary, input, textarea, select, [tabindex]):focus-visible { outline-color: var(--o5-link); }
+html[data-brand="option5"] .toast { background: #24103e; color: #fff; }
+html[data-brand="option5"] .toast svg { color: #d4bdff; }
+html[data-brand="option5"] :is(.progress-track, .profile-meter, .quest-progress-track, .workout-progress) { background: var(--line); }
+html[data-brand="option5"] :is(.progress-track > span, .profile-meter > span, .quest-progress-track > span, .workout-progress > span) { background: var(--o5-violet); box-shadow: none; }
+html[data-brand="option5"] :is(.section-title, .word-overview > h1, .daily-quests-heading h2, .profile-overview-heading h1, .profile-identity-copy h2, .profile-card-heading h2, .say-card h3, .modal-head h2, .workout-prompt h2, .chapter-heading h3, .community-section-heading h2) { color: var(--text); }
+html[data-brand="option5"] :is(.section-label, .desktop-signoff, .profile-footer > span) { color: var(--muted); }
+html[data-brand="option5"] :is(.page-description, .community-shortcut small, .community-shortcut > svg) { color: var(--muted); }
+html[data-brand="option5"] .topbar-actions .header-arena { background: #28103f; color: #fff; border-color: #51316c; box-shadow: 0 2px 0 #14052f; }
+html[data-brand="option5"] .header-arena > svg:first-child { color: #c6adff; }
+html[data-brand="option5"] :is(.header-arena-copy small, .header-arena > svg:last-child) { color: #c9b5d9; }
+
+/* Lesson and practice. Orange is reserved for warm highlights, not small text. */
+html[data-brand="option5"] .lesson-focus-card { background: linear-gradient(125deg, var(--lavender), color-mix(in srgb, var(--pink) 65%, var(--surface)) 67%, var(--surface)); border-color: var(--line); box-shadow: 0 7px 0 #9a7bff0b, 0 15px 35px #38105d07; }
+html[data-brand="option5"] .lesson-focus-card::after { border-color: color-mix(in srgb, var(--o5-lilac) 20%, transparent); }
+html[data-brand="option5"] :is(.lesson-greeting .eyebrow, .lesson-unit-label, .lesson-focus-meta, .lesson-focus-description, .lesson-unit-progress, .lesson-prep-roles, .practice-mode small, .practice-goal-label, .practice-scenario-goal, .practice-scenario-meta) { color: var(--muted); }
+html[data-brand="option5"] .lesson-daily-strip { border-color: var(--line); }
+html[data-brand="option5"] :is(.lesson-row, .lesson-prep-vocabulary p) { border-color: var(--line); color: var(--text); }
+html[data-brand="option5"] .lesson-row.current { border-color: var(--o5-lilac); background: var(--lavender); }
+html[data-brand="option5"] .lesson-row.locked { background: color-mix(in srgb, var(--surface) 75%, var(--lavender)); color: var(--muted); }
+html[data-brand="option5"] :is(.lesson-symbol, .lesson-symbol:not(.done), .lesson-symbol.done, .lesson-recent-check) { background: var(--o5-violet); color: #fff; box-shadow: none; }
+html[data-brand="option5"] :is(.lesson-row.locked .lesson-symbol, .lesson-prep-vocabulary p) { background: var(--lavender); color: var(--muted); }
+html[data-brand="option5"] :is(.up-next, .practice-create-row, .lesson-recent button) { background: var(--surface); border-color: var(--line); }
+html[data-brand="option5"] :is(.practice-mode.active, .graph-node.current, .selected, .goal-option.selected, .tutor-option.selected) { border-color: var(--o5-lilac); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--o5-lilac) 28%, transparent), 0 4px 0 #9a7bff16; }
+html[data-brand="option5"] :is(.goal-option.selected, .tutor-option.selected) { background: var(--lavender); }
+html[data-brand="option5"] :is(.tone-green, .practice-mode.tone-green, .tutor-profile-camila) { background: var(--green); }
+html[data-brand="option5"] :is(.tone-lavender, .tutor-profile-henry) { background: var(--lavender); }
+html[data-brand="option5"] :is(.tone-blue, .tutor-profile-dwayne) { background: var(--blue); }
+html[data-brand="option5"] :is(.tone-peach, .tutor-profile-skye) { background: var(--peach); }
+html[data-brand="option5"] .tone-pink { background: var(--pink); }
+html[data-brand="option5"] .tone-yellow { background: var(--yellow); }
+html[data-brand="option5"] :is(.goal-option-minutes, .goal-option > svg, .tutor-option > svg, .tool-card svg, .create-scenario > svg, .dialog-illustration, .profile-card-heading h2 > svg) { color: var(--o5-link); }
+html[data-brand="option5"] :is(.path-map-unit-heading, .path-map-lesson-label, .path-map-unit-ring > span) { background: var(--surface); color: var(--text); border-color: var(--line); }
+html[data-brand="option5"] .path-map-unit-heading h3 { color: var(--text); }
+html[data-brand="option5"] :is(.path-map-legend, .path-map-unit-heading div > span, .path-map-lesson-label > span) { color: var(--muted); }
+html[data-brand="option5"] :is(.path-map-lesson.is-next .path-map-lesson-node, .path-map-lesson.is-open .path-map-lesson-node, .path-map-lesson.is-done .path-map-lesson-node, .path-map-continue) { background: var(--o5-violet); color: #fff; border-color: var(--surface); }
+html[data-brand="option5"] .path-map-lesson.is-open:hover .path-map-lesson-node { background: var(--o5-violet-hover); color: #fff; }
+html[data-brand="option5"] .path-map-lesson.is-locked .path-map-lesson-node { background: var(--lavender); color: var(--muted); box-shadow: 0 0 0 4px color-mix(in srgb, var(--surface) 70%, transparent); }
+
+/* Dictionary and word learning. */
+html[data-brand="option5"] :is(.dictionary-flashcards, .dictionary-say, .dictionary-extra-grid > button, .dictionary-search, .word-metrics > div, .workout-score, .wd-pronunciation, .wd-example-panel, .wd-library-controls) { background: var(--surface); color: var(--text); border-color: var(--line); }
+html[data-brand="option5"] .dictionary-flashcards { background: var(--lavender); }
+html[data-brand="option5"] .dictionary-say { background: var(--peach); }
+html[data-brand="option5"] .dictionary-review :is(strong, small, svg, .dictionary-study-icon) { color: #fff; }
+html[data-brand="option5"] .dictionary-review .dictionary-study-icon { background: #ffffff24; }
+html[data-brand="option5"] :is(.dictionary-study-icon, .dictionary-extra-grid > button > svg:first-child) { background: var(--lavender); color: var(--o5-link); }
+html[data-brand="option5"] :is(.dictionary-day-card, .word-of-day, .wd-example-panel.wd-ielts-panel) { background: var(--yellow); color: var(--text); border-color: var(--line); }
+html[data-brand="option5"] :is(.dictionary-day-card .eyebrow, .dictionary-day-card p, .dictionary-day-card > svg, .word-practice-actual > span) { color: var(--muted); }
+html[data-brand="option5"] :is(.dictionary-search:focus-within, .wd-status-control > select:focus) { border-color: var(--o5-lilac); }
+html[data-brand="option5"] :is(.word-status.status-new, .wd-pos, .wd-saved, .wd-word-chips > span) { background: var(--lavender); color: var(--o5-link); }
+html[data-brand="option5"] :is(.word-status.status-learning, .wd-opposites > span) { background: var(--peach); color: var(--text); }
+html[data-brand="option5"] .word-status.status-mastered { background: var(--pink); color: var(--text); }
+html[data-brand="option5"] :is(.wd-pronunciation-lines > button, .wd-example-actions > button, .wd-inline-audio, .wd-lookup-button) { background: var(--lavender); color: var(--o5-link); border-color: var(--line); }
+html[data-brand="option5"] :is(.wd-stress strong, .wd-meaning > .wd-translation, .wd-section-icon, .wd-sources > a, .wd-lookup-intro > svg) { color: var(--o5-link); }
+html[data-brand="option5"] :is(.workout-prompt, .workout-explanation, .workout-feedback.is-correct, .answer-option.correct, .writing-feedback) { background: var(--lavender); color: var(--text); border-color: var(--line); }
+html[data-brand="option5"] :is(.workout-intro > p, .workout-explanation > p, .workout-prompt > span, .workout-progress-label, .workout-score > span, .workout-score strong span, .workout-complete > p, .workout-missed-list span, .workout-empty p) { color: var(--muted); }
+html[data-brand="option5"] :is(.workout-listen, .workout-close) { background: var(--surface); color: var(--o5-link); border-color: var(--line); }
+html[data-brand="option5"] .workout-dialog { --workout-paper: var(--background); --workout-ink: var(--text); }
+html[data-brand="option5"] .answer-option > span { background: var(--lavender); color: var(--o5-link); }
+html[data-brand="option5"] :is(.success-medallion, .workout-trophy, .conversation-summary-check) { background: var(--lavender); color: var(--o5-link); }
+html[data-brand="option5"] :is(.record-button, .word-record-button) { box-shadow: 0 0 0 8px var(--lavender); }
+html[data-brand="option5"] :is(.record-button.recording, .word-record-button.recording, .conversation-primary-mic.is-listening) { background: var(--o5-orange); color: #210d02; border-color: #c7490c; box-shadow: 0 0 0 7px var(--peach); }
+
+/* Profile, quests, customization and plan previews. */
+html[data-brand="option5"] .profile-identity { background: linear-gradient(125deg, var(--surface), var(--lavender)); border-color: var(--line); }
+html[data-brand="option5"] :is(.profile-personal-avatar, .player-studio-preview) { background: var(--blue); border-color: var(--line); box-shadow: 0 5px 0 #9a7bff12; }
+html[data-brand="option5"] :is(.profile-identity-tags span, .profile-week-dot, .profile-metrics > div, .player-coming-pill) { background: var(--lavender); color: var(--muted); border-color: var(--line); }
+html[data-brand="option5"] .profile-week-day.has-activity .profile-week-dot { background: var(--o5-violet); color: #fff; }
+html[data-brand="option5"] .profile-week-day.is-today .profile-week-dot { border-color: var(--o5-lilac); }
+html[data-brand="option5"] .profile-study-card { background: var(--blue); border-color: var(--line); }
+html[data-brand="option5"] :is(.profile-plan-unit, .profile-goal-label, .profile-plan-bottom, .profile-current-tutor h2) { color: var(--text); }
+html[data-brand="option5"] :is(.motivation-chip, .community-shortcut) { background: var(--surface); color: var(--text); border-color: var(--line); }
+html[data-brand="option5"] :is(.chip-xp .motivation-chip-icon, .chip-league .motivation-chip-icon, .daily-quest-action, .quest-reward.earned) { color: var(--o5-link); }
+html[data-brand="option5"] :is(.motivation-chip small, .motivation-eyebrow, .motivation-chip-arrow, .quest-reward, .quest-progress-row > span) { color: var(--muted); }
+html[data-brand="option5"] .daily-quests { background: linear-gradient(135deg, var(--lavender), var(--surface) 78%); border-color: var(--line); box-shadow: var(--o5-shadow); }
+html[data-brand="option5"] :is(.daily-quests-count, .daily-quest-icon, .quest-daily-goal .daily-quest-icon, .daily-quest-action, .daily-quests-footer) { background: var(--lavender); color: var(--o5-link); border-color: var(--line); box-shadow: none; }
+html[data-brand="option5"] .quest-review-words .daily-quest-icon { background: var(--peach); color: var(--text); box-shadow: none; }
+html[data-brand="option5"] .daily-quest-row.is-complete .daily-quest-icon { background: var(--o5-violet); color: #fff; }
+html[data-brand="option5"] :is(.daily-quest-title h3, .daily-quests-footer > span:last-child) { color: var(--text); }
+html[data-brand="option5"] :is(.community-medallion, .community-friends .community-medallion, .community-avatar .community-medallion) { background: var(--lavender); color: var(--o5-link); border-color: var(--line); box-shadow: 0 3px 0 #9a7bff16; }
+html[data-brand="option5"] .community-feed .community-medallion { background: var(--peach); color: var(--text); box-shadow: none; }
+html[data-brand="option5"] :is(.player-studio-kicker, .player-preview-spark, .player-studio-preview > p, .player-extra-quiet, .player-studio-free) { color: var(--muted); }
+html[data-brand="option5"] :is(.player-hair-choices > button, .player-accessory-choices > button) { background: var(--surface); color: var(--text); border-color: var(--line); box-shadow: 0 3px 0 #9a7bff12; }
+html[data-brand="option5"] :is(.player-hair-choices > button.selected, .player-accessory-choices > button.selected) { background: var(--lavender); border-color: var(--o5-lilac); box-shadow: 0 3px 0 #9a7bff50; }
+html[data-brand="option5"] .player-hair-choices > button > svg:last-child:not(.personal-avatar) { background: var(--o5-violet); color: #fff; }
+html[data-brand="option5"] .player-plans-hero { background: linear-gradient(130deg, #1d0b36, #3d1972); color: #fff; }
+html[data-brand="option5"] :is(.player-plans-hero > div:first-child > span, .player-plan-star) { color: #c5aaff; }
+html[data-brand="option5"] .player-plans-hero p { color: #d8c6ef; }
+html[data-brand="option5"] :is(.player-plan-card.plan-plus, .player-plan-card.plan-family) { background: var(--lavender); border-color: var(--line); box-shadow: 0 5px 0 #9a7bff13; }
+html[data-brand="option5"] .player-plan-card.plan-family { background: var(--pink); }
+html[data-brand="option5"] :is(.player-plan-icon, .plan-plus .player-plan-icon, .plan-family .player-plan-icon) { background: var(--o5-violet); color: #fff; box-shadow: none; }
+html[data-brand="option5"] .plan-family > .player-extra-primary { background: var(--o5-violet); color: #fff; }
+html[data-brand="option5"] :is(.player-plan-name > span, .player-plan-headline, .player-plan-feature-label, .player-plan-footnote) { color: var(--muted); }
+html[data-brand="option5"] .player-plan-name > span { background: color-mix(in srgb, var(--surface) 80%, transparent); }
+html[data-brand="option5"] .player-plan-card li > svg { color: var(--o5-link); }
+html[data-brand="option5"] :is(.player-plan-notice, .player-share-notice) { background: var(--lavender); color: var(--o5-link); border-color: var(--line); }
+html[data-brand="option5"] .narra-plus-teaser { background: linear-gradient(130deg, #1d0b36, #3d1972); color: #fff; }
+html[data-brand="option5"] .plus-teaser-content > p { color: #d8c6ef; }
+html[data-brand="option5"] .plus-teaser-content > button { background: var(--o5-violet); color: #fff; border-color: var(--o5-lilac); }
+
+/* Buddy and the tutor preview keep their imagery, with Option 5 surroundings. */
+html[data-brand="option5"] .buddy-coach { background: linear-gradient(115deg, var(--lavender), var(--surface)); border-color: var(--line); box-shadow: 0 4px 0 #9a7bff0d; }
+html[data-brand="option5"] :is(.buddy-coach-copy > h2, .buddy-coach-copy > p, .buddy-coach-expanded > p, .buddy-coach-phrase > p) { color: var(--text); }
+html[data-brand="option5"] .buddy-coach-portrait > span { background: var(--o5-violet); color: #fff; box-shadow: none; }
+html[data-brand="option5"] :is(.buddy-coach-tip-toggle, .buddy-coach-action, .buddy-coach-phrase > button) { color: var(--o5-link); border-color: var(--line); }
+html[data-brand="option5"] :is(.buddy-coach-phrase, .buddy-coach-action) { background: color-mix(in srgb, var(--surface) 78%, transparent); }
+html[data-brand="option5"] .tutor-spotlight { background: linear-gradient(125deg, var(--lavender), var(--pink)); border-color: var(--line); }
+html[data-brand="option5"] :is(.tutor-spotlight-heading > div > span, .tutor-spotlight-heading > p, .tutor-spotlight-card > small, .tutor-spotlight-chosen) { color: var(--muted); }
+html[data-brand="option5"] .tutor-spotlight-card { background: var(--o5-glass); color: var(--text); border-color: var(--line); box-shadow: 0 3px 0 #9a7bff0c; }
+html[data-brand="option5"] :is(.tutor-spotlight-card.is-selected, .tutor-spotlight-card:hover) { border-color: var(--o5-lilac); background: var(--surface); }
+html[data-brand="option5"] :is(.tutor-spotlight-play, .tutor-body-preview > span) { background: var(--o5-violet); color: #fff; border-color: var(--surface); box-shadow: none; }
+html[data-brand="option5"] .tutor-spotlight-hear { background: var(--lavender); color: var(--o5-link); border-color: var(--line); }
+html[data-brand="option5"] :is(.tutor-preview-stage, .tutor-preview-skye .tutor-preview-stage, .tutor-preview-henry .tutor-preview-stage, .tutor-preview-dwayne .tutor-preview-stage) { background: radial-gradient(ellipse at 50% 25%, var(--surface), var(--lavender) 72%); border-color: var(--line); box-shadow: 0 6px 0 #9a7bff0c; }
+html[data-brand="option5"] :is(.tutor-preview-stage-label, .tutor-preview-nameplate) { background: var(--o5-glass); color: var(--text); border-color: var(--line); }
+html[data-brand="option5"] :is(.tutor-preview-nameplate > span, .tutor-preview-loading, .tutor-preview-fallback) { color: var(--muted); border-color: var(--line); }
+html[data-brand="option5"] .tutor-preview-stage-label > span.is-speaking { background: var(--o5-violet); box-shadow: 0 0 0 4px #9a7bff20; }
+html[data-brand="option5"] :is(.tutor-preview-replay, .tutor-preview-fallback > button, .tutor-profile-actions .tutor-profile-preview) { background: var(--lavender); color: var(--o5-link); border-color: var(--line); }
+
+/* Conversation and video-call stage. Canvas and real camera media are untouched. */
+html[data-brand="option5"] :is(.conversation-header, .conversation-dock) { background: var(--o5-glass); border-color: var(--line); }
+html[data-brand="option5"] :is(.conversation-bubble, .conversation-help-panel, .session-feedback-card, .conversation-composer > input, .voice-side-control) { background: var(--surface); color: var(--text); border-color: var(--line); box-shadow: 0 2px 0 #9a7bff08; }
+html[data-brand="option5"] .conversation-user-message .conversation-bubble { background: var(--o5-violet); color: #fff; border-color: var(--o5-violet); }
+html[data-brand="option5"] .conversation-user-message .conversation-bubble p { color: #fff; }
+html[data-brand="option5"] :is(.conversation-goal, .conversation-goal.goal-peach) { background: var(--peach); color: var(--text); border-color: var(--line); }
+html[data-brand="option5"] :is(.conversation-goal p, .conversation-goal > span, .audio-tutor-name, .audio-tutor-stage .conversation-avatar-caption) { color: var(--muted); }
+html[data-brand="option5"] :is(.conversation-tools > button.active, .conversation-word-choices > button.selected, .conversation-view-switch button.active) { background: var(--lavender); color: var(--o5-link); border-color: var(--o5-lilac); }
+html[data-brand="option5"] .conversation-primary-mic { background: var(--o5-violet); color: #fff; border-color: var(--o5-violet); box-shadow: 0 4px 0 #3e168c, 0 0 0 5px var(--lavender); }
+html[data-brand="option5"] .conversation-primary-mic:active { box-shadow: 0 2px 0 #3e168c, 0 0 0 5px var(--lavender); }
+html[data-brand="option5"] .conversation-view-switch { background: var(--lavender); }
+html[data-brand="option5"] :is(.conversation-level-up, .concise-feedback-heading) { color: var(--o5-link); }
+html[data-brand="option5"] .conversation-voice-controls > button.voice-main { background: var(--o5-violet); color: #fff; }
+html[data-brand="option5"] .narra-conversation.is-avatar { background: var(--lavender); }
+html[data-brand="option5"] .narra-conversation.video-call-mode { --call-stage-paper: var(--lavender); --call-stage-edge: var(--line); --call-glass: var(--o5-glass); --call-ink: var(--text); --call-muted: var(--muted); --call-accent: var(--o5-violet); }
+html[data-brand="option5"] .narra-conversation.video-call-mode .call-stage { background: radial-gradient(ellipse at 50% 20%, var(--surface), var(--lavender) 76%); border-color: var(--line); box-shadow: 0 6px 0 #9a7bff10, 0 18px 44px #30105008; }
+html[data-brand="option5"] .video-call-mode .call-stage::after { background: #6f3ea322; }
+html[data-brand="option5"] :is(.video-call-mode .call-controls, .video-call-mode .call-controls .voice-side-control, .video-call-mode .conversation-close, .video-call-mode .call-caption, .video-call-mode .call-status) { background: var(--o5-glass); color: var(--text); border-color: var(--line); box-shadow: 0 4px 0 #9a7bff10; }
+html[data-brand="option5"] .video-call-mode .call-controls .conversation-primary-mic { background: var(--o5-violet); color: #fff; border-color: var(--o5-violet); box-shadow: 0 5px 0 #3e168c, 0 0 0 5px var(--lavender); }
+html[data-brand="option5"] .video-call-mode .call-controls .conversation-primary-mic.is-listening { background: var(--o5-orange); color: #210d02; border-color: #c7490c; box-shadow: 0 5px 0 #c7490c, 0 0 0 5px var(--peach); }
+html[data-brand="option5"] :is(.video-call-mode .call-buddy-hint, .video-call-mode .call-buddy-hint[aria-expanded="true"], .video-call-mode .call-controls .voice-side-control.active) { background: var(--lavender); color: var(--o5-link); border-color: var(--line); }
+html[data-brand="option5"] :is(.video-call-mode .call-control-label, .video-call-mode .call-caption-tools button) { color: var(--o5-link); }
+html[data-brand="option5"] .video-call-mode .learner-pip { background: linear-gradient(140deg, var(--lavender), var(--pink)); color: var(--text); border-color: var(--surface); box-shadow: 0 5px 19px #34105815; }
+html[data-brand="option5"] :is(.video-call-mode .learner-pip-caption, .video-call-mode .learner-pip-camera) { color: var(--muted); }
+html[data-brand="option5"] .video-call-mode .learner-pip-camera { background: var(--o5-glass); }
+html[data-brand="option5"] .video-call-mode .call-status[data-state="speaking"]::before { background: var(--o5-lilac); box-shadow: 0 0 0 4px #9a7bff20; }
+
+/* Arena keeps its technical layout in violet ink rather than the Option 1 teal. */
+html[data-brand="option5"] .community-page { --community-paper: var(--background); --community-surface: var(--surface); --community-ink: var(--text); --community-muted: var(--muted); --community-line: var(--line); }
+html[data-brand="option5"] .community-page.community-arena {
+  --community-paper: #140a24; --community-surface: #211332; --community-ink: #f8f1ff; --community-muted: #baa8ce; --community-line: #493358;
+  --arena-cyan: #c0a5ff; --arena-lime: #bfa4ff; --arena-orange: var(--o5-orange);
+  background-color: var(--community-paper);
+  background-image: radial-gradient(ellipse 800px 550px at 65% 0, #6f32ce24, transparent 80%), linear-gradient(#d2b9ff06 1px, transparent 1px), linear-gradient(90deg, #d2b9ff06 1px, transparent 1px);
+}
+html[data-brand="option5"] :is(.community-arena .community-page-header, .community-arena .community-sticky-tabs) { background: #140a24ed; border-color: #493358; }
+html[data-brand="option5"] :is(.community-arena .community-back, .community-arena .community-header-share, .community-arena .community-section-tabs) { background: #241537; color: #dcccf0; border-color: #493358; }
+html[data-brand="option5"] .community-arena .community-section-tabs > button.is-active { background: var(--o5-violet); color: #fff; }
+html[data-brand="option5"] :is(.community-section-tabs > button.is-active, .community-primary-button, .calendar-day.selected, .map-card .chip.active) { background: var(--o5-violet); color: #fff; border-color: var(--o5-violet); }
+html[data-brand="option5"] :is(.arena-panel, .arena-console, .arena-xp-explainer) { background: #221434dc; border-color: #4b345e; box-shadow: 0 10px 30px #09031018; }
+html[data-brand="option5"] .arena-telemetry { background: #160c24aa; border-color: #493358; }
+html[data-brand="option5"] .arena-telemetry > div { border-color: #493358; }
+html[data-brand="option5"] :is(.arena-intro > span, .arena-console-main .arena-xp-block > div > span, .arena-panel-heading > svg, .arena-telemetry svg, .arena-text-button, .arena-xp-explainer > summary, .arena-completion-count) { color: #c9b0ff; }
+html[data-brand="option5"] :is(.arena-intro > p, .arena-board-intro, .arena-activity > p, .arena-demo-note, .arena-telemetry > div > span, .arena-person small) { color: #baa8ce; }
+html[data-brand="option5"] :is(.arena-orbit, .arena-signal > div, .arena-profile-arrow, .arena-demo-tag) { border-color: #75579d88; color: #d2b9ff; }
+html[data-brand="option5"] .arena-signal > div { background: #8c5cc51a; }
+html[data-brand="option5"] .arena-person > .community-avatar { background: #4c2d70; color: #ebd8ff; }
+html[data-brand="option5"] :is(.arena-chart-column > i, .arena-meter > span, .arena-board-value > div > span) { background: #9a7bff; }
+html[data-brand="option5"] .arena-board-row.is-you { background: #a478ec0c; border-left-color: #c0a5ff; }
+html[data-brand="option5"] :is(.friend-detail-hero, .friend-detail-challenge) { background: radial-gradient(ellipse at 50% 0, #6829b72c, transparent 80%), #211033; border-color: #4a2c65; }
+html[data-brand="option5"] :is(.friend-detail-challenge > button, .community-follow-button:not(.is-following)) { background: var(--o5-violet); color: #fff; border-color: var(--o5-violet); box-shadow: none; }
+html[data-brand="option5"] :is(.friend-challenge-button, .friend-detail-follow) { background: var(--lavender); color: var(--o5-link); border-color: var(--line); }
+html[data-brand="option5"] .friend-profile-open:hover .friend-profile-copy > strong { color: var(--o5-link); }
+
+/* The shared invitation room and exercises inherit all functional states. */
+html[data-brand="option5"] :is(.challenge-duration button.selected, .challenge-topics button.selected, .challenge-player.is-you, .challenge-result-card.is-you) { background: var(--lavender); border-color: var(--o5-lilac); }
+html[data-brand="option5"] :is(.challenge-invite, .challenge-prompt, .challenge-topic-dot, .challenge-player-avatar, .challenge-waiting-orb, .challenge-join-icon, .challenge-finish-icon, .challenge-goal-result.complete) { background: var(--lavender); color: var(--o5-link); border-color: var(--line); }
+html[data-brand="option5"] .challenge-primary.is-recording { background: var(--o5-orange); color: #210d02; border-color: #c7490c; }
+html[data-brand="option5"] .challenge-timer { background: conic-gradient(var(--o5-violet) var(--challenge-progress), var(--line) 0); }
+html[data-brand="option5"] .challenge-last-seconds .challenge-timer { background: conic-gradient(var(--o5-orange) var(--challenge-progress), var(--line) 0); }
+html[data-brand="option5"] :is(.challenge-leave, .challenge-error, .conversation-voice-error, .tutor-preview-notice) { background: var(--peach); color: var(--text); border-color: color-mix(in srgb, var(--o5-orange) 40%, var(--line)); }
+html[data-brand="option5"] :is(.challenge-notice, .conversation-notice) { background: var(--lavender); color: var(--text); border-color: var(--line); }
+html[data-brand="option5"] .narra-launch { background: var(--background); color: var(--text); }
+html[data-brand="option5"] .narra-launch::before { background: radial-gradient(ellipse at 50% 48%, var(--surface) 0%, transparent 59%), radial-gradient(ellipse at 99% 99%, #e9d6ff66 0%, transparent 42%), radial-gradient(ellipse at 0% 0%, #ffdded55 0%, transparent 34%); }
+html[data-brand="option5"] :is(.narra-launch-skip, .narra-launch-skip > span, .narra-launch-tagline, .narra-launch-corner) { color: var(--muted); }
+html[data-brand="option5"] .narra-launch-skip { background: var(--o5-glass); }
+html[data-brand="option5"] .narra-launch-orbit.orbit-lime { border-color: #c8aff3; }
+html[data-brand="option5"] .narra-launch-orbit.orbit-cyan { border-color: #edb7d9; }
+
+/* Dark-only contrast corrections for legacy component ink. */
+html[data-brand="option5"][data-theme="dark"] :is(.dictionary-review, .dictionary-review strong, .dictionary-review small, .dictionary-review > svg, .dictionary-review .dictionary-study-icon, .primary-button, .player-extra-primary, .plan-family > .player-extra-primary, .nav-item.active, .player-level-pill) { color: #fff; }
+html[data-brand="option5"][data-theme="dark"] :is(.tutor-spotlight-heading > div > span, .tutor-spotlight-heading > p, .tutor-spotlight-card > small, .tutor-spotlight-chosen, .buddy-coach-phrase > span) { color: var(--muted); }
+html[data-brand="option5"][data-theme="dark"] .tutor-spotlight-card { background: var(--surface); }
+html[data-brand="option5"][data-theme="dark"] .tutor-spotlight-portrait > .avatar { border-color: var(--line); }
+html[data-brand="option5"][data-theme="dark"] :is(.conversation-help-panel p, .session-feedback-card > p, .workout-feedback p, .workout-feedback > strong, .profile-study-card h3, .profile-metrics strong, .daily-quest-title h3) { color: var(--text); }
+html[data-brand="option5"][data-theme="dark"] :is(.player-studio-free, .player-studio-preview > p, .plus-teaser-content > p, .conversation-goal p) { color: var(--muted); }
+html[data-brand="option5"][data-theme="dark"] :is(.video-call-mode .learner-pip-error, .video-call-mode .call-fallback-message) { background: var(--peach); color: var(--text); border-color: var(--line); }
+html[data-brand="option5"][data-theme="dark"] .buddy-coach-action { border-color: var(--line); }
+html[data-brand="option5"][data-theme="dark"] .primary-button.danger-button { color: #ffb3d0; }
+html[data-brand="option5"][data-theme="dark"] :is(.plus-teaser-content > button, .tutor-profile-actions .chosen, .calendar-day.selected) { color: #fff; }
+
+@media (prefers-reduced-transparency: reduce) {
+  html[data-brand="option5"] :is(.topbar, .bottom-nav, .tutor-preview-header, .video-call-mode .call-caption, .video-call-mode .call-controls) { background: var(--surface); backdrop-filter: none; }
+}
+html[data-brand="option5"][data-theme="dark"] :is(.profile-footer > img,.settings-about-logo){content:url('/brand/option5/logo-light.svg')}
+@media(max-width:650px){html[data-brand="option5"] .is-compact .tutor-spotlight-card>small{font-size:10px}html[data-brand="option5"] .is-compact .tutor-spotlight-hear{font-size:11px;line-height:1.35}html[data-brand="option5"] .is-compact .tutor-spotlight-chosen{font-size:9px;line-height:1.35}}

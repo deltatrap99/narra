@@ -9,5 +9,9 @@ import './brand.css';
 import './refined.css';
 import './dark-polish.css';
 import './readability.css';
+import './brand-option5.css';
+import { initializeBrand } from './brand-variant';
+
+initializeBrand();
 
 createRoot(document.getElementById('root')!).render(<React.StrictMode><NarraProvider><PlayerProvider><App /></PlayerProvider></NarraProvider></React.StrictMode>);

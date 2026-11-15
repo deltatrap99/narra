@@ -1,3 +1,4 @@
+import { brandAsset } from './brand-variant';
 import { useState } from 'react';
 import { Check, Clock3, Flame, GitFork, List, LockKeyhole, Play } from 'lucide-react';
 import { chapters, type Lesson } from './data';
@@ -34,7 +35,7 @@ export default function Learn({ onGoal, onLesson, onWord, onPractice, onOpenLeag
   return <div className="learn-page lesson-uat">
     <header className="lesson-greeting"><p className="eyebrow">{tr('Your next little win', 'Bước tiến nhỏ tiếp theo')}</p><h1>{tr('Let’s keep going', 'Cùng học tiếp nhé')}, {profile.name}.</h1></header>
     <section className="lesson-focus-card" aria-labelledby="next-lesson-title">
-      <div className="lesson-focus-top"><div className="lesson-focus-copy"><p className="lesson-unit-label">{tr('Unit', 'Chủ đề')} {String(unitIndex + 1).padStart(2, '0')}: {nextChapter.title}</p><h2 id="next-lesson-title">{next.title}</h2><p className="lesson-focus-description">{description}</p><span className="lesson-focus-meta"><Clock3 size={15} />{next.minutes} {tr('min', 'phút')}<span aria-hidden="true">·</span>{profile.level}<span aria-hidden="true">·</span>{tr('Speaking lesson', 'Bài luyện nói')}</span></div><img src="/brand/mascot.webp" alt="" className="lesson-buddy" /></div>
+      <div className="lesson-focus-top"><div className="lesson-focus-copy"><p className="lesson-unit-label">{tr('Unit', 'Chủ đề')} {String(unitIndex + 1).padStart(2, '0')}: {nextChapter.title}</p><h2 id="next-lesson-title">{next.title}</h2><p className="lesson-focus-description">{description}</p><span className="lesson-focus-meta"><Clock3 size={15} />{next.minutes} {tr('min', 'phút')}<span aria-hidden="true">·</span>{profile.level}<span aria-hidden="true">·</span>{tr('Speaking lesson', 'Bài luyện nói')}</span></div><img src={brandAsset('mascot.webp')} alt="" className="lesson-buddy" /></div>
       <button className="lesson-focus-cta primary-button" onClick={() => onLesson(next)}><Play size={19} fill="currentColor" />{doneInUnit ? tr('Continue lesson', 'Học tiếp bài này') : tr('Start lesson', 'Bắt đầu bài học')}</button>
       <div className="lesson-unit-progress"><span>{tr('This unit', 'Chủ đề này')}</span><div className="progress-track" role="progressbar" aria-label={tr('Current unit progress', 'Tiến độ chủ đề hiện tại')} aria-valuemin={0} aria-valuemax={nextChapter.lessons.length} aria-valuenow={doneInUnit}><span style={{ width: `${doneInUnit / nextChapter.lessons.length * 100}%` }} /></div><strong>{doneInUnit}/{nextChapter.lessons.length} {tr('complete', 'đã hoàn thành')}</strong></div>
     </section>

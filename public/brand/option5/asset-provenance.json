@@ -1,0 +1,137 @@
+{
+  "referenceBoard": "User supplied Narra Buddy caterpillar sheet",
+  "generation": "OpenAI built-in image_gen with reference image",
+  "poses": {
+    "crawl": {
+      "source": "exec-c6a3df71-0ec5-456f-a3eb-7d5448603c6d.png",
+      "sourceDimensions": [
+        1774,
+        887
+      ],
+      "sourceContentBounds": [
+        252,
+        17,
+        1589,
+        875
+      ],
+      "outputDimensions": [
+        1024,
+        1024
+      ],
+      "contentDimensions": [
+        900,
+        578
+      ],
+      "baseline": 956,
+      "alpha": [
+        0,
+        255
+      ],
+      "bytes": 81406
+    },
+    "excited": {
+      "source": "exec-b45e7f89-c843-4e0a-9a8f-915dfe38cf10.png",
+      "sourceDimensions": [
+        1254,
+        1254
+      ],
+      "sourceContentBounds": [
+        224,
+        37,
+        1068,
+        1209
+      ],
+      "outputDimensions": [
+        1024,
+        1024
+      ],
+      "contentDimensions": [
+        648,
+        900
+      ],
+      "baseline": 956,
+      "alpha": [
+        0,
+        255
+      ],
+      "bytes": 100660
+    },
+    "wink": {
+      "source": "exec-0d210fff-8c8e-4b97-be6a-e1ade58ed5c6.png",
+      "sourceDimensions": [
+        1254,
+        1254
+      ],
+      "sourceContentBounds": [
+        204,
+        49,
+        1037,
+        1172
+      ],
+      "outputDimensions": [
+        1024,
+        1024
+      ],
+      "contentDimensions": [
+        668,
+        900
+      ],
+      "baseline": 956,
+      "alpha": [
+        0,
+        255
+      ],
+      "bytes": 96350
+    }
+  },
+  "logoAssets": {
+    "source": "User-supplied Option 5 brand board",
+    "method": "Source silhouette masks traced with Potrace 2.1.8, smooth SVG gradient ribbon reconstruction, source wordmark glyph outlines, even-odd counters. Rasterized using Sharp 0.34.5. No substitute font.",
+    "assets": {
+      "logo-dark": {
+        "dimensions": [
+          600,
+          160
+        ],
+        "bytes": 12794,
+        "alphaHistogram": {
+          "zero": 58578,
+          "partial": 2525,
+          "opaque": 34897
+        },
+        "svgBytes": 5285
+      },
+      "logo-light": {
+        "dimensions": [
+          600,
+          160
+        ],
+        "bytes": 12256,
+        "alphaHistogram": {
+          "zero": 58578,
+          "partial": 2525,
+          "opaque": 34897
+        },
+        "svgBytes": 5285
+      },
+      "icon": {
+        "dimensions": [
+          512,
+          512
+        ],
+        "bytes": 15360,
+        "alphaHistogram": {
+          "zero": 200590,
+          "partial": 1712,
+          "opaque": 59842
+        },
+        "svgBytes": 3065
+      }
+    }
+  },
+  "palette": {
+    "orange": "#FE611A",
+    "lavender": "#947AFF",
+    "deepPurple": "#0F0132"
+  }
+}

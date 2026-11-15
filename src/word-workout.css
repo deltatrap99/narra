@@ -1,0 +1,47 @@
+.workout-dialog { --workout-ink: #171a16; --workout-paper: #fafbf7; --workout-accent: var(--brand-lime, #99ef32); --workout-secondary: var(--purple, #287300); box-sizing: border-box; width: 600px; max-width: 100vw; height: min(900px, 94dvh); max-height: 100dvh; padding: 0; border: 0; border-radius: 32px; background: var(--workout-paper); color: var(--workout-ink); overflow: hidden; }
+.workout-dialog::backdrop { background: #15201050; backdrop-filter: blur(5px); }
+.workout-shell { display: flex; flex-direction: column; height: 100%; }
+.workout-header { flex-shrink: 0; display: grid; grid-template-columns: 92px 1fr 92px; gap: 8px; align-items: center; padding: 17px 18px 14px; }
+.workout-header h1 { margin: 0; font-size: 19px; font-weight: 750; text-align: center; white-space: nowrap; }
+.workout-close { justify-self: start; padding: 10px 15px; border: 1px solid #dfe3da; border-radius: 30px; background: #ffffffad; color: var(--workout-secondary); font-size: 17px; }
+.workout-content { flex: 1; overflow: auto; padding: 12px 18px 24px; scrollbar-width: thin; }
+.workout-intro { padding-top: 12px; }
+.workout-intro h2 { margin: 7px 0 23px; font-family: var(--font-display, inherit); font-size: 27px; letter-spacing: -.6px; font-weight: 850; line-height: 1.15; }
+.workout-intro > p { color: #74796f; font-size: 16px; line-height: 1.35; margin: 0 0 21px; }
+.workout-segments { display: flex; padding: 3px; border-radius: 30px; background: #e9ebe5; margin: 0 0 18px; }
+.workout-segments > button { flex: 1; padding: 8px 2px; border: 0; border-radius: 26px; background: transparent; color: var(--workout-ink); font-size: 14px; white-space: nowrap; }
+.workout-segments > button.active { background: white; box-shadow: 0 1px 3px #18210e0a; }
+.workout-explanation { padding: 19px 16px 17px; border-radius: 22px; background: var(--green, #edf8df); margin-bottom: 19px; }
+.workout-explanation > strong { font-size: 16px; line-height: 1.3; font-weight: 700; }
+.workout-explanation > p { color: #75816a; font-size: 13px; line-height: 1.3; margin: 8px 0 0; }
+.workout-primary { width: 100%; display: flex; justify-content: center; align-items: center; gap: 9px; min-height: 50px; border: 0; border-radius: 19px; padding: 13px 16px; background: var(--workout-accent); color: var(--workout-ink); font-size: 16px; font-weight: 750; }
+.workout-primary:disabled { opacity: .44; cursor: default; }.workout-primary:not(:disabled):hover { filter: brightness(.96); }
+.workout-question { display: flex; flex-direction: column; min-height: 100%; }
+.workout-progress-label { display: flex; justify-content: space-between; gap: 15px; color: #767b71; font-size: 13px; font-weight: 600; margin: 3px 0 15px; }
+.workout-progress { background: #dfe3da; border-radius: 8px; height: 4px; overflow: hidden; margin-bottom: 17px; }
+.workout-progress > span { display: block; height: 100%; background: var(--workout-secondary); border-radius: inherit; transition: width .2s; }
+.workout-prompt { background: var(--green, #edf8df); border-radius: 22px; padding: 20px 16px; margin-bottom: 17px; }
+.workout-prompt h2 { margin: 0 0 11px; font-size: 23px; font-weight: 750; letter-spacing: -.35px; line-height: 1.2; }
+.workout-prompt > span { color: #747e6c; font-size: 13px; }.workout-prompt > svg { color: var(--workout-secondary); margin-bottom: 8px; }
+.workout-listen { display: inline-flex; align-items: center; gap: 7px; padding: 9px 12px; border: 1px solid #d0e1bb; border-radius: 20px; background: #ffffffc9; color: var(--workout-secondary); font-size: 14px; font-weight: 650; }
+.workout-answer-label input { box-sizing: border-box; width: 100%; padding: 17px 16px; border: 1px solid transparent; border-radius: 16px; background: white; color: var(--workout-ink); font: inherit; font-size: 17px; outline-offset: 2px; }
+.workout-answer-label input::placeholder { color: #b2b6af; }.workout-answer-label input:disabled { color: #7d8376; opacity: .8; }
+.workout-answer-label input:focus { border-color: var(--workout-secondary); }
+.workout-show { align-self: flex-start; margin-top: 16px; padding: 0; border: 0; background: none; color: var(--workout-secondary); font-size: 15px; text-align: left; }
+.workout-feedback { border-radius: 22px; padding: 16px; margin-top: 17px; }.workout-feedback.is-correct { background: var(--green, #edf8df); }.workout-feedback.is-missed { background: var(--peach, #fff0e5); }
+.workout-feedback h3 { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 750; line-height: 1.2; margin: 0 0 16px; }
+.workout-feedback > strong { font-family: var(--font-display, inherit); font-size: 25px; font-weight: 850; line-height: 1.1; }
+.workout-feedback p { font-size: 15px; line-height: 1.3; margin: 14px 0 8px; }.workout-feedback .workout-example { font-style: italic; margin-top: 7px; }
+.workout-text-button { display: inline-flex; align-items: center; gap: 8px; color: var(--workout-secondary); font-size: 15px; background: none; border: 0; padding: 5px 0; }
+.workout-feedback .workout-saved-note { font-size: 12px; margin: 10px 0 0; }
+.workout-bottom { margin-top: auto; padding-top: 24px; position: sticky; bottom: -24px; background: linear-gradient(transparent, var(--workout-paper) 20%); padding-bottom: 8px; }
+.workout-complete { padding-top: 18px; text-align: center; }.workout-trophy { display: inline-grid; place-items: center; width: 75px; height: 75px; border-radius: 50%; background: var(--workout-accent); color: #171a16; margin-bottom: 14px; }
+.workout-complete h2 { margin: 0 0 10px; font-size: 28px; font-family: var(--font-display, inherit); font-weight: 850; letter-spacing: -.6px; }.workout-complete > p { color: #737b6b; font-size: 15px; margin: 0 0 20px; }
+.workout-score { background: var(--blue, #e5f7ff); padding: 25px; border-radius: 24px; display: flex; align-items: center; flex-direction: column; gap: 4px; margin-bottom: 23px; }.workout-score strong { font-size: 42px; letter-spacing: -1.5px; }.workout-score strong span { color: #7c8970; font-size: 25px; }.workout-score > span { font-size: 14px; color: #65765a; }
+.workout-complete h3 { margin: 0 0 12px; font-size: 16px; text-align: left; }.workout-missed-list { text-align: left; border-radius: 19px; background: white; margin-bottom: 19px; padding: 0 16px; }.workout-missed-list > div { display: flex; flex-direction: column; gap: 4px; padding: 14px 0; }.workout-missed-list > div + div { border-top: 1px solid #e8ebe5; }.workout-missed-list strong { font-size: 16px; }.workout-missed-list span { color: #727b6b; font-size: 13px; }.workout-complete > button + button { margin-top: 10px; }
+.workout-secondary { background: #edf0e9; color: var(--workout-secondary); }.workout-all-correct { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 0 24px; color: var(--workout-secondary); font-size: 14px; }
+.workout-empty { text-align: center; padding: 30px 0; }.workout-empty > svg { color: var(--workout-secondary); }.workout-empty h3 { margin: 13px 0 7px; }.workout-empty p { color: #747c6b; line-height: 1.4; margin-bottom: 24px; }
+.workout-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
+@media (max-width: 640px) { .workout-dialog { width: 100vw; height: 100dvh; max-height: 100dvh; margin: 0; border-radius: 0; }.workout-header { padding-top: max(16px, env(safe-area-inset-top)); }.workout-content { padding-bottom: max(24px, env(safe-area-inset-bottom)); } }
+@media (max-width: 360px) { .workout-header { grid-template-columns: 75px 1fr 75px; gap: 4px; }.workout-header h1 { font-size: 17px; }.workout-close { padding: 9px 12px; font-size: 16px; }.workout-prompt h2 { font-size: 21px; }.workout-intro h2 { font-size: 25px; }.workout-answer-label input { font-size: 15px; }.workout-segments > button { font-size: 13px; } }
+@media (prefers-reduced-motion: reduce) { .workout-progress > span { transition: none; } }

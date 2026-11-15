@@ -1,0 +1,196 @@
+{
+  "brand": "Narra",
+  "identity": "Option 1",
+  "source": "docs/brand-guidelines.md",
+  "tagline": "Your voice. Your story.",
+  "primitive": {
+    "color": {
+      "black": {
+        "$value": "#000000",
+        "$type": "color"
+      },
+      "lime": {
+        "$value": "#9CE943",
+        "$type": "color"
+      },
+      "orange": {
+        "$value": "#FF6E0B",
+        "$type": "color"
+      },
+      "cyan": {
+        "$value": "#6DD9FF",
+        "$type": "color"
+      },
+      "ink": {
+        "$value": "#10140F",
+        "$type": "color"
+      },
+      "muted": {
+        "$value": "#657062",
+        "$type": "color"
+      },
+      "background": {
+        "$value": "#F8FAF6",
+        "$type": "color"
+      },
+      "surface": {
+        "$value": "#FFFFFF",
+        "$type": "color"
+      },
+      "border": {
+        "$value": "#E3E8DF",
+        "$type": "color"
+      },
+      "green-ink": {
+        "$value": "#32661A",
+        "$type": "color"
+      },
+      "lime-tint": {
+        "$value": "#EEF9E3",
+        "$type": "color"
+      },
+      "cyan-tint": {
+        "$value": "#EAF9FF",
+        "$type": "color"
+      },
+      "orange-tint": {
+        "$value": "#FFF0E5",
+        "$type": "color"
+      }
+    },
+    "radius": {
+      "control": {
+        "$value": "12px",
+        "$type": "dimension"
+      },
+      "card": {
+        "$value": "24px",
+        "$type": "dimension"
+      },
+      "sheet": {
+        "$value": "28px",
+        "$type": "dimension"
+      },
+      "pill": {
+        "$value": "999px",
+        "$type": "dimension"
+      }
+    },
+    "spacing": {
+      "unit": {
+        "$value": "4px",
+        "$type": "dimension"
+      }
+    },
+    "font": {
+      "heading": {
+        "$value": "Nunito, system-ui, sans-serif",
+        "$type": "fontFamily"
+      },
+      "body": {
+        "$value": "-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif",
+        "$type": "fontFamily"
+      }
+    }
+  },
+  "semantic": {
+    "color": {
+      "primary": {
+        "$value": "{primitive.color.lime}",
+        "$type": "color"
+      },
+      "on-primary": {
+        "$value": "{primitive.color.ink}",
+        "$type": "color"
+      },
+      "text": {
+        "$value": "{primitive.color.ink}",
+        "$type": "color"
+      },
+      "muted": {
+        "$value": "{primitive.color.muted}",
+        "$type": "color"
+      },
+      "background": {
+        "$value": "{primitive.color.background}",
+        "$type": "color"
+      },
+      "surface": {
+        "$value": "{primitive.color.surface}",
+        "$type": "color"
+      },
+      "border": {
+        "$value": "{primitive.color.border}",
+        "$type": "color"
+      },
+      "link": {
+        "$value": "{primitive.color.green-ink}",
+        "$type": "color"
+      },
+      "focus": {
+        "$value": "{primitive.color.green-ink}",
+        "$type": "color"
+      },
+      "conversation": {
+        "$value": "{primitive.color.cyan-tint}",
+        "$type": "color"
+      },
+      "conversation-accent": {
+        "$value": "{primitive.color.cyan}",
+        "$type": "color"
+      },
+      "highlight": {
+        "$value": "{primitive.color.lime-tint}",
+        "$type": "color"
+      },
+      "energy": {
+        "$value": "{primitive.color.orange}",
+        "$type": "color"
+      },
+      "energy-surface": {
+        "$value": "{primitive.color.orange-tint}",
+        "$type": "color"
+      }
+    }
+  },
+  "component": {
+    "button-primary": {
+      "background": {
+        "$value": "{semantic.color.primary}",
+        "$type": "color"
+      },
+      "foreground": {
+        "$value": "{semantic.color.on-primary}",
+        "$type": "color"
+      },
+      "radius": {
+        "$value": "{primitive.radius.pill}",
+        "$type": "dimension"
+      }
+    },
+    "card": {
+      "background": {
+        "$value": "{semantic.color.surface}",
+        "$type": "color"
+      },
+      "border": {
+        "$value": "{semantic.color.border}",
+        "$type": "color"
+      },
+      "radius": {
+        "$value": "{primitive.radius.card}",
+        "$type": "dimension"
+      }
+    },
+    "conversation-panel": {
+      "background": {
+        "$value": "{semantic.color.conversation}",
+        "$type": "color"
+      },
+      "foreground": {
+        "$value": "{semantic.color.text}",
+        "$type": "color"
+      }
+    }
+  }
+}

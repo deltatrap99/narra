@@ -1,0 +1,37 @@
+/* Generated from docs/brand-guidelines.md by tools/sync-brand-tokens.mjs. */
+:root {
+  --brand-black: #000000;
+  --brand-lime: #9CE943;
+  --brand-orange: #FF6E0B;
+  --brand-cyan: #6DD9FF;
+  --brand-ink: #10140F;
+  --brand-muted: #657062;
+  --brand-background: #F8FAF6;
+  --brand-surface: #FFFFFF;
+  --brand-border: #E3E8DF;
+  --brand-green-ink: #32661A;
+  --brand-lime-tint: #EEF9E3;
+  --brand-cyan-tint: #EAF9FF;
+  --brand-orange-tint: #FFF0E5;
+  --color-primary: var(--brand-lime);
+  --color-on-primary: var(--brand-ink);
+  --color-text: var(--brand-ink);
+  --color-muted: var(--brand-muted);
+  --color-background: var(--brand-background);
+  --color-surface: var(--brand-surface);
+  --color-border: var(--brand-border);
+  --color-link: var(--brand-green-ink);
+  --color-focus: var(--brand-green-ink);
+  --color-conversation: var(--brand-cyan-tint);
+  --color-conversation-accent: var(--brand-cyan);
+  --color-highlight: var(--brand-lime-tint);
+  --color-energy: var(--brand-orange);
+  --color-energy-surface: var(--brand-orange-tint);
+  --radius-control: 12px;
+  --radius-card: 24px;
+  --radius-sheet: 28px;
+  --radius-pill: 999px;
+  --spacing-unit: 4px;
+  --font-heading: Nunito, system-ui, sans-serif;
+  --font-body: -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif;
+}

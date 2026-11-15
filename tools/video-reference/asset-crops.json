@@ -1,0 +1,170 @@
+{
+  "henry-body": {
+    "box": [
+      74,
+      470,
+      203,
+      665
+    ],
+    "size": [
+      129,
+      195
+    ],
+    "background": "#ece4fb",
+    "source": "video2 at 5s, tutors-list.jpg"
+  },
+  "camila-body": {
+    "box": [
+      68,
+      802,
+      217,
+      979
+    ],
+    "size": [
+      149,
+      177
+    ],
+    "background": "#e2f3e3",
+    "source": "video2 at 5s, tutors-list.jpg"
+  },
+  "dwayne-body": {
+    "box": [
+      64,
+      1128,
+      211,
+      1323
+    ],
+    "size": [
+      147,
+      195
+    ],
+    "background": "#e4edfc",
+    "source": "video2 at 5s, tutors-list.jpg"
+  },
+  "henry": {
+    "box": [
+      88,
+      503,
+      190,
+      605
+    ],
+    "size": [
+      102,
+      102
+    ],
+    "source": "video2 at 5s, tutors-list.jpg",
+    "alpha": true
+  },
+  "dwayne": {
+    "box": [
+      80,
+      1128,
+      202,
+      1250
+    ],
+    "size": [
+      122,
+      122
+    ],
+    "source": "video2 at 5s, tutors-list.jpg",
+    "alpha": true
+  },
+  "camila-reference": {
+    "box": [
+      78,
+      802,
+      205,
+      929
+    ],
+    "size": [
+      127,
+      127
+    ],
+    "source": "video2 at 5s, tutors-list.jpg",
+    "alpha": true
+  },
+  "house-reference": {
+    "box": [
+      455,
+      447,
+      604,
+      575
+    ],
+    "size": [
+      149,
+      128
+    ],
+    "background": "#fde7d8",
+    "source": "video1 approx 55.1s, practice-scan-07.png"
+  },
+  "plane-reference": {
+    "box": [
+      72,
+      840,
+      313,
+      979
+    ],
+    "size": [
+      241,
+      139
+    ],
+    "background": "#e3ecfc",
+    "source": "video1 approx 55.1s, practice-scan-07.png"
+  },
+  "briefcase-reference": {
+    "box": [
+      466,
+      850,
+      602,
+      976
+    ],
+    "size": [
+      136,
+      126
+    ],
+    "background": "#ebe3fd",
+    "source": "video1 approx 55.1s, practice-scan-07.png"
+  },
+  "books-reference": {
+    "box": [
+      99,
+      1282,
+      289,
+      1426
+    ],
+    "size": [
+      190,
+      144
+    ],
+    "background": "#e1efe3",
+    "source": "video1 approx 55.1s, practice-scan-07.png"
+  },
+  "plant-reference": {
+    "box": [
+      477,
+      1283,
+      594,
+      1426
+    ],
+    "size": [
+      117,
+      143
+    ],
+    "background": "#fcf1d2",
+    "source": "video1 approx 55.1s, practice-scan-07.png"
+  },
+  "tutor-stack-reference": {
+    "box": [
+      57,
+      207,
+      254,
+      280
+    ],
+    "size": [
+      197,
+      73
+    ],
+    "background": "#ebe3fd",
+    "source": "video1 approx 55.1s, practice-scan-07.png"
+  }
+}

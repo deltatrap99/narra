@@ -1,0 +1,49 @@
+{
+  "source": "tools/brand-board-option1.png",
+  "source_size": [
+    2560,
+    1440
+  ],
+  "wordmark_crop_source": [
+    1000,
+    640,
+    1570,
+    805
+  ],
+  "trim_bounds": [
+    25,
+    27,
+    549,
+    148
+  ],
+  "logo_size": [
+    524,
+    121
+  ],
+  "icon_size": [
+    131,
+    121
+  ],
+  "tagline_size": [
+    256,
+    32
+  ],
+  "palette": {
+    "black": "#000000",
+    "lime": "#9CE943",
+    "orange": "#FF6E0B",
+    "cyan": "#6DD9FF"
+  },
+  "source_wordmark_lime_dominant": "#9AF953",
+  "tagline": "Your voice. Your story.",
+  "mascot": {
+    "file": "public/brand/mascot.webp",
+    "method": "Built-in image_gen, Option 1 board as style reference",
+    "prompt": "tools/asset-prompts.md",
+    "size": [
+      768,
+      768
+    ],
+    "alpha": true
+  }
+}

@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/conversation.tsx","./src/learn.tsx","./src/mywords.tsx","./src/pathgraph.tsx","./src/practice.tsx","./src/profile.tsx","./src/progress.tsx","./src/sessions.tsx","./src/tutors.tsx","./src/wordworkout.tsx","./src/words.tsx","./src/data.ts","./src/main.tsx","./src/state.tsx","./src/ui.tsx"],"version":"5.9.3"}

@@ -1,0 +1,53 @@
+.path-map { max-width: 720px; margin: 0 auto; }
+.path-map-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 20px 0; }
+.path-map-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; color: #77727f; font-size: 12px; }
+.path-map-legend > span { display: inline-flex; align-items: center; gap: 4px; }
+.path-map-legend i { width: 8px; height: 8px; border-radius: 50%; }
+.path-dot-done { background: var(--purple, #287300); }.path-dot-next { background: var(--brand-lime, #99ef32); }.path-dot-locked { background: #bfbcc6; }
+.path-map-toolbar > button { display: flex; align-items: center; gap: 7px; border: 0; background: transparent; color: var(--purple, #287300); font-size: 12px; font-weight: 700; padding: 8px 0 8px 8px; }
+.path-map-canvas { --path-node-size: 68px; position: relative; border: 1px solid #d7e6e8; border-radius: 26px; background: linear-gradient(180deg, var(--blue, #e5f7ff) 0%, var(--blue, #e5f7ff) 35%, var(--green, #edf8df) 100%); padding-top: 6px; padding-bottom: 12px; overflow: hidden; }
+.path-map-unit { position: relative; height: 460px; isolation: isolate; }
+.path-map-connectors { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; overflow: visible; fill: none; }
+.path-line-halo { stroke: #d9eadb; stroke-width: 13px; stroke-linecap: round; }
+.path-line-dots { stroke: #bbb7c7; stroke-width: 4.5px; stroke-linecap: round; stroke-dasharray: .1 10; }
+.path-line-open .path-line-dots, .path-line-next .path-line-dots { stroke: var(--purple, #287300); stroke-width: 5.2px; }
+.path-line-done .path-line-halo { stroke: transparent; }.path-line-done .path-line-dots { stroke: var(--purple, #287300); stroke-width: 4.5px; stroke-dasharray: none; }
+.path-map-unit-heading { display: flex; align-items: center; gap: 10px; position: absolute; top: 20px; left: 3%; right: 3%; min-height: 68px; padding: 9px 12px 9px 9px; border: 1px solid transparent; border-radius: 21px; background: #ffffffed; box-shadow: 0 7px 15px #3e265c08; }
+.path-map-unit-heading.is-current { border-color: var(--purple, #287300); }
+.path-map-unit-ring { flex: 0 0 46px; width: 46px; height: 46px; padding: 4px; background: conic-gradient(var(--purple, #287300) var(--unit-progress), #e7e6e8 0); border-radius: 50%; }
+.path-map-unit-ring > span { display: grid; place-items: center; width: 100%; height: 100%; background: #fff; border-radius: 50%; font-size: 15px; font-weight: 750; color: var(--purple, #287300); }
+.path-map-unit-heading p { margin: 0 0 2px; font-size: 10px; line-height: 1.2; font-weight: 650; text-transform: uppercase; color: var(--purple, #287300); }
+.path-map-unit-heading h3 { margin: 0 0 2px; font-size: 15px; line-height: 1.15; font-weight: 750; color: #29252e; }
+.path-map-unit-heading div > span { display: block; color: #7b7582; font-size: 11px; line-height: 1.3; }
+.path-map-lesson { width: 100%; height: 84px; border: 0; padding: 0; position: absolute; left: 0; transform: translateY(-50%); background: none; color: var(--purple, #287300); z-index: 2; }
+.path-map-lesson-node { position: absolute; display: grid; place-items: center; top: 50%; left: 27.7778%; transform: translate(-50%, -50%); width: var(--path-node-size); height: var(--path-node-size); border: 9px solid #ffffffdb; border-radius: 50%; background: #fff; box-shadow: 0 4px 10px #183e3014; z-index: 2; }
+.path-map-lesson--right .path-map-lesson-node { left: 72.2222%; }
+.path-map-lesson-node svg { width: 24px; height: 24px; }
+.path-map-lesson.is-open .path-map-lesson-node::after { content: ''; position: absolute; inset: 0; border: 2px solid var(--brand-lime, #99ef32); border-radius: 50%; }
+.path-map-lesson.is-next .path-map-lesson-node { width: calc(var(--path-node-size) + 8px); height: calc(var(--path-node-size) + 8px); border: 5px solid #fff; background: var(--brand-lime, #99ef32); color: #fff; outline: 2px solid var(--purple, #287300); outline-offset: 2px; box-shadow: 0 0 0 7px #ffffffab; }
+.path-map-lesson.is-next .path-map-lesson-node::after { content: ''; position: absolute; inset: -1px; border: 2px solid var(--purple, #287300); border-radius: 50%; }
+.path-map-lesson.is-next .path-map-lesson-node svg { width: 27px; height: 27px; margin-left: 4px; }
+.path-map-lesson.is-done .path-map-lesson-node { color: #fff; background: var(--purple, #287300); border-color: #f7fff9; box-shadow: 0 0 0 5px #fafffac7; }
+.path-map-lesson.is-done .path-map-lesson-node svg { width: 29px; height: 29px; }
+.path-map-lesson.is-locked .path-map-lesson-node { color: #77717f; background: #ebe8f0; box-shadow: inset 0 2px 12px #ffffffa1, 0 0 0 4px #ffffff70; }
+.path-map-lesson.is-locked .path-map-lesson-node svg { width: 21px; height: 21px; stroke-width: 1.5px; }
+.path-map-continue { position: absolute; left: 50%; top: -27px; transform: translateX(-50%); display: block; width: max-content; border-radius: 12px; padding: 5px 9px; background: var(--purple, #287300); font-size: 9px; text-transform: uppercase; letter-spacing: .65px; line-height: 1; font-weight: 700; }
+.path-map-lesson-label { position: absolute; top: 50%; left: calc(27.7778% + var(--path-node-size)/2 - 4px); right: 7%; transform: translateY(-50%); min-height: 48px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: 7px 10px 7px 13px; border-radius: 12px; background: #ffffffed; color: #322d36; text-align: left; box-shadow: 0 4px 10px #32244405; }
+.path-map-lesson--right .path-map-lesson-label { left: 7%; right: calc(27.7778% + var(--path-node-size)/2 - 4px); align-items: flex-end; text-align: right; padding: 7px 13px 7px 10px; }
+.path-map-lesson-label strong { font-size: 13px; line-height: 1.2; font-weight: 700; }
+.path-map-lesson-label > span { margin-top: 3px; color: #847d89; font-size: 11px; line-height: 1.2; }
+.path-map-lesson.is-next .path-map-lesson-label > span { color: var(--purple, #287300); font-weight: 600; }
+.path-map-lesson.is-locked .path-map-lesson-label strong { color: #6d6773; }
+.path-map-lesson:focus-visible { outline: none; }.path-map-lesson:focus-visible .path-map-lesson-node { outline: 3px solid #161814; outline-offset: 6px; }
+.path-map-lesson:hover .path-map-lesson-label { background: #fff; }.path-map-lesson.is-open:hover .path-map-lesson-node { background: var(--green, #edf8df); }
+.path-map-finish { display: flex; align-items: center; flex-direction: column; gap: 7px; padding: 0 0 18px; color: #84734f; }
+.path-map-finish > span { display: grid; place-items: center; width: 42px; height: 42px; background: var(--peach, #fff0e5); color: #ea8b35; border-radius: 50%; }
+.path-map-finish p { margin: 0; font-size: 11px; }
+@media (min-width: 768px) { .path-map-canvas { --path-node-size: 80px; }.path-map-unit { height: 500px; }.path-map-unit-heading { min-height: 80px; gap: 14px; padding: 12px 16px; }.path-map-unit-heading h3 { font-size: 18px; }.path-map-unit-heading p { font-size: 11px; }.path-map-unit-heading div > span { font-size: 13px; }.path-map-lesson-label { min-height: 58px; }.path-map-lesson-label strong { font-size: 16px; }.path-map-lesson-label > span { font-size: 13px; } }
+@media (max-width: 400px) { .path-map-canvas { --path-node-size: 62px; border-radius: 23px; }.path-map-unit { height: 420px; }.path-map-unit-heading { gap: 8px; padding-right: 9px; }.path-map-unit-heading h3 { font-size: 13px; }.path-map-unit-heading div > span { font-size: 10px; }.path-map-unit-ring { flex-basis: 42px; width: 42px; height: 42px; }.path-map-lesson-label strong { font-size: 11.5px; }.path-map-lesson-label > span { font-size: 10px; }.path-map-lesson-label { right: 6%; padding-left: 8px; }.path-map-lesson--right .path-map-lesson-label { left: 6%; padding-right: 8px; }.path-map-legend { gap: 7px; font-size: 11px; } }
+@media (prefers-reduced-motion: reduce) { .path-map * { scroll-behavior: auto; } }
+
+/* Narra lime brand: high-contrast node controls and the reference path layout. */
+.path-map-lesson.is-next .path-map-lesson-node { color: #161814; }
+.path-map-lesson.is-open .path-map-lesson-node { color: #161814; background: var(--brand-lime, #99ef32); }
+.path-map-continue { background: #161814; color: var(--brand-lime, #99ef32); }

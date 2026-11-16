@@ -1,18 +1,16 @@
 import { useState } from 'react';
-import { Check, Clock3, Flame, List, LockKeyhole, Play, Route } from 'lucide-react';
+import { Check, Clock3, Flame, List, LockKeyhole, Play, Route, Sparkles, Users } from 'lucide-react';
 import { chapters, type Lesson } from './data';
 import { activityStreak, localDateKey, useCopy, useNarra } from './state';
 import PathGraph from './PathGraph';
 import './lesson-uat.css';
 import { DailyQuests, MotivationStrip } from './Motivation';
-import BuddyCoach from './BuddyCoach';
-import BuddyAvatar from './BuddyAvatar';
 import TutorSpotlight from './TutorSpotlight';
-import PlusTeaser from './PlusTeaser';
+import { FocusHero, QuietSection } from './FocusLayout';
 
 type Props = { onGoal: () => void; onLesson: (lesson: Lesson) => void; onTalk: () => void; onWord: () => void; onPractice: () => void; onOpenLeague: () => void; onOpenAchievements: () => void; onTutorPreview: (name: string) => void; onPlans: () => void };
 
-export default function Learn({ onGoal, onLesson, onWord, onPractice, onOpenLeague, onOpenAchievements, onTutorPreview, onPlans }: Props) {
+export default function Learn({ onGoal, onLesson, onWord, onPractice, onOpenLeague, onOpenAchievements, onTutorPreview }: Props) {
   const { profile, stats, notify } = useNarra();
   const tr = useCopy();
   const [view, setView] = useState<'List' | 'Journey'>('Journey');
@@ -20,7 +18,6 @@ export default function Learn({ onGoal, onLesson, onWord, onPractice, onOpenLeag
   const next = allLessons.find(lesson => !stats.completed.includes(lesson.id)) ?? allLessons[0];
   const nextChapter = chapters.find(chapter => chapter.lessons.some(lesson => lesson.id === next.id))!;
   const unitIndex = chapters.indexOf(nextChapter);
-  const doneInUnit = nextChapter.lessons.filter(lesson => stats.completed.includes(lesson.id)).length;
   const completedCount = allLessons.filter(lesson => stats.completed.includes(lesson.id)).length;
   const journeyComplete = completedCount === allLessons.length;
   const minutesToday = stats.activity.filter(activity => activity.date === localDateKey()).reduce((sum, activity) => sum + activity.minutes, 0);
@@ -34,19 +31,11 @@ export default function Learn({ onGoal, onLesson, onWord, onPractice, onOpenLeag
     if (available || stats.completed.includes(lesson.id)) onLesson(lesson);
     else notify(tr('One little step first: finish the previous lesson, then this one will open.', 'Bạn học xong bài trước nhé, rồi mình sẽ mở được bài này.'));
   }
-  return <div className="learn-page lesson-uat">
-    <header className="lesson-greeting"><p className="eyebrow">{journeyComplete ? tr('A little revisit', 'Mình ôn lại một chút') : tr('Your next little win', 'Bước tiến nhỏ tiếp theo')}</p><h1>{tr('Let’s keep going', 'Cùng học tiếp nhé')}, {profile.name}.</h1></header>
-    <section className="lesson-focus-card" aria-labelledby="next-lesson-title">
-      <div className="lesson-focus-top"><div className="lesson-focus-copy"><p className="lesson-unit-label">{tr('Unit', 'Chủ đề')} {String(unitIndex + 1).padStart(2, '0')}: {nextChapter.title}</p><h2 id="next-lesson-title">{next.title}</h2><p className="lesson-focus-description">{description}</p><span className="lesson-focus-meta"><Clock3 size={15} />{next.minutes} {tr('min', 'phút')}<span aria-hidden="true">·</span>{profile.level}<span aria-hidden="true">·</span>{tr('Speaking lesson', 'Bài luyện nói')}</span></div><BuddyAvatar mood={minutesToday >= profile.dailyGoal ? 'celebrate' : completedCount > 0 ? 'encourage' : 'welcome'} className="lesson-buddy" /></div>
-      <button className="lesson-focus-cta primary-button" onClick={() => onLesson(next)}><Play size={19} fill="currentColor" />{journeyComplete ? tr('Revisit a lesson', 'Ôn lại một bài nhé') : doneInUnit ? tr('Continue lesson', 'Học tiếp bài này') : tr('Start lesson', 'Bắt đầu bài học')}</button>
-      <div className="lesson-unit-progress"><span>{tr('This unit', 'Chủ đề này')}</span><div className="progress-track" role="progressbar" aria-label={tr('Current unit progress', 'Tiến độ chủ đề hiện tại')} aria-valuemin={0} aria-valuemax={nextChapter.lessons.length} aria-valuenow={doneInUnit}><span style={{ width: `${doneInUnit / nextChapter.lessons.length * 100}%` }} /></div><strong>{doneInUnit}/{nextChapter.lessons.length} {tr('complete', 'đã hoàn thành')}</strong></div>
-    </section>
-    <div className="lesson-daily-strip" aria-label={tr('Your daily progress', 'Tiến độ hôm nay')}><span><Clock3 size={16} /><strong>{minutesToday}/{profile.dailyGoal}</strong> {tr('min today', 'phút hôm nay')}</span><button type="button" className="lesson-streak-entry" onClick={onOpenAchievements} aria-label={tr('Explore your streak milestones to 365 days', 'Khám phá các mốc streak tới 365 ngày')}><Flame size={17} /><strong>{streak}</strong> {tr('day streak', 'ngày liên tiếp')}</button><button onClick={onGoal}>{tr('Change goal', 'Đổi mục tiêu')}</button></div>
-    <PlusTeaser onOpen={onPlans} />
-    <TutorSpotlight compact onPreview={onTutorPreview} />
-    <BuddyCoach compact mood={minutesToday >= profile.dailyGoal ? 'cheer' : 'guide'} title={tr('A little practice, with Buddy.', 'Cùng tớ nói một chút nhé?')} message={minutesToday >= profile.dailyGoal ? tr(`You’ve made ${minutesToday} minutes for English today, and “${next.title}” is ready whenever you’d like one more little step.`, `Bạn đã dành ${minutesToday} phút cho tiếng Anh hôm nay rồi, nếu muốn học thêm một chút thì “${next.title}” đang chờ mình nè.`) : tr(`Let’s start “${next.title}” with one short sentence, without needing to get it perfect.`, `Chưa cần hoàn hảo đâu, mình bắt đầu “${next.title}” bằng một câu ngắn nhé.`)} tip={tr('Listen once, then tap the big mic and tell the tutor one little thing. If you get stuck, replay the example and try again. There’s no rush.', 'Bạn nghe mẫu một lần, rồi chạm micro lớn và nói một ý nhỏ thôi. Nếu bí từ, mình nghe lại rồi thử tiếp nhé. Không cần vội.')} phrase={next.id === 'everyday-2' ? 'I usually start my day with a cup of coffee.' : undefined} actionLabel={tr('Open this lesson', 'Mở bài học này')} onAction={() => onLesson(next)} />
-    <MotivationStrip onOpenLeague={onOpenLeague} onOpenAchievements={onOpenAchievements}/>
-    <DailyQuests onLesson={() => onLesson(next)} onDictionary={onWord} onPractice={onPractice}/>
+  return <div className="learn-page lesson-uat focus-page">
+    <FocusHero eyebrow={journeyComplete ? tr('A LITTLE REVISIT', 'MÌNH ÔN LẠI MỘT CHÚT') : tr('TODAY’S LITTLE LESSON', 'BÀI HỌC NHỎ HÔM NAY')} title={next.title} description={description} action={journeyComplete ? tr('Revisit with Buddy', 'Ôn lại cùng Buddy') : tr('Continue with Buddy', 'Học tiếp cùng Buddy')} onAction={() => onLesson(next)} mood={minutesToday >= profile.dailyGoal ? 'proud' : 'welcome'} meta={<><Clock3 size={15} /><span>{next.minutes} {tr('min', 'phút')}</span><span className="focus-meta-dot">·</span><span>{tr('Unit', 'Chủ đề')} {unitIndex + 1}</span></>} />
+    <div className="focus-daily-row" aria-label={tr('Today’s progress', 'Tiến độ hôm nay')}><button type="button" onClick={onGoal} aria-label={tr('Today’s minutes, change daily goal', 'Số phút hôm nay, đổi mục tiêu học')}><Clock3 size={17} /><span>{minutesToday}/{profile.dailyGoal} {tr('min today', 'phút hôm nay')}</span></button><button type="button" onClick={onOpenAchievements}><Flame size={17} /><span>{streak} {tr('day streak', 'ngày liên tiếp')}</span></button></div>
+    <div className="focus-disclosures">
+    <QuietSection icon={<Route size={20} />} title={tr('My learning path', 'Lộ trình của mình')} summary={tr(`${completedCount}/${allLessons.length} lessons`, `${completedCount}/${allLessons.length} bài học`)}>
     {recent.length > 0 && <section className="lesson-recent"><h2>{tr('Keep it fresh', 'Ôn lại một chút')}</h2><div>{recent.map(lesson => <button key={lesson.id} onClick={() => onLesson(lesson)}><span className="lesson-recent-check"><Check size={15} /></span><span>{lesson.title}</span><small>{tr('Revisit', 'Ôn lại')}</small></button>)}</div></section>}
     <section className="learning-path" id="learning-path">
       <div className="page-intro"><h2 className="section-title">{tr('Your learning path', 'Lộ trình bài học')}</h2><p className="page-description">{tr("Choose a topic and tap a stop, and Buddy will meet you there.", "Bạn chọn chủ đề rồi chạm vào một bài nhé, Buddy sẽ ghé cùng bạn nè.")}</p></div>
@@ -62,5 +51,9 @@ export default function Learn({ onGoal, onLesson, onWord, onPractice, onOpenLeag
         })}</div></section>;
       })}</div> : <PathGraph chapters={chapters} completed={stats.completed} nextId={next.id} onLesson={openLesson} />}
     </section>
+    </QuietSection>
+    <QuietSection icon={<Users size={20} />} title={tr('My learning companion', 'Người bạn đồng hành')} summary={profile.tutor}><TutorSpotlight compact onPreview={onTutorPreview} /></QuietSection>
+    <QuietSection icon={<Sparkles size={20} />} title={tr('My little wins', 'Những niềm vui nhỏ')} summary={tr('Quests & friends', 'Nhiệm vụ & bạn bè')}><MotivationStrip onOpenLeague={onOpenLeague} onOpenAchievements={onOpenAchievements} /><DailyQuests onLesson={() => onLesson(next)} onDictionary={onWord} onPractice={onPractice} /></QuietSection>
+    </div>
   </div>;
 }

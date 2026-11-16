@@ -1,55 +1,40 @@
 import { useState } from 'react';
-import { BriefcaseBusiness, ChevronRight, Clock3, Drama, MessageCircle, MessagesSquare, Mic, Play, Plus, Scale } from 'lucide-react';
+import { BriefcaseBusiness, ChevronRight, Clock3, Drama, MessagesSquare, Plus, Scale, Users } from 'lucide-react';
 import { scenarios, type Scenario } from './data';
 import { useCopy, useNarra } from './state';
 import { Avatar } from './ui';
-import BuddyCoach from './BuddyCoach';
+import { FocusHero, QuietSection } from './FocusLayout';
 import './lesson-uat.css';
 import './practice-polish.css';
-import TutorSpotlight from './TutorSpotlight';
 
 type Props = { onTutors: () => void; onScenario: (scenario: Scenario) => void; onCreate: () => void; onTalk: () => void; onTutorPreview: (name: string) => void };
-const modeEntries = [
-  { type: 'Roleplay', vietnamese: 'Nhập vai', detail: ['A little everyday life', 'Tình huống quen thuộc'], Icon: Drama, tone: 'peach' },
-  { type: 'Discussion', vietnamese: 'Thảo luận', detail: ['Let’s share a few ideas', 'Cùng chia sẻ ý tưởng'], Icon: MessagesSquare, tone: 'blue' },
-  { type: 'Debate', vietnamese: 'Tranh luận', detail: ["Pick a side and talk it through!", 'Thử bảo vệ ý kiến nhé'], Icon: Scale, tone: 'green' },
-  { type: 'Interview', vietnamese: 'Phỏng vấn', detail: ['Tell a little of your story', 'Kể một chút về bạn'], Icon: BriefcaseBusiness, tone: 'yellow' },
+const modes = [
+  { type: 'Roleplay', vi: 'Nhập vai', Icon: Drama },
+  { type: 'Discussion', vi: 'Thảo luận', Icon: MessagesSquare },
+  { type: 'Debate', vi: 'Tranh luận', Icon: Scale },
+  { type: 'Interview', vi: 'Phỏng vấn', Icon: BriefcaseBusiness },
 ] as const;
-const scenarioGoalsVi: Record<string, string> = {
-  usual: 'Gọi một ly cà phê và trò chuyện ngắn với nhân viên.',
-  anywhere: 'Biến chuyến phiêu lưu tiếp theo thành một cuộc trò chuyện thú vị.',
-  impression: 'Bước vào buổi phỏng vấn tiếp theo với sự tự tin.',
-  remote: 'Chọn một phía, nêu lý lẽ và tự tin chia sẻ quan điểm.',
-  habits: 'Chia sẻ những thói quen giúp bạn cảm thấy tốt hơn.',
+const goalsVi: Record<string, string> = {
+  usual: 'Gọi món ở quán cà phê.', anywhere: 'Kể về chuyến đi bạn mong chờ.', impression: 'Chuẩn bị cho buổi phỏng vấn.',
+  remote: 'Chia sẻ quan điểm về làm việc từ xa.', habits: 'Kể một thói quen khiến bạn vui hơn.',
 };
-const modeCoaching = {
-  Roleplay: { message: ['Imagine we’ve just walked into a café. What would you like to order?', 'Mình thử ghé một quán cà phê nhé. Bạn muốn gọi món gì nào?'], tip: ['A friendly question is enough to get going.', 'Một câu hỏi thân thiện là đủ để bắt đầu.'], phrase: 'Could I have a latte, please?' },
-  Discussion: { message: ['Got a little habit that makes your day better? Let’s start there.', 'Có thói quen nhỏ nào giúp ngày của bạn dễ chịu hơn không? Mình bắt đầu từ đó nhé.'], tip: ['Tell your tutor one small example from your own day.', 'Bạn thử kể một ví dụ nhỏ từ chính ngày của mình nhé.'], phrase: 'I think small habits make a big difference.' },
-  Debate: { message: ['Working from home: better or worse? Pick a side, then let’s try one reason.', 'Làm việc ở nhà có tốt hơn không? Bạn chọn một phía, rồi mình thử nói lý do nhé.'], tip: ['You can disagree and still keep it friendly.', 'Mình vẫn có thể bất đồng một cách thân thiện mà.'], phrase: 'In my opinion, working from home is better because…' },
-  Interview: { message: ["Let’s start simply with one strength and one real example.", 'Mình cứ bắt đầu đơn giản nhé: một điểm mạnh, một ví dụ thật của bạn.'], tip: ['A short first answer gives your tutor something to ask about.', 'Cứ nói ngắn gọn trước, tutor sẽ hỏi thêm để bạn kể tiếp.'], phrase: 'One strength I would bring to the team is…' },
-  All: { message: ["Shall we ease into a familiar conversation with a little café roleplay?", "Mình thử nhập vai ở quán cà phê để dễ mở lời từ một chuyện quen thuộc nhé?"], tip: ['Pick a conversation you can imagine having in real life.', 'Bạn cứ chọn chuyện nào thấy gần gũi với mình nhé.'], phrase: 'Could I have a latte, please?' },
-} as const;
 
 export default function Practice({ onTutors, onScenario, onCreate, onTalk, onTutorPreview }: Props) {
-  const tr = useCopy();
-  const { profile } = useNarra();
+  const tr = useCopy(); const { profile } = useNarra();
   const [filter, setFilter] = useState<Scenario['type'] | 'All'>('Roleplay');
-  const visibleScenarios = scenarios.filter(scenario => filter === 'All' || scenario.type === filter);
-  const activeMode = modeEntries.find(mode => mode.type === filter);
-  const coaching = modeCoaching[filter];
-  return <div className="practice-page practice-uat">
-    <div className="page-intro"><h1 className="section-title">{tr('What shall we talk about?', 'Mình nói chuyện gì hôm nay?')}</h1><p className="page-description">{tr("Pick something that feels like you, and we’ll take it from there.", 'Chọn một chuyện gần gũi, rồi mình thử nói nhé.')}</p></div>
-    <TutorSpotlight compact onPreview={onTutorPreview} />
-    <div className="practice-mode-grid" aria-label={tr('Speaking practice modes', 'Các hình thức luyện nói')}>{modeEntries.map(({ type, vietnamese, detail, Icon, tone }) => <button key={type} className={`practice-mode tone-${tone} ${filter === type ? 'active' : ''}`} aria-pressed={filter === type} onClick={() => setFilter(type)}><Icon size={23} /><span><strong>{tr(type, vietnamese)}</strong><small>{tr(detail[0], detail[1])}</small></span></button>)}</div>
-    <BuddyCoach compact mood={filter === 'Debate' || filter === 'Interview' ? 'focus' : 'guide'} avatarMood={filter === 'Interview' ? 'encourage' : filter === 'Debate' ? 'focus' : filter === 'Discussion' ? 'curious' : 'welcome'} title={tr('Let’s find your first words.', 'Tớ gợi ý câu mở đầu nhé.')} message={tr(coaching.message[0], coaching.message[1])} tip={tr(coaching.tip[0], coaching.tip[1])} phrase={coaching.phrase} actionLabel={tr('Try this conversation', 'Mình thử nói nhé')} onAction={() => { if (visibleScenarios[0]) onScenario(visibleScenarios[0]); else setFilter('Roleplay'); }} />
-    <div className="practice-results-heading"><h2>{activeMode ? tr(activeMode.type, activeMode.vietnamese) : tr('All conversations', 'Tất cả cuộc trò chuyện')}<span>{visibleScenarios.length}</span></h2><button className={filter === 'All' ? 'active' : ''} onClick={() => setFilter('All')} aria-pressed={filter === 'All'}>{tr('View all', 'Xem tất cả')}</button></div>
-    <div className="practice-scenario-grid">{visibleScenarios.map(scenario => <article className={`practice-conversation-card card tone-${scenario.tone}`} key={scenario.id} data-scenario-id={scenario.id} aria-labelledby={`practice-title-${scenario.id}`}>
-      <div className="practice-scenario-art" aria-hidden="true"><img src={`/assets/${scenario.asset}`} className="art practice-reserved-art" alt="" width="320" height="172" loading="lazy" decoding="async" draggable={false} /></div>
-      <div className="practice-scenario-copy"><span className="scenario-tag">{tr(scenario.type, modeEntries.find(mode => mode.type === scenario.type)?.vietnamese ?? scenario.type)}</span><h2 id={`practice-title-${scenario.id}`}>{scenario.title}</h2><p className="practice-goal-label">{tr('Let’s try this', 'Mình thử nhé')}</p><p className="practice-scenario-goal">{tr(scenario.description, scenarioGoalsVi[scenario.id] ?? scenario.description)}</p><p className="practice-scenario-meta"><span>{tr('Level', 'Trình độ')} {scenario.level}</span><span><Clock3 size={13} />{scenario.minutes} {tr('min', 'phút')}</span></p></div>
-      <button className="practice-start primary-button" onClick={() => onScenario(scenario)} aria-label={`${tr('Start practice', 'Bắt đầu luyện')}: ${scenario.title}`}><Play size={15} fill="currentColor" />{tr('Start practice', 'Bắt đầu luyện')}</button>
-    </article>)}</div>
-    {visibleScenarios.length === 0 && <p className="practice-no-results">{tr('Try another mode to find your next conversation.', 'Thử một hình thức khác để chọn cuộc trò chuyện tiếp theo.')}</p>}
-    <button className="practice-create-row" onClick={onCreate}><Plus size={20} /><span><strong>{tr('Got something on your mind?', 'Bạn đang muốn nói về chuyện gì?')}</strong><small>{tr('Bring a topic and make it your next practice conversation.', 'Tự chọn chủ đề, rồi mình tạo một cuộc trò chuyện để thử nhé.')}</small></span><ChevronRight size={18} /></button>
-    <section className="practice-secondary"><h2>{tr('Make it feel like you', 'Luyện theo cách bạn thích')}</h2><button className="practice-secondary-row" onClick={onTutors}><Avatar name={profile.tutor} /><span><strong>{tr('Choose your tutor', 'Chọn gia sư hợp với bạn')}</strong><small>{tr(`You’re speaking with ${profile.tutor}, fancy a change?`, `Mình đang luyện cùng ${profile.tutor}, bạn muốn đổi thử không?`)}</small></span><ChevronRight size={19} /></button><button className="practice-secondary-row" onClick={onTalk}><span className="practice-free-icon"><MessageCircle size={24} /><Mic size={13} /></span><span><strong>{tr('Free talk', 'Trò chuyện tự do')}</strong><small>{tr("Bring whatever’s on your mind, with no plan needed.", "Không cần nghĩ sẵn chủ đề, có gì muốn kể thì mình cứ nói thôi.")}</small></span><ChevronRight size={19} /></button></section>
+  const visible = scenarios.filter(s => filter === 'All' || s.type === filter);
+  const suggested = scenarios.filter(s => ['usual', 'habits', 'impression'].includes(s.id)).slice(0, 3);
+  return <div className="practice-page practice-uat focus-page">
+    <FocusHero eyebrow={tr('A LITTLE ROOM TO TALK', 'MỘT CHÚT CHUYỆN ĐỂ KỂ')} title={tr('What’s on your mind?', 'Có chuyện gì, kể tớ nghe!')} description={tr('I’m all ears, bring a little story!', 'Tớ đang hóng chuyện của bạn đây!')} action={tr('Let’s talk', 'Mình nói chuyện nhé')} onAction={onTalk} mood="curious" meta={<><Avatar name={profile.tutor} /><span>{tr('With', 'Cùng')} {profile.tutor}</span></>} />
+    <section className="focus-suggestions" aria-labelledby="suggestions-title"><h2 id="suggestions-title">{tr('Or try a little situation', 'Hoặc thử một tình huống nhỏ')}</h2><div>{suggested.map(s => <button type="button" key={s.id} onClick={() => onScenario(s)}><span><strong>{s.title}</strong><small>{s.minutes} {tr('min', 'phút')}</small></span><ChevronRight size={18} /></button>)}</div></section>
+    <div className="focus-disclosures">
+      <QuietSection icon={<Drama size={20} />} title={tr('More ways to practise', 'Thử một cách luyện khác')} summary={tr('4 ways', '4 hình thức')}>
+        <div className="focus-mode-tabs" aria-label={tr('Speaking practice modes', 'Các hình thức luyện nói')}>{modes.map(({ type, vi, Icon }) => <button type="button" key={type} aria-pressed={filter === type} onClick={() => setFilter(type)}><Icon size={17} />{tr(type, vi)}</button>)}<button type="button" aria-pressed={filter === 'All'} onClick={() => setFilter('All')}>{tr('All', 'Tất cả')}</button></div>
+        <div className="focus-scenario-grid">{visible.map(s => <article key={s.id} data-scenario-id={s.id}><img src={`/assets/${s.asset}`} alt="" loading="lazy" /><div><h3>{s.title}</h3><p>{tr(s.description, goalsVi[s.id] ?? s.description)}</p><span><Clock3 size={13} />{s.minutes} {tr('min', 'phút')}</span><button type="button" className="focus-secondary" onClick={() => onScenario(s)} aria-label={tr('Try ', 'Thử ')+s.title}>{tr('Try this one', 'Thử chuyện này')}<ChevronRight size={16} /></button></div></article>)}</div>
+        {!visible.length && <p>{tr('Try another mode for your next conversation.', 'Mình chọn một hình thức khác nhé.')}</p>}
+        <button type="button" className="focus-tool-row" onClick={onCreate}><Plus size={20} /><span>{tr('Bring my own topic', 'Tự chọn một chủ đề')}</span><ChevronRight size={17} /></button>
+      </QuietSection>
+      <QuietSection icon={<Users size={20} />} title={tr('My learning companion', 'Người bạn đồng hành')} summary={profile.tutor}><div className="focus-tutor-row"><button type="button" className="focus-tutor-preview" onClick={() => onTutorPreview(profile.tutor)}><Avatar name={profile.tutor} /><span><strong>{profile.tutor}</strong><small>{tr('Hear a little hello', 'Nghe một lời chào')}</small></span></button><button type="button" className="focus-text-button" onClick={onTutors}>{tr('Change tutor', 'Đổi gia sư')}<ChevronRight size={16} /></button></div></QuietSection>
+    </div>
   </div>;
 }

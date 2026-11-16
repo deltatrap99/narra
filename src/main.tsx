@@ -10,6 +10,7 @@ import './refined.css';
 import './dark-polish.css';
 import './readability.css';
 import './brand-option5.css';
+import './focus-layout.css';
 import { initializeBrand } from './brand-variant';
 
 initializeBrand();

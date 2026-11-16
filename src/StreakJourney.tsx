@@ -7,6 +7,7 @@ import { brandAsset, isOption5 } from './brand-variant';
 import { Modal } from './ui';
 import { STREAK_MILESTONES, type StreakMilestone } from './streaks';
 import { createStreakCard, streakMascotAsset } from './streak-share';
+import { streakCaption, streakPalette, type StreakCardTone } from './streak-card-design';
 import './streak-journey.css';
 
 function milestoneStyle(milestone: StreakMilestone): CSSProperties { return { '--streak-color': milestone.color } as CSSProperties; }
@@ -21,15 +22,18 @@ export function StreakShareDialog({ milestone, onClose }: { milestone: StreakMil
   const achievedAt = streakJourney.earnedDates[milestone.days];
   const earned = !!achievedAt;
   const [capture, setCapture] = useState(false); const [file, setFile] = useState<File | null>(null); const [notice, setNotice] = useState('');
-  const title = tr(milestone.title, milestone.titleVi);
-  const earnedLabel = achievedAt ? new Intl.DateTimeFormat(tr('en-GB', 'vi-VN'), { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }).format(new Date(achievedAt + 'T12:00:00Z')) : tr('A milestone still ahead', 'Một cột mốc đang chờ mình');
-  const preview = earned ? '' : tr('PREVIEW · NOT EARNED YET', 'XEM TRƯỚC · CHƯA ĐẠT');
-  const encouragement = tr('One little step, every day!', 'Mỗi ngày một chút, cùng nhau nhé!');
+  const [tone, setTone] = useState<StreakCardTone>('cheeky');
+  const [captionEn, captionVi] = streakCaption(milestone.days, tone);
+  const title = tr(captionEn, captionVi);
+  const preview = earned ? '' : tr('PREVIEW', 'XEM TRƯỚC');
+  const daysLabel = tr('DAYS IN A ROW', 'NGÀY LIÊN TIẾP');
+  const palette = streakPalette(tone, isOption5);
+  const posterStyle = { ...milestoneStyle(milestone), '--poster-paper': palette.paper, '--poster-ink': palette.ink, '--poster-accent': palette.accent, '--poster-disc': palette.disc, '--poster-highlight': palette.highlight } as CSSProperties;
   useEffect(() => {
     let active = true; setFile(null); setNotice('');
-    createStreakCard(milestone, { name: profile.name, title, days: tr('DAYS TOGETHER', 'NGÀY CÙNG NHAU'), streak: tr('MY ENGLISH STREAK', 'CHUỖI NGÀY HỌC CỦA MÌNH'), earned: earnedLabel, preview, encouragement }).then(value => { if (active) setFile(value); }).catch(() => { if (active) setNotice(tr('The image could not be prepared, but you can still take a screenshot of the card.', 'Chưa chuẩn bị được ảnh, bạn vẫn có thể chụp màn hình thẻ thành tích nhé.')); });
+    createStreakCard(milestone, { name: profile.name, caption: title, days: daysLabel, preview, tone }).then(value => { if (active) setFile(value); }).catch(() => { if (active) setNotice(tr('The image could not be prepared, but you can still take a screenshot.', 'Chưa chuẩn bị được ảnh, mình vẫn chụp màn hình được nhé.')); });
     return () => { active = false; };
-  }, [milestone, profile.name, title, earnedLabel, preview, encouragement]);
+  }, [milestone, profile.name, title, daysLabel, preview, tone]);
   function download() {
     if (!file) return;
     const url = URL.createObjectURL(file), link = document.createElement('a'); link.href = url; link.download = file.name; document.body.append(link); link.click(); link.remove(); window.setTimeout(() => URL.revokeObjectURL(url), 10_000);
@@ -43,22 +47,22 @@ export function StreakShareDialog({ milestone, onClose }: { milestone: StreakMil
   }
   return <div className={`streak-dialog-shell ${capture ? 'is-capture' : ''}`} onKeyDown={event => event.stopPropagation()}><Modal wide title={earned ? tr('This little win is yours!', 'Niềm vui này là của bạn!') : tr('A little look ahead', 'Mình ngắm trước nhé')} onClose={onClose}>
     <div className="streak-share-layout">
-      <article className={`streak-share-card ${earned ? '' : 'is-preview'}`} style={milestoneStyle(milestone)} aria-label={tr(`${milestone.days}-day Narra streak card${earned ? '' : ', preview only'}`, `Thẻ thành tích ${milestone.days} ngày Narra${earned ? '' : ', chỉ xem trước'}`)}>
-        <header><img src={brandAsset('logo-dark.webp')} alt="Narra" /><span>NARRA STREAK CLUB</span></header>
-        <p className="streak-share-kicker">{tr('MY ENGLISH STREAK', 'CHUỖI NGÀY HỌC CỦA MÌNH')}</p>
-        <div className="streak-share-count"><strong>{milestone.days}</strong><span>{tr('DAYS TOGETHER', 'NGÀY CÙNG NHAU')}</span></div>
-        <div className="streak-share-art" data-effect={milestone.effect}><span /><img src={streakMascotAsset} alt={isOption5 ? tr('Buddy winking with a goofy head tilt and curled body', 'Buddy nháy mắt, nghiêng đầu và uốn người ngố ngố') : tr('Buddy winking with a happy thumbs-up', 'Buddy nháy mắt và giơ tay like thật vui')} /></div>
-        <h3>{title}</h3><p className="streak-share-name">{profile.name}</p><p className="streak-share-date">{earnedLabel}</p><p className="streak-share-encouragement">{encouragement}</p>
-        <footer><strong lang="en">Your voice, your story!</strong><span>#NarraStreak · #YourVoiceYourStory</span></footer>
+      <article className={`streak-share-card ${earned ? '' : 'is-preview'}`} style={posterStyle} data-tone={tone} data-digits={String(milestone.days).length} aria-label={tr(`${milestone.days}-day Narra streak card${earned ? '' : ', preview only'}`, `Thẻ thành tích ${milestone.days} ngày Narra${earned ? '' : ', chỉ xem trước'}`)}>
+        <header><img src={brandAsset('logo-dark.webp')} alt="Narra" /><span>STREAK</span></header>
+        <div className="streak-share-count"><strong>{milestone.days}</strong><span>{daysLabel}</span></div>
+        <div className="streak-share-art" data-effect={milestone.effect}><span /><i /><i /><img src={streakMascotAsset} alt={isOption5 ? tr('Buddy winking with a goofy head tilt and curled body', 'Buddy nháy mắt, nghiêng đầu và uốn người ngố ngố') : tr('Buddy winking with a happy thumbs-up', 'Buddy nháy mắt và giơ tay like thật vui')} /></div>
+        <h3>{title}</h3>
+        <footer><span className="streak-poster-name">{profile.name}</span><strong lang="en">Your voice, your story!</strong></footer>
         {preview && <span className="streak-share-watermark">{preview}</span>}
       </article>
       <div className="streak-share-controls">
-        <StreakBadge milestone={milestone} /><h3>{tr(milestone.cheer, milestone.cheerVi)}</h3>
-        <p>{earned ? tr('Your badge and matching card theme are unlocked, ready for a screenshot or a little Facebook celebration!', 'Huy hiệu và phông thẻ của mốc này đã mở, mình chụp màn hình hoặc lưu ảnh để khoe một chút trên Facebook nhé!') : tr('You can explore this card now, and the preview label stays until you earn the milestone.', 'Bạn cứ ngắm trước thẻ này nhé, nhãn xem trước sẽ được giữ cho đến khi mình đạt mốc.')}</p>
+        <h3>{tr('Pick your vibe', 'Chọn chút cá tính')}</h3>
+        <div className="streak-tone-options" role="group" aria-label={tr('Card style', 'Phong cách thẻ')}><button type="button" aria-pressed={tone === 'cheeky'} onClick={() => setTone('cheeky')}>{tr('A little cheeky', 'Lầy một chút')}</button><button type="button" aria-pressed={tone === 'cute'} onClick={() => setTone('cute')}>Cute</button></div>
+        <p>{earned ? tr('A little win, ready to show off!', 'Một chút thành tích, mình khoe nhẹ nhé!') : tr('A little preview while this milestone is still ahead.', 'Mình ngắm trước thôi, mốc này đang chờ bạn nhé!')}</p>
         <button type="button" onClick={() => setCapture(value => !value)}><Eye size={18} />{capture ? tr('Back to controls', 'Quay lại các nút') : tr('Screenshot mode', 'Chế độ chụp ảnh')}</button>
         <button type="button" disabled={!file} onClick={download}><Download size={18} />{tr(earned ? 'Save image' : 'Save preview image', earned ? 'Lưu ảnh thành tích' : 'Lưu ảnh xem trước')}</button>
         {earned && <button type="button" className="streak-share-primary" disabled={!file} onClick={share}><Share2 size={18} />{tr('Share this little win', 'Khoe niềm vui này')}</button>}
-        <small>{tr('1080 × 1350 PNG with Narra identity, ready for your Facebook feed.', 'Ảnh PNG 1080 × 1350 có nhận diện Narra, vừa khung bài đăng Facebook.')}</small>
+        <small>{tr('1080 × 1350 PNG, ready for Facebook.', 'PNG 1080 × 1350, sẵn sàng đăng Facebook.')}</small>
         {notice && <p role="status" className="streak-share-notice">{notice}</p>}
       </div>
     </div>
@@ -72,7 +76,7 @@ export default function StreakJourney({ onLesson }: { onLesson: () => void }) {
   const next = streakJourney.next;
   function open(milestone: StreakMilestone) { setSelected(milestone); if (streakJourney.earnedDates[milestone.days]) setPlayer(p => ({ ...p, seenStreakMilestones: [...new Set([...p.seenStreakMilestones, ...STREAK_MILESTONES.filter(m => m.days <= milestone.days).map(m => m.days)])] })); }
   return <section className="streak-journey" aria-labelledby="streak-journey-title">
-    <header className="streak-journey-header"><div><span className="community-eyebrow">NARRA STREAK CLUB</span><h2 id="streak-journey-title">{tr('365 days, a little more you!', '365 ngày, thêm một chút là bạn!')}</h2><p>{tr('Eleven little celebrations, with badges and card themes that stay yours.', 'Mười một lần ăn mừng, cùng huy hiệu và phông thẻ thành tích dành riêng cho bạn.')}</p></div><BuddyAvatar mood={streakJourney.current > 0 ? 'celebrate' : 'encourage'} size={100} /></header>
+    <header className="streak-journey-header"><div><span className="community-eyebrow">NARRA STREAK CLUB</span><h2 id="streak-journey-title">{tr('365 days, a little more you!', '365 ngày, thêm một chút là bạn!')}</h2><p>{tr('A little milestone, another reason to show off!', 'Mỗi mốc, thêm một lý do để khoe!')}</p></div><BuddyAvatar mood={streakJourney.current > 0 ? 'celebrate' : 'encourage'} size={100} /></header>
     <div className="streak-journey-summary"><div><Flame size={22} /><strong>{streakJourney.current}</strong><span>{tr('current streak', 'ngày liên tiếp')}</span></div><div><Trophy size={20} /><strong>{streakJourney.best}</strong><span>{tr('personal best', 'kỷ lục của bạn')}</span></div><div><Award size={20} /><strong>{earnedCount}/11</strong><span>{tr('streak badges', 'huy hiệu streak')}</span></div></div>
     <div className="streak-next"><div><span>{next ? tr('Your next little celebration', 'Lần ăn mừng tiếp theo') : tr('A whole year, and beyond!', 'Trọn một năm, rồi mình đi tiếp!')}</span><strong>{next ? tr(`${next.days} days, ${next.title}`, `${next.days} ngày, ${next.titleVi}`) : tr('Your 365-day badge is yours to keep', 'Huy hiệu 365 ngày đã là của bạn')}</strong></div><button type="button" onClick={onLesson}>{tr(streakJourney.practisedToday ? 'A little more practice?' : 'Let’s keep our rhythm', streakJourney.practisedToday ? 'Mình học thêm chút nhé?' : 'Cùng giữ nhịp nhé')}</button></div>
     {next && <div className="streak-next-progress" role="progressbar" aria-label={tr('Current streak toward the next milestone', 'Chuỗi ngày hiện tại tới mốc tiếp theo')} aria-valuemin={0} aria-valuemax={next.days} aria-valuenow={Math.min(streakJourney.current, next.days)}><span style={{ width: Math.min(100, streakJourney.current / next.days * 100) + '%' }} /></div>}
@@ -83,8 +87,8 @@ export default function StreakJourney({ onLesson }: { onLesson: () => void }) {
         <button type="button" className="streak-milestone-open" onClick={() => open(milestone)} aria-label={tr(`${milestone.days} days, ${milestone.title}, ${earned ? 'earned, open your card' : 'preview this milestone'}`, `${milestone.days} ngày, ${milestone.titleVi}, ${earned ? 'đã đạt, mở thẻ thành tích' : 'xem trước cột mốc'}`)}>
           <span className="streak-milestone-top"><strong>{milestone.days}<small>{tr('days', 'ngày')}</small></strong><span>{earned ? <Check size={15} /> : <LockKeyhole size={14} />}{tr(earned ? 'Yours!' : 'Up ahead', earned ? 'Đã là của bạn!' : 'Đang chờ bạn')}</span></span>
           <div className="streak-celebration-stage" data-effect={milestone.effect}><span className="streak-celebration-orbit" /><BuddyAvatar mood={milestone.mood} size={125} /><i /><i /><i />{milestone.days >= 180 && <Crown className="streak-celebration-crown" size={30} />}</div>
-          <h3>{tr(milestone.title, milestone.titleVi)}</h3><p>{tr(milestone.cheer, milestone.cheerVi)}</p>
-          <span className="streak-reward"><StreakBadge milestone={milestone} locked={!earned} /><span><strong>{tr('A badge + your card theme', 'Huy hiệu + phông thẻ riêng')}</strong><small>{tr(earned ? 'Open your celebration card' : 'Have a little preview', earned ? 'Mở thẻ để cùng ăn mừng' : 'Mình ngắm trước một chút nhé')}</small></span></span>
+          <h3>{tr(milestone.title, milestone.titleVi)}</h3>
+          <span className="streak-reward"><StreakBadge milestone={milestone} locked={!earned} /><span><strong>{tr('A badge & a share card', 'Huy hiệu & thẻ khoe')}</strong><small>{tr(earned ? 'Open my card' : 'Have a peek', earned ? 'Mở thẻ của mình' : 'Ngắm trước nhé')}</small></span></span>
         </button>
       </li>;
     })}</ol>

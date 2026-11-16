@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, type ReactNode } from 'react';
 import { X } from 'lucide-react';
+import { TutorPortrait } from './TutorArtwork';
 
 export function Modal({ title, children, onClose, wide = false }: { title: string; children: ReactNode; onClose: () => void; wide?: boolean }) {
   const ref = useRef<HTMLDialogElement>(null);
@@ -14,5 +15,5 @@ export function Modal({ title, children, onClose, wide = false }: { title: strin
   </dialog>;
 }
 export function Art({ name, className = '' }: { name: string; className?: string }) { return <img className={`art ${className}`} src={`/assets/${name}.webp`} alt="" draggable={false} />; }
-export function Avatar({ className = '', name = 'Camila' }: { className?: string; name?: string }) { const asset = ['Skye', 'Henry', 'Camila', 'Dwayne'].includes(name) ? name.toLowerCase() : 'camila'; return <img src={`/assets/${asset}.webp`} alt={name} className={`avatar ${className}`} />; }
+export function Avatar({ className = '', name = 'Camila' }: { className?: string; name?: string }) { return <TutorPortrait name={name} className={className} />; }
 export function Empty({ title, children }: { title: string; children: ReactNode }) { return <div className="empty-state"><div className="empty-symbol">✧</div><h3>{title}</h3><p className="muted">{children}</p></div>; }

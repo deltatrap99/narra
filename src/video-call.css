@@ -650,3 +650,41 @@
 .video-call-mode .call-end-button>span{font-size:9px;font-weight:800;line-height:1.2;white-space:nowrap}
 [data-theme=dark] .video-call-mode .call-end-button{background:#4c282a;border-color:#a66b69;color:#ffc1bc}
 @media(max-width:380px){.video-call-mode .call-controls{gap:12px;padding-inline:14px}}
+
+/* Give the complete mascot, phone and desk their own space above captions. */
+.narra-conversation.video-call-mode .call-stage {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 8px;
+  padding: 48px 16px 16px;
+}
+.video-call-mode .call-tutor-media {
+  position: relative;
+  grid-row: 1;
+  grid-column: 1;
+  inset: auto;
+  align-self: stretch;
+  height: 100%;
+  min-height: 0;
+}
+.narra-conversation.video-call-mode .call-caption {
+  position: relative;
+  grid-row: 2;
+  grid-column: 1;
+  bottom: auto;
+  left: auto;
+  transform: none;
+  width: min(100%, 710px);
+  margin: 0 auto;
+}
+.video-call-mode .call-stage::after { display: none; }
+.video-call-mode .call-stage-light { position: absolute; inset: 0; pointer-events: none; }
+@media (max-width: 720px) {
+  .narra-conversation.video-call-mode .call-stage { padding: 42px 12px 12px; gap: 6px; }
+}
+@media (min-width: 900px) and (max-height: 800px) {
+  .narra-conversation.video-call-mode .call-stage { grid-template-columns: minmax(0, .9fr) minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); gap: 20px; padding: 48px 22px 18px; }
+  .narra-conversation.video-call-mode .call-caption { grid-row: 1; grid-column: 2; align-self: end; }
+  .video-call-mode .learner-pip { width: 86px; height: 110px; }
+  .video-call-mode .learner-pip .personal-avatar { width: 58px; height: 63px; }
+}

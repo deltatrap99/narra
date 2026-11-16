@@ -1,0 +1,51 @@
+{
+  "method": "Built-in Imagegen, identity-preserving mascot reference generation",
+  "date": "2026-11-16",
+  "prompts": "tools/tutor-mascot-prompts.md",
+  "assets": [
+    {
+      "brand": "original",
+      "asset": "public/brand/tutor-desk-sprites.png",
+      "reference": "public/brand/mascot.webp",
+      "generatedSource": "exec-a6e54dd1-8eec-41fe-ba4e-98d0142db702.png",
+      "dimensions": [
+        2172,
+        724
+      ],
+      "frameDimensions": [
+        724,
+        724
+      ],
+      "poses": [
+        "listening",
+        "speaking",
+        "laughing"
+      ],
+      "alpha": true,
+      "bytes": 1666814,
+      "sha256": "f6f6a809f2693515679bf3b9a115c886ac4d21efd676c469278e753a2f4229c4"
+    },
+    {
+      "brand": "option5",
+      "asset": "public/brand/option5/tutor-desk-sprites.png",
+      "reference": "public/brand/option5/excited.webp",
+      "generatedSource": "exec-095dd5f5-94cf-47d5-9445-c24d4f5f8240.png",
+      "dimensions": [
+        2172,
+        724
+      ],
+      "frameDimensions": [
+        724,
+        724
+      ],
+      "poses": [
+        "listening",
+        "speaking",
+        "laughing"
+      ],
+      "alpha": true,
+      "bytes": 1407942,
+      "sha256": "086eb8544d351de2ddb14f421c9a6b42db7648f43a153c449e68b447f8eb6342"
+    }
+  ]
+}

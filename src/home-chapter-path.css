@@ -66,10 +66,10 @@
   .chapter-path-buddy > .buddy-avatar { width: 72px!important; height: 72px!important; }
   .chapter-path-meadow.meadow-one { left: 1%; top: 8%; width: 61%; height: 32%; }
   .chapter-path-meadow.meadow-two { right: 0; top: 43%; width: 67%; height: 35%; }
-  .chapter-path-landmark { left: 10%; top: 43%; width: 40px; height: 50px; }
+  .chapter-path-landmark { left: 2%; top: 43%; width: 32px; height: 42px; }
   .chapter-path-landmark > svg { width: 12px; right: -6px; }
   .chapter-path-sun { left: 82%; top: 7%; width: 21px; }
-  .chapter-path-finish { left: 7%; top: 86%; width: 24px; height: 30px; }
+  .chapter-path-finish { left: 2%; top: 86%; width: 24px; height: 30px; }
   .chapter-path-finish > svg:first-child { left: 0; width: 23px; }
   .chapter-path-finish > span { width: 26px; left: -4px; height: 9px; }
   .chapter-path-buddy.buddy-at-finish { left: 24%; bottom: 22%; }

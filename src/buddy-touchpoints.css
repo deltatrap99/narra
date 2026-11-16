@@ -1,5 +1,5 @@
 .video-call-mode .call-buddy-hint>.buddy-avatar{flex:none;overflow:visible;width:38px;height:38px}
-.video-call-mode .call-buddy-hint>.buddy-avatar img{width:100%;height:100%;object-fit:contain}
+.video-call-mode .call-buddy-hint>.buddy-avatar img:not(.narry-avatar-sheet){width:100%;height:100%;object-fit:contain}
 .conversation-buddy-nudge,.challenge-buddy-nudge{display:flex;align-items:center;gap:12px;margin:8px 0 14px;text-align:left}
 .conversation-buddy-nudge>.buddy-avatar,.challenge-buddy-nudge>.buddy-avatar{flex:none}
 .conversation-buddy-nudge>span,.challenge-buddy-nudge>span{font-size:14px;line-height:1.55;color:var(--text);font-weight:700}

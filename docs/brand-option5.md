@@ -26,3 +26,7 @@ Orange highlights recording and time-sensitive states. Use dark ink on orange an
 Existing `--brand-lime` and `--brand-green-ink` names are compatibility aliases in this variant: they resolve to violet action and readable link roles respectively. They do not describe the displayed hue. Option 1 token files and synchronization script remain unchanged. Theme settings still choose Light, Dark or System independently of the brand variant.
 
 The skin changes no model, audio, authentication, scoring or payment behavior. Existing sample-content notices and plan-preview limitations remain visible.
+
+## Mascot name and expression
+
+The mascot is named **Narry**. Refer to the learner as “bạn” and let Narry use its name and “tớ” in friendly Vietnamese guidance. Current emotion atlases have nine different body poses and emotions, selected by actual UI state. See `tools/narry-emotion-prompts.md` and `public/brand/narry-emotions-provenance.json`. Blue Narry has arms and legs; Option 5 remains an armless caterpillar.

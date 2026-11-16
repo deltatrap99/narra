@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from '
 import { initialWords, type Word } from './data';
 import { streakState } from './streaks';
 import { useAccounts } from './AccountContext';
+import { restoreSessions, type SavedSession } from './session-review';
 
 export type Tab = 'Lesson' | 'Practice' | 'Dictionary' | 'Profile';
 export type Activity = { date: string; minutes: number; label: string; score?: number };
@@ -58,6 +59,7 @@ function useNarraState() {
   useEffect(() => { const timer = window.setInterval(() => setToday(localDateKey()), 60_000); return () => window.clearInterval(timer); }, []);
   const [profile, setProfile] = useStored(storageKey('narra-profile-v1'), { ...defaultProfile, name: activeAccount.name }, restoreProfile);
   const [stats, setStats] = useStored(storageKey('narra-stats-v1'), activeAccount.id === 'primary' ? defaultStats : { ...defaultStats, minutes: 0, conversations: 0, speakingTries: 0, completed: [] }, restoreStats);
+  const [sessions, setSessions] = useStored<SavedSession[]>(storageKey('narra-sessions-v1'), [], restoreSessions);
   const [words, setWords] = useStored<Word[]>(storageKey('narra-words-v1'), activeAccount.id === 'primary' ? initialWords : [], restoreWords);
   const [tab, setTab] = useState<Tab>(() => {
     const name = location.hash.slice(1).split('?')[0];
@@ -71,7 +73,7 @@ function useNarraState() {
     const today = localDateKey();
     setStats(s => ({ ...s, minutes: s.minutes + minutes, activity: [{ date: today, label, minutes, score }, ...s.activity] }));
   }
-  return { profile, setProfile, stats, setStats, words, setWords, tab, navigate, toast, notify: setToast, logActivity, today };
+  return { profile, setProfile, stats, setStats, words, setWords, sessions, setSessions, tab, navigate, toast, notify: setToast, logActivity, today };
 }
 const Context = createContext<ReturnType<typeof useNarraState> | null>(null);
 export function NarraProvider({ children }: { children: ReactNode }) { const value = useNarraState(); return <Context.Provider value={value}>{children}</Context.Provider>; }

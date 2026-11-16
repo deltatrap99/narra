@@ -36,7 +36,7 @@ export default function HomeToday({ lesson, chapter, unitIndex, journeyComplete,
 
   return <>
     <header className="home-welcome">
-      <div><span>{tr('YOUR DAILY LITTLE ADVENTURE', 'CHUYẾN PHIÊU LƯU NHỎ MỖI NGÀY')}</span><p>{tr(`Hey ${profile.name}, Buddy’s here!`, `Chào ${profile.name}, Buddy đây nè!`)}</p></div>
+      <div><span>{tr('YOUR DAILY LITTLE ADVENTURE', 'CHUYẾN PHIÊU LƯU NHỎ MỖI NGÀY')}</span><p>{tr(`Hey ${profile.name}, Narry’s here!`, `Chào ${profile.name}, Narry đây nè!`)}</p></div>
       <button type="button" className="home-goal" onClick={onGoal} aria-label={tr('Change my daily practice goal', 'Đổi mục tiêu luyện tập mỗi ngày')}>
         <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12" /><circle cx="16" cy="16" r="12" pathLength="100" strokeDasharray={`${dayProgress} 100`} /></svg>
         <span><strong>{minutesToday}/{profile.dailyGoal}</strong> {tr('min today', 'phút hôm nay')}</span>
@@ -48,11 +48,11 @@ export default function HomeToday({ lesson, chapter, unitIndex, journeyComplete,
         <div className="home-lesson-copy">
           <span className="home-lesson-eyebrow"><span />{journeyComplete ? tr('A LITTLE REVISIT', 'MÌNH ÔN LẠI MỘT CHÚT') : tr('TODAY’S LITTLE LESSON', 'BÀI HỌC NHỎ HÔM NAY')}</span>
           <h1 id="home-lesson-title">{lesson.title}</h1>
-          <p>{tr('A little story, a little more confidence!', 'Thêm một chuyện nhỏ, thêm một chút tự tin!')}</p>
-          <button type="button" className="home-start" onClick={() => onLesson(lesson, true)}>{journeyComplete ? tr('Revisit with Buddy', 'Ôn lại cùng Buddy') : tr('Continue with Buddy', 'Học tiếp cùng Buddy')}<ArrowRight size={19} /></button>
+          <p>{tr('Tell Narry a little story, and we’ll try it one sentence at a time!', 'Kể Narry một chuyện nhỏ, tớ cùng bạn luyện từng câu nhé!')}</p>
+          <button type="button" className="home-start" onClick={() => onLesson(lesson, true)}>{journeyComplete ? tr('Revisit with Narry', 'Ôn lại cùng Narry') : tr('Continue with Narry', 'Học tiếp cùng Narry')}<ArrowRight size={19} /></button>
           <div className="home-lesson-meta"><Clock3 size={14} /><span>{lesson.minutes} {tr('min', 'phút')}</span><span>·</span><span>{tr('Unit', 'Chủ đề')} {String(unitIndex + 1).padStart(2, '0')}</span></div>
         </div>
-        <div className="home-buddy-stage" aria-hidden="true"><span className="home-buddy-orbit" /><Sparkles className="home-buddy-spark" size={25} /><span className="home-buddy-note">{tr('A little practice, a lot of cool!', 'Học xíu, ngầu xíu!')}</span><BuddyAvatar mood={minutesToday >= profile.dailyGoal ? 'proud' : 'welcome'} size={260} motion={false} /><span className="home-buddy-ground" /></div>
+        <div className="home-buddy-stage" aria-hidden="true"><span className="home-buddy-orbit" /><Sparkles className="home-buddy-spark" size={25} /><span className="home-buddy-note">{tr('A little practice, a lot of cool!', 'Học xíu, ngầu xíu!')}</span><BuddyAvatar mood={minutesToday >= profile.dailyGoal ? 'celebrate' : 'welcome'} size={260} motion={false} /><span className="home-buddy-ground" /></div>
       </section>
 
       <section className="home-streak" aria-labelledby="home-streak-title">
@@ -69,7 +69,7 @@ export default function HomeToday({ lesson, chapter, unitIndex, journeyComplete,
 
     <div className="home-little-extras">
       <button type="button" className="home-word-invite" onClick={onWord}><span className="home-extra-icon"><BookOpen size={25} /></span><span className="home-extra-copy"><small>{tr('A LITTLE WORD REUNION', 'HỘI NGỘ VÀI TỪ QUEN')}</small><strong>{dueWords.length ? tr(dueWords.length === 1 ? 'One word is calling you!' : `${dueWords.length} words are calling you!`, `${dueWords.length} từ đang réo bạn!`) : tr('Keep a little discovery', 'Góp nhặt một từ hay')}</strong><span className="home-word-tags">{previewWords.length ? previewWords.map(word => <span key={word.id}>{word.word}</span>) : tr('Your collection starts here', 'Bộ sưu tập bắt đầu từ đây')}</span></span><ChevronRight size={18} /></button>
-      <button type="button" className="home-tutor-invite" onClick={() => onTutorPreview(profile.tutor)} aria-label={tr(`Hear a hello from ${profile.tutor}`, `Nghe lời chào của ${profile.tutor}`)}><Avatar name={profile.tutor} /><span className="home-extra-copy"><small>{tr('WITH', 'CÙNG')} {profile.tutor.toUpperCase()}</small><strong>{tr('I’m all ears!', 'Tớ đang hóng chuyện nè!')}</strong><span><Headphones size={13} />{tr('Hear a little hello', 'Nghe một lời chào')}</span></span><ChevronRight size={18} /></button>
+      <button type="button" className="home-tutor-invite" onClick={() => onTutorPreview(profile.tutor)} aria-label={tr(`Hear a hello from ${profile.tutor}`, `Nghe lời chào của ${profile.tutor}`)}><Avatar name={profile.tutor} /><span className="home-extra-copy"><small>{tr('WITH', 'CÙNG')} {profile.tutor.toUpperCase()}</small><strong>{tr('Narry’s all ears!', 'Narry đang hóng chuyện bạn nè!')}</strong><span><Headphones size={13} />{tr('Hear a little hello', 'Nghe một lời chào')}</span></span><ChevronRight size={18} /></button>
     </div>
     {shareCard && <StreakShareDialog milestone={shareCard} onClose={() => setShareCard(null)} />}
   </>;

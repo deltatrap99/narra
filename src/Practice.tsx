@@ -25,7 +25,7 @@ export default function Practice({ onTutors, onScenario, onCreate, onTalk, onTut
   const visible = scenarios.filter(s => filter === 'All' || s.type === filter);
   const suggested = scenarios.filter(s => ['usual', 'habits', 'impression'].includes(s.id)).slice(0, 3);
   return <div className="practice-page practice-uat focus-page">
-    <FocusHero eyebrow={tr('A LITTLE ROOM TO TALK', 'MỘT CHÚT CHUYỆN ĐỂ KỂ')} title={tr('What’s on your mind?', 'Có chuyện gì, kể tớ nghe!')} description={tr('I’m all ears, bring a little story!', 'Tớ đang hóng chuyện của bạn đây!')} action={tr('Let’s talk', 'Mình nói chuyện nhé')} onAction={onTalk} mood="curious" meta={<><Avatar name={profile.tutor} /><span>{tr('With', 'Cùng')} {profile.tutor}</span></>} />
+    <FocusHero eyebrow={tr('A LITTLE ROOM TO TALK', 'MỘT CHÚT CHUYỆN ĐỂ KỂ')} title={tr('What’s on your mind?', 'Có chuyện gì, kể Narry nghe!')} description={tr('I’m all ears, bring me a little story!', 'Tớ hóng sẵn rồi, bạn mang câu chuyện tới nhé!')} action={tr('Let’s talk', 'Mình nói chuyện nhé')} onAction={onTalk} mood="listening" meta={<><Avatar name={profile.tutor} /><span>{tr('With', 'Cùng')} {profile.tutor}</span></>} />
     <section className="focus-suggestions" aria-labelledby="suggestions-title"><h2 id="suggestions-title">{tr('Or try a little situation', 'Hoặc thử một tình huống nhỏ')}</h2><div>{suggested.map(s => <button type="button" key={s.id} onClick={() => onScenario(s)}><span><strong>{s.title}</strong><small>{s.minutes} {tr('min', 'phút')}</small></span><ChevronRight size={18} /></button>)}</div></section>
     <div className="focus-disclosures">
       <QuietSection icon={<Drama size={20} />} title={tr('More ways to practise', 'Thử một cách luyện khác')} summary={tr('4 ways', '4 hình thức')}>

@@ -5,7 +5,7 @@ import BuddyAvatar, { type BuddyMood } from './BuddyAvatar';
 export function FocusHero({ eyebrow, title, description, action, onAction, mood = 'welcome', meta }: { eyebrow: string; title: string; description: string; action: string; onAction: () => void; mood?: BuddyMood; meta?: ReactNode }) {
   return <section className="focus-hero">
     <div className="focus-hero-copy"><span className="focus-eyebrow">{eyebrow}</span><h1>{title}</h1><p>{description}</p><button type="button" className="focus-primary" onClick={onAction}>{action}<ArrowRight size={20} /></button>{meta && <div className="focus-hero-meta">{meta}</div>}</div>
-    <div className="focus-hero-stage" aria-hidden="true"><span /><BuddyAvatar mood={mood} size={248} /></div>
+    <div className="focus-hero-stage" aria-hidden="true"><span className="focus-hero-orbit" /><BuddyAvatar mood={mood} size={248} /></div>
   </section>;
 }
 

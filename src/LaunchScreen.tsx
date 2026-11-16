@@ -70,7 +70,7 @@ export default function LaunchScreen({ onDone, variant = 'option1' }: { onDone: 
     else if (event.key === 'Escape') { event.preventDefault(); finish(); }
   }}>
     <button ref={skipButton} className="narra-launch-skip" type="button" onClick={finish}>{tr('Skip intro', 'Bỏ qua giới thiệu')}<span aria-hidden="true">↗</span></button>
-    <p id={descriptionId} className="narra-launch-description">{tr('Buddy tiptoes and looks both ways. A friend in an orange scarf takes Buddy’s hand and they run off together.', 'Buddy nhón chân rụt rè, nhìn trái rồi nhìn phải. Một người bạn đeo khăn cam chạy đến, nắm tay Buddy và cả hai cùng chạy đi.')}</p>
+    <p id={descriptionId} className="narra-launch-description">{tr('Narry tiptoes and looks both ways. A friend in an orange scarf takes Narry’s hand and they run off together.', 'Narry nhón chân rụt rè, nhìn trái rồi nhìn phải. Một người bạn đeo khăn cam chạy đến, nắm tay Narry và cả hai cùng chạy đi.')}</p>
     <div className="narra-launch-composition">
       <div className="launch-story" aria-hidden="true">
         <span className="launch-story-floor" />

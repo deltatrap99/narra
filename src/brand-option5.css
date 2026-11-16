@@ -201,7 +201,7 @@ html[data-brand="option5"] .plus-teaser-content > button { background: var(--o5-
 /* Buddy and the tutor preview keep their imagery, with Option 5 surroundings. */
 html[data-brand="option5"] .buddy-coach { background: linear-gradient(115deg, var(--lavender), var(--surface)); border-color: var(--line); box-shadow: 0 4px 0 #9a7bff0d; }
 html[data-brand="option5"] :is(.buddy-coach-copy > h2, .buddy-coach-copy > p, .buddy-coach-expanded > p, .buddy-coach-phrase > p) { color: var(--text); }
-html[data-brand="option5"] .buddy-coach-portrait > span { background: var(--o5-violet); color: #fff; box-shadow: none; }
+html[data-brand="option5"] .buddy-coach-portrait > .buddy-coach-badge { background: var(--o5-violet); color: #fff; box-shadow: none; }
 html[data-brand="option5"] :is(.buddy-coach-tip-toggle, .buddy-coach-action, .buddy-coach-phrase > button) { color: var(--o5-link); border-color: var(--line); }
 html[data-brand="option5"] :is(.buddy-coach-phrase, .buddy-coach-action) { background: color-mix(in srgb, var(--surface) 78%, transparent); }
 html[data-brand="option5"] .tutor-spotlight { background: linear-gradient(125deg, var(--lavender), var(--pink)); border-color: var(--line); }

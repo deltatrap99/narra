@@ -1,11 +1,17 @@
 /* Zero-specificity base keeps established hero/coach dimensions intact. */
 :where(.buddy-avatar) { display: block; width: 96px; height: 96px; max-width: 100%; flex-shrink: 0; object-fit: contain; user-select: none; pointer-events: none; transform-origin: 50% 82%; }
+.narry-avatar-atlas { position: relative; display: block; overflow: hidden; aspect-ratio: 1; }
+.narry-avatar-atlas > .narry-avatar-sheet { position: absolute; top: 0; left: 0; display: block; width: 300%; height: 300%; max-width: none; object-fit: fill; transform: translate(var(--narry-x), var(--narry-y)); pointer-events: none; }
+.video-call-mode .call-buddy-hint > .buddy-avatar.narry-avatar-atlas { overflow: hidden; }
 .buddy-avatar[data-buddy-mood="welcome"] { animation: buddy-welcome 1.8s ease-in-out 2; }
 .buddy-avatar[data-buddy-mood="focus"] { animation: buddy-focus 5s ease-in-out infinite; }
 .buddy-avatar[data-buddy-mood="curious"] { animation: buddy-curious 2s ease-in-out 2; }
 .buddy-avatar[data-buddy-mood="encourage"] { animation: buddy-encourage 1.6s ease-in-out 2; }
 .buddy-avatar[data-buddy-mood="celebrate"] { animation: buddy-celebrate .75s ease-in-out 3; }
 .buddy-avatar[data-buddy-mood="proud"] { animation: buddy-proud 1.8s ease-in-out 2; }
+.buddy-avatar[data-buddy-mood="thinking"] { animation: narry-thinking 2s ease-in-out 2; }
+.buddy-avatar[data-buddy-mood="listening"] { animation: none; }
+.buddy-avatar[data-buddy-mood="oops"] { animation: narry-oops .9s ease-in-out 1; }
 .buddy-avatar[data-buddy-motion="still"] { animation: none !important; transform: none !important; transition: none !important; }
 .buddy-avatar-placeholder { position: relative; border-radius: 42% 46% 45% 35%; background: var(--brand-cyan, #6dd9ff); aspect-ratio: 1; }
 .buddy-avatar-placeholder > i { position: absolute; top: 34%; left: 25%; width: 22%; height: 29%; background: #fff; border-radius: 50%; }
@@ -24,5 +30,10 @@
 @keyframes buddy-encourage { 0%, 100% { transform: translateY(0); } 35% { transform: translateY(2px) rotate(1deg); } 65% { transform: translateY(-2px); } }
 @keyframes buddy-celebrate { 0%, 100% { transform: translateY(0) rotate(0); } 45% { transform: translateY(-6px) rotate(-3deg); } 70% { transform: translateY(-2px) rotate(2deg); } }
 @keyframes buddy-proud { 0%, 100% { transform: translateY(0) scale(1); } 45%, 60% { transform: translateY(-3px) scale(1.025); } }
+@keyframes narry-thinking { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-2deg); } }
+@keyframes narry-oops { 0%, 100% { transform: rotate(0); } 35% { transform: rotate(3deg) translateY(1px); } 70% { transform: rotate(-2deg); } }
 @media(max-width:600px) { .buddy-word-note { gap: 10px; padding: 11px 12px; } }
 @media(prefers-reduced-motion:reduce) { .buddy-avatar { animation: none !important; transform: none !important; transition: none !important; } }
+/* Legacy hero slots were taller than their image; keep atlas cells square. */
+.home-buddy-stage > .buddy-avatar.narry-avatar-atlas,
+.challenge-dialog .challenge-buddy.narry-avatar-atlas { height: auto !important; aspect-ratio: 1; }

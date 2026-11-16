@@ -1,13 +1,13 @@
-# Buddy at the right moment
+# Narry at the right moment
 
-Buddy's expression follows a real screen state. It offers company and a useful next step; it does not grade a learner's voice, award points, invent progress or react to a fictional participant as though they were present.
+Narry's expression follows a real screen state. It offers company and a useful next step; it does not grade a learner's voice, award points, invent progress or react to a fictional participant as though they were present.
 
 | Touchpoint | State | Mood |
 | --- | --- | --- |
 | Main guidance | A welcome, first step or invitation | `welcome` |
-| Learning roadmap | Travelling to a selected stop | Option 5 crawl; original blue Buddy hop/glide |
+| Learning roadmap | Travelling to a selected stop | Option 5 crawl; original blue Narry hop/glide |
 | Learning roadmap | Arriving at an open / completed / locked stop | `welcome` / `celebrate` / `curious`; selecting never starts a lesson or changes progress |
-| Lesson / Practice / Dictionary guidance | Choosing an opener, reviewing a strategy or exploring a word | `curious` or `focus`, with existing BuddyCoach guidance |
+| Lesson / Practice / Dictionary guidance | Choosing an opener, reviewing a strategy or exploring a word | `curious` or `focus`, with existing NarryCoach guidance |
 | Word workout feedback | Answer matches the normalized target | `celebrate` |
 | Word workout feedback | Answer does not match, or the learner asks to reveal it | `encourage` |
 | Word workout completion | Every target recalled correctly | `celebrate` |
@@ -35,11 +35,15 @@ Buddy's expression follows a real screen state. It offers company and a useful n
 
 ## Keep the screen calm
 
-- Use one Buddy per nearby task or feedback block. Workout feedback and completion keep their useful BuddyCoach tips/actions but hide that coach's second portrait when a state avatar is already present.
+- Use one Narry per nearby task or feedback block. Workout feedback and completion keep their useful NarryCoach tips/actions but hide that coach's second portrait when a state avatar is already present.
 - Do not put a mascot on every word, mission row, badge or friend card. A single small header or empty-state avatar can explain the whole section.
-- Keep the lesson, mic, answer field and next action dominant. Buddy should not cover copy, move a control or reveal an answer before the learner checks it.
+- Keep the lesson, mic, answer field and next action dominant. Narry should not cover copy, move a control or reveal an answer before the learner checks it.
 - Freeze optional motion during mic use, permission processing and other focused moments. Respect reduced-motion preferences. Repeated looping celebrations should not compete with reading or listening.
 - Decorative images have empty alternative text; nearby text carries the actual state and action. If an illustration alone carries information, provide localized alternative text.
 - A changed expression never changes review status, badges, XP, timer results or account state. Existing local sample progress and fictional community profiles retain their labels. Challenges wait for actual people and expose browser-reported counts, not pronunciation scores or anti-cheat results.
 
-Mood assets are selected through the shared `BuddyAvatar`. Both identities have a welcome pose and five distinct illustrations for focus, curiosity, encouragement, celebration and pride. Option 5 keeps the purple caterpillar with blue headphones; the original identity keeps the fuzzy blue speech-bubble Buddy with its tuft, arms and legs. Missing poses fall back to the active brand mascot, then the original mascot, with a small local face as the final fallback.
+Mood assets are selected through the shared internal `BuddyAvatar` component. Each brand has a transparent 3 × 3 atlas with nine whole-body poses: `welcome`, `focus`, `curious`, `encourage`, `celebrate`, `proud`, `thinking`, `listening` and `oops`. Original blue Narry waves, reads while seated, peeks, kneels, jumps, stands proudly, thinks with a hand at its chin, cups an ear and scratches its head. Option 5 keeps its armless, legless caterpillar anatomy, expressing these states with body curls, leans, eyes and mouth.
+
+Expanded hints and lesson preparation use `thinking`; focused conversation and playback use `listening`; unsupported words or wrong practice answers can use `oops` without judging the learner. Auth varies welcome, curiosity and celebration. Actual completion triggers celebration or pride. A fixed crop changes the pose without moving nearby controls. The atlas falls back to the existing mood illustration, active brand mascot, original mascot and a local face.
+
+During microphone input optional mascot motion is disabled. Reduced-motion preferences disable CSS motion. The tutor desk illustrations keep their separate audio-driven listening/speaking/laughing frames and the Option 5 microphone remains a separate button.

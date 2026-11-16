@@ -20,7 +20,7 @@ export default function AccountsDialog({ onClose }: { onClose: () => void }) {
     else setError(result === 'limit' ? tr(`This device can keep up to ${MAX_DEVICE_ACCOUNTS} profiles.`, `Thiết bị này lưu tối đa ${MAX_DEVICE_ACCOUNTS} hồ sơ nhé.`) : tr('Your browser could not save this profile. Allow local storage and try again.', 'Trình duyệt chưa lưu được hồ sơ, bạn cho phép lưu dữ liệu trên máy rồi thử lại nhé.'));
   }
   return <Modal title={tr('Your learning accounts', 'Tài khoản trên thiết bị')} onClose={onClose}>
-    <p className="account-dialog-intro">{tr('Everyone gets their own words, progress and Buddy adventures.', 'Mỗi người một kho từ, một tiến độ, một hành trình cùng Buddy.')}</p>
+    <p className="account-dialog-intro">{tr('Everyone gets their own words, progress and Narry adventures.', 'Mỗi người một kho từ, một tiến độ, một hành trình cùng Narry.')}</p>
     <ul className="device-account-list">{accounts.map(account => {
       const current = account.id === activeAccount.id;
       const label = current ? profile.name : deviceAccountName(account);

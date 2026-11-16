@@ -46,4 +46,3 @@
 .review-cefr-scale{list-style:none;display:flex;gap:5px;padding:0;margin:20px 0}.review-cefr-scale>li{flex:1;text-align:center;border:1px solid var(--line);border-radius:10px;padding:9px 2px;font-size:12px;font-weight:750;min-height:52px;background:var(--background);color:var(--muted)}.review-cefr-scale>li.selected{background:var(--lavender);border-color:var(--purple);color:var(--purple)}.review-cefr-scale span{display:block;font-size:9px;line-height:1.4}
 .review-demo-banner strong{display:block}.saved-session-view{height:min(76dvh,850px);margin-inline:-24px;margin-bottom:-24px}.session-archive-list>button>span{flex:1;min-width:0}
 @media(max-width:360px){.review-score-top h3{font-size:35px}.review-score-top{gap:10px}.review-score-number{flex-basis:84px;min-height:84px}.review-score-number strong{font-size:26px}.review-score-number strong>span{font-size:10px}.review-score-top h3>span{font-size:12px}}
-

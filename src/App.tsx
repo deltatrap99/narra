@@ -21,6 +21,8 @@ import LanguageSwitch from './LanguageSwitch';
 import { CreateDialog, FlashcardsDialog, GoalDialog, SpeakingDialog, WritingDialog } from './Sessions';
 import './header-arena.css';
 import { brandAsset, brandVariant, isOption5 } from './brand-variant';
+import AuthScreen from './AuthScreen';
+import { clearEntrySession, readEntrySession, type EntrySession } from './entry-session';
 
 const TutorPreview = lazy(() => import('./TutorPreview'));
 const ChallengeRoom = lazy(() => import('./ChallengeRoom'));
@@ -37,6 +39,7 @@ function NavIcon({ tab }: { tab: Tab }) {
 
 export default function App() {
   const { tab, navigate, profile, setProfile, toast } = useNarra();
+  const [entrySession, setEntrySession] = useState<EntrySession | null>(readEntrySession);
   const tr = useCopy();
   const labels: Record<Tab, string> = { Lesson: tr('Lesson', 'Bài học'), Practice: tr('Practice', 'Luyện nói'), Dictionary: tr('Dictionary', 'Từ điển'), Profile: tr('Profile', 'Hồ sơ') };
   const [overlay, setOverlay] = useState<Overlay | null>(null);
@@ -62,6 +65,8 @@ export default function App() {
   const subpage = overlay?.kind === 'tutors' || overlay?.kind === 'word-pronunciation' || overlay?.kind === 'workout' || overlay?.kind === 'community' || overlay?.kind === 'avatar';
   function lessonScenario(lesson: Lesson): Scenario { const chapter = chapters.find(c => c.lessons.some(l => l.id === lesson.id))!; return { id: `lesson-${lesson.id}`, title: lesson.title, description: chapter.description, type: 'Roleplay', level: profile.level, minutes: lesson.minutes, tone: chapter.tone, asset: 'plant.webp' }; }
   function nextLesson(lesson: Lesson) { const all = chapters.flatMap(c => c.lessons); const next = all[all.findIndex(l => l.id === lesson.id) + 1]; if (next) setOverlay({ kind: 'lesson', lesson: next }); else close(); }
+  useEffect(() => { const signOut = () => { clearEntrySession(); setEntrySession(null); setOverlay(null); setPlansOpen(false); setTutorPreview(null); setCommunityExtra(null); setLaunching(false); }; window.addEventListener('narra:sign-out', signOut); return () => window.removeEventListener('narra:sign-out', signOut); }, []);
+  if (!entrySession) return <AuthScreen onEnter={session => { setEntrySession(session); window.scrollTo(0, 0); }} />;
   return <><div className={`app app-refined ${tab === 'Profile' ? 'profile-background' : ''}`} inert={launching}>
     <a className="skip-link" href="#main">Skip to content</a>
     <header className="topbar" inert={subpage || tutorPreview !== null || challenge !== null}><div className="topbar-inner"><button className="brand" onClick={() => navigate('Lesson')} aria-label="Narra home"><img src={brandAsset(`logo-${dark ? 'light' : 'dark'}.webp`)} alt="Narra" /></button><span className="topbar-title">{labels[tab]}</span><div className="topbar-actions"><LanguageSwitch /><button type="button" className="header-plus" onClick={openPlans} aria-label={tr('Explore Narra Plus plans', 'Khám phá các gói Narra Plus')}><Sparkles size={17}/><span>Narra Plus</span></button></div></div></header>

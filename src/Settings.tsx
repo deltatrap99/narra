@@ -1,6 +1,6 @@
 import { brandAsset } from './brand-variant';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { ArrowLeft, Bell, BookOpen, ChevronRight, ChevronsUpDown, CircleHelp, Heart, Info, LockKeyhole, MonitorSmartphone, Play, ShieldCheck, UserRound } from 'lucide-react';
+import { ArrowLeft, Bell, BookOpen, ChevronRight, ChevronsUpDown, CircleHelp, Heart, Info, LockKeyhole, LogOut, MonitorSmartphone, Play, ShieldCheck, UserRound } from 'lucide-react';
 import { useCopy, useNarra, type Profile } from './state';
 import { Modal } from './ui';
 
@@ -48,12 +48,13 @@ export default function Settings({ onClose, onTutors }: Props) {
         <p className="settings-group-note"><Info size={15} />{tr("These are preferences only, with scheduled reminders and push notifications not yet connected in this preview.", "Đây là tùy chọn cá nhân, bản xem thử chưa gửi nhắc học theo lịch hay thông báo đẩy nhé.")}</p>
       </Group>
       <Group title={tr('Account', 'Tài khoản')} icon={<UserRound size={18} />}>
-        <div className="narra-setting-row settings-account-state"><span><strong>{tr('Guest on this device', 'Khách trên thiết bị này')}</strong><small>{tr('Cloud sync is not connected', 'Chưa kết nối đồng bộ đám mây')}</small></span><LockKeyhole size={18} /></div>
+        <div className="narra-setting-row settings-account-state"><span><strong>{tr('Preview access with a code', 'Đang trải nghiệm bằng mã')}</strong><small>{tr('Cloud sync is not connected', 'Chưa kết nối đồng bộ đám mây')}</small></span><LockKeyhole size={18} /></div>
         <label className="narra-setting-row"><span>{tr('Your name', 'Tên của bạn')}</span><input type="text" aria-label={tr('Your name', 'Tên của bạn')} value={profile.name} maxLength={35} onChange={event => update('name', event.target.value)} onBlur={() => update('name', profile.name.trim() || 'Tuan Quoc')} /></label>
         <SelectSetting label={tr('App language', 'Ngôn ngữ ứng dụng')} value={profile.uiLanguage} options={[{ value: 'English', label: 'English' }, { value: 'Tiếng Việt', label: 'Tiếng Việt' }]} onChange={value => update('uiLanguage', value as Profile['uiLanguage'])} />
         <SelectSetting label={tr('Appearance', 'Giao diện')} value={profile.theme} options={[{value:'light',label:tr('Light', 'Sáng')},{value:'dark',label:tr('Dark', 'Tối')},{value:'system',label:tr('System', 'Theo hệ thống')}]} onChange={value => update('theme', value as Profile['theme'])} />
         <button className="narra-setting-row" onClick={() => setDialog('account')}><span>{tr('Account information', 'Thông tin tài khoản')}</span><ChevronRight size={17} /></button>
         <button className="narra-setting-row" onClick={() => setDialog('privacy')}><span>{tr('Data & privacy', 'Dữ liệu & quyền riêng tư')}</span><ChevronRight size={17} /></button>
+        <button className="narra-setting-row" onClick={() => window.dispatchEvent(new Event('narra:sign-out'))}><span>{tr('Sign out, keep my progress on this device', 'Đăng xuất, giữ tiến độ trên máy')}</span><LogOut size={17} /></button>
       </Group>
       <Group title={tr('More', 'Thông tin thêm')} icon={<CircleHelp size={18} />}><button className="narra-setting-row" onClick={() => setDialog('help')}><span>{tr('Help & getting started', 'Trợ giúp & bắt đầu học')}</span><ChevronRight size={17} /></button><button className="narra-setting-row" onClick={() => window.dispatchEvent(new Event('narra:replay-intro'))}><span>{tr('Meet Narra Buddy again', 'Xem lại lời chào của Narra Buddy')}</span><Play size={17}/></button><button className="narra-setting-row" onClick={() => setDialog('about')}><span>{tr('About Narra', 'Về Narra')}</span><Heart size={17} /></button></Group>
       <div className="settings-page-footer"><ShieldCheck size={15} />{tr('Your preferences stay on this device.', 'Tùy chọn của bạn được lưu trên thiết bị này.')}</div>

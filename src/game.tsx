@@ -2,16 +2,19 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from '
 import { chapters, scenarios } from './data';
 import { localDateKey, useNarra } from './state';
 import { STREAK_MILESTONES, streakState } from './streaks';
+import { useAccounts } from './AccountContext';
+import { restoreFamilyMembers, type FamilyMember } from './family';
 
 export type Appearance = { skin: string; hair: string; hairStyle: 'swoop' | 'curly' | 'short'; shirt: string; accessory: 'none' | 'glasses' | 'headphones' };
 export type PlanCycle = 'monthly' | 'annual';
-export type Player = { handle: string; friendIds: string[]; likedPosts: string[]; dismissedFriends: string[]; appearance: Appearance; planInterest: 'free' | 'plus' | 'family'; planInterestCycle: PlanCycle | null; shareId: string; seenStreakMilestones: number[] };
+export type Player = { handle: string; friendIds: string[]; likedPosts: string[]; dismissedFriends: string[]; appearance: Appearance; planInterest: 'free' | 'plus' | 'family'; planInterestCycle: PlanCycle | null; shareId: string; seenStreakMilestones: number[]; familyMembers: FamilyMember[] };
 export type DailyMission = { id: 'say-practice' | 'review-words' | 'daily-goal'; title: string; titleVi: string; progress: number; target: number; xp: number };
 export type Achievement = { id: string; title: string; titleVi: string; description: string; descriptionVi: string; unlocked: boolean; progress: number; target: number; icon: 'talk' | 'word' | 'streak' | 'lesson' };
 const defaultAppearance: Appearance = { skin: '#edb69b', hair: '#25313b', hairStyle: 'swoop', shirt: '#6dd9ff', accessory: 'none' };
-function readPlayer(fallback: Player): Player {
-  try { const value: unknown = JSON.parse(localStorage.getItem('narra-player-v1') ?? 'null'); if (!value || typeof value !== 'object' || Array.isArray(value)) return fallback;
+function readPlayer(fallback: Player, key: string): Player {
+  try { const value: unknown = JSON.parse(localStorage.getItem(key) ?? 'null'); if (!value || typeof value !== 'object' || Array.isArray(value)) return fallback;
     const raw = value as Record<string, unknown>; const result = { ...fallback, appearance: { ...defaultAppearance } };
+    result.familyMembers = restoreFamilyMembers(raw.familyMembers);
     for (const key of ['handle', 'shareId'] as const) if (typeof raw[key] === 'string' && raw[key].length > 0) result[key] = raw[key].slice(0, 50);
     for (const key of ['friendIds', 'likedPosts', 'dismissedFriends'] as const) if (Array.isArray(raw[key])) result[key] = raw[key].filter((v): v is string => typeof v === 'string').slice(0, 100);
     if (Array.isArray(raw.seenStreakMilestones)) result.seenStreakMilestones = [...new Set(raw.seenStreakMilestones.filter((v): v is number => typeof v === 'number' && STREAK_MILESTONES.some(m => m.days === v)))];
@@ -25,10 +28,12 @@ const lessonNames = new Set(chapters.flatMap(c => c.lessons.map(l => l.title)));
 const scenarioNames = new Set(scenarios.map(s => s.title));
 const isConversation = (label: string) => lessonNames.has(label) || scenarioNames.has(label) || /^(Conversation with|Practice ·)/.test(label);
 function usePlayerState() {
+  const { storageKey } = useAccounts();
+  const playerKey = storageKey('narra-player-v1');
   const { stats, words, profile, today: studyDate } = useNarra();
-  const [player, setPlayer] = useState<Player>(() => readPlayer({ handle: `narra_${profile.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/gi, 'd').replace(/[^a-z0-9]/gi, '').toLowerCase()}`, friendIds: [], likedPosts: [], dismissedFriends: [], appearance: defaultAppearance, planInterest: 'free', planInterestCycle: null, shareId: crypto.randomUUID().slice(0, 8), seenStreakMilestones: [] }));
-  useEffect(() => { try { localStorage.setItem('narra-player-v1', JSON.stringify(player)); } catch { /* Local play remains available without storage. */ } }, [player]);
-  useEffect(() => { const sync = (event: StorageEvent) => { if (event.key === 'narra-player-v1' && event.newValue) setPlayer(current => { const next = readPlayer(current); return JSON.stringify(next) === JSON.stringify(current) ? current : next; }); }; window.addEventListener('storage', sync); return () => window.removeEventListener('storage', sync); }, []);
+  const [player, setPlayer] = useState<Player>(() => readPlayer({ handle: `narra_${profile.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/gi, 'd').replace(/[^a-z0-9]/gi, '').toLowerCase()}`, friendIds: [], likedPosts: [], dismissedFriends: [], appearance: defaultAppearance, planInterest: 'free', planInterestCycle: null, shareId: crypto.randomUUID().slice(0, 8), seenStreakMilestones: [], familyMembers: [] }, playerKey));
+  useEffect(() => { try { localStorage.setItem(playerKey, JSON.stringify(player)); } catch { /* Local play remains available without storage. */ } }, [player, playerKey]);
+  useEffect(() => { const sync = (event: StorageEvent) => { if (event.key === playerKey && event.newValue) setPlayer(current => { const next = readPlayer(current, playerKey); return JSON.stringify(next) === JSON.stringify(current) ? current : next; }); }; window.addEventListener('storage', sync); return () => window.removeEventListener('storage', sync); }, [playerKey]);
   const today = stats.activity.filter(a => a.date === localDateKey());
   const dailyMissions: DailyMission[] = [
     { id: 'say-practice', title: 'Have one real conversation', titleVi: 'Hoàn thành một cuộc hội thoại', progress: today.filter(a => isConversation(a.label)).length, target: 1, xp: 15 },

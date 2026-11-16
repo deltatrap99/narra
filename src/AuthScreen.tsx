@@ -2,9 +2,11 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { ArrowLeft, ArrowRight, Check, Facebook, KeyRound, Mail, RotateCcw, Sparkles } from 'lucide-react';
 import { brandAsset, isOption5 } from './brand-variant';
 import { acceptsPreviewCode, createEntrySession, facebookSupportUrl, isAppleMobileDevice, type EntrySession } from './entry-session';
-import { useCopy } from './state';
+import { useCopy, useNarra } from './state';
 import LanguageSwitch from './LanguageSwitch';
 import './auth-screen.css';
+import { useAccounts } from './AccountContext';
+import AccountsDialog from './AccountsDialog';
 
 type Page = 'login' | 'email' | 'code' | 'signup' | 'apple' | 'help';
 function AppleMark() {
@@ -13,6 +15,9 @@ function AppleMark() {
 
 export default function AuthScreen({ onEnter }: { onEnter: (session: EntrySession) => void }) {
   const tr = useCopy();
+  const { profile } = useNarra();
+  const { activeAccount, accounts } = useAccounts();
+  const [accountsOpen, setAccountsOpen] = useState(false);
   const [page, setPage] = useState<Page>('login');
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
@@ -40,7 +45,7 @@ export default function AuthScreen({ onEnter }: { onEnter: (session: EntrySessio
     if (entering.current) return;
     if (!acceptsPreviewCode(code)) { setError(tr('Buddy did a double take, that code does not match, try again?', 'Buddy nhìn hai lần rồi, mã này chưa khớp, mình thử lại nhé!')); input.current?.focus(); return; }
     entering.current = true; setError(''); setBusy(true); setWelcome(true); setMotion(value => value + 1);
-    timer.current = setTimeout(() => { onEnter(createEntrySession()); document.title = 'Narra - Your voice, your story!'; }, matchMedia('(prefers-reduced-motion: reduce)').matches ? 100 : 850);
+    timer.current = setTimeout(() => { onEnter(createEntrySession(activeAccount.id)); document.title = 'Narra - Your voice, your story!'; }, matchMedia('(prefers-reduced-motion: reduce)').matches ? 100 : 850);
   }
   function emailPreview(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -66,6 +71,7 @@ export default function AuthScreen({ onEnter }: { onEnter: (session: EntrySessio
         {page !== 'login' && <button className="auth-back" type="button" onClick={() => go('login')} disabled={busy}><ArrowLeft size={18} />{tr('Back', 'Quay lại')}</button>}
         <span className="auth-panel-icon" aria-hidden="true">{welcome ? <Check size={24} /> : page === 'code' ? <KeyRound size={24} /> : <Sparkles size={24} />}</span>
         <h1 id="auth-title" ref={heading} tabIndex={-1}>{title}</h1>
+        {accounts.length > 1 && <p className="auth-account-label">{tr('Learning profile', 'Hồ sơ học')}: <strong>{profile.name}</strong></p>}
         {page === 'login' && <><p className="auth-subtitle">{tr('A little English, a lot to tell!', 'Một chút tiếng Anh, cả rổ chuyện hay!')}</p><div className="auth-options">
           {appleMobile && <button className="auth-option auth-apple" type="button" onClick={() => go('apple')}><AppleMark /><span>{tr('Sign in with Apple', 'Đăng nhập bằng Apple ID')}</span></button>}
           <button className="auth-option" type="button" onClick={() => go('email')}><Mail size={22} /><span>{tr('Sign in with Email', 'Đăng nhập bằng Email')}</span><ArrowRight size={18} /></button>
@@ -76,7 +82,8 @@ export default function AuthScreen({ onEnter }: { onEnter: (session: EntrySessio
         {page === 'apple' && <div className="auth-form"><p className="auth-subtitle">{tr('Apple ID sign-in is waiting for its secure connection, use your code to meet Buddy for now!', 'Apple ID đang chờ kết nối xác thực, mình dùng mã để gặp Buddy trước nhé!')}</p><button className="auth-submit" type="button" onClick={() => go('code')}><KeyRound size={20} />{tr('Use my access code', 'Vào bằng mã của mình')}</button></div>}
         {page === 'help' && <div className="auth-form"><p className="auth-subtitle">{tr('Check your code for extra spaces or mixed-up letters, then give it another go!', 'Mình kiểm tra lại mã được nhận, tránh thiếu ký tự hoặc nhầm chữ rồi thử lại nhé!')}</p>{supportUrl ? <a className="auth-submit" href={supportUrl} target="_blank" rel="noopener noreferrer"><Facebook size={21} />{tr('Message Narra on Facebook', 'Nhắn Narra qua Facebook')}</a> : <p className="auth-notice">{tr('The official Facebook support link has not been connected in this preview yet.', 'Kênh Facebook hỗ trợ chính thức chưa được kết nối trong bản trải nghiệm này.')}</p>}<button className="auth-option" type="button" onClick={() => go('code')}><KeyRound size={20} /><span>{tr('Try my code again', 'Mình thử lại mã nhé')}</span><ArrowRight size={18} /></button></div>}
       </div>
-      <footer className="auth-footer"><button className="auth-help" type="button" onClick={() => go('help')}><Facebook size={18} />{tr('Need a hand?', 'Cần hỗ trợ?')}</button><span>{tr('A preview, with progress saved on this device', 'Bản trải nghiệm, tiến độ lưu trên thiết bị')}</span></footer>
+      <footer className="auth-footer">{accounts.length > 1 && <button className="auth-text-link" type="button" disabled={busy} onClick={() => setAccountsOpen(true)}>{tr('Switch learning account', 'Đổi tài khoản học')}</button>}<button className="auth-help" type="button" onClick={() => go('help')}><Facebook size={18} />{tr('Need a hand?', 'Cần hỗ trợ?')}</button><span>{tr('A preview, with progress saved on this device', 'Bản trải nghiệm, tiến độ lưu trên thiết bị')}</span></footer>
     </section>
+    {accountsOpen && <AccountsDialog onClose={() => setAccountsOpen(false)} />}
   </main>;
 }

@@ -23,6 +23,7 @@ import './header-arena.css';
 import { brandAsset, brandVariant, isOption5 } from './brand-variant';
 import AuthScreen from './AuthScreen';
 import { clearEntrySession, readEntrySession, type EntrySession } from './entry-session';
+import { useAccounts } from './AccountContext';
 
 const TutorPreview = lazy(() => import('./TutorPreview'));
 const ChallengeRoom = lazy(() => import('./ChallengeRoom'));
@@ -39,7 +40,8 @@ function NavIcon({ tab }: { tab: Tab }) {
 
 export default function App() {
   const { tab, navigate, profile, setProfile, toast } = useNarra();
-  const [entrySession, setEntrySession] = useState<EntrySession | null>(readEntrySession);
+  const { activeAccount } = useAccounts();
+  const [entrySession, setEntrySession] = useState<EntrySession | null>(() => readEntrySession(activeAccount.id));
   const tr = useCopy();
   const labels: Record<Tab, string> = { Lesson: tr('Lesson', 'Bài học'), Practice: tr('Practice', 'Luyện nói'), Dictionary: tr('Dictionary', 'Từ điển'), Profile: tr('Profile', 'Hồ sơ') };
   const [overlay, setOverlay] = useState<Overlay | null>(null);

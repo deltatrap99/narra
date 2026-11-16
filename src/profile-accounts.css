@@ -1,0 +1,51 @@
+.profile-account-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: -4px 0 24px; }
+.profile-account-actions button { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); color: var(--text); font: 800 13px Nunito, sans-serif; }
+.profile-account-actions button:hover { border-color: var(--brand-green-ink); }
+.profile-family-card { display: flex; align-items: center; gap: 16px; width: 100%; margin-top: 12px; padding: 20px; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); color: var(--text); text-align: left; }
+.profile-family-card > span:nth-child(2) { flex: 1; min-width: 0; display: grid; gap: 5px; }
+.profile-family-card strong { font: 900 16px Nunito, sans-serif; }
+.profile-family-card small { color: var(--muted); font-size: 12px; }
+.account-round-icon { display: grid; place-items: center; width: 44px; height: 44px; flex-shrink: 0; border-radius: 14px; background: var(--green); color: var(--text); }
+.account-dialog-intro { font-size: 14px; color: var(--muted); margin: 0 0 20px; line-height: 1.6; }
+.device-account-list, .family-member-list { list-style: none; margin: 0; padding: 0; }
+.device-account-list { display: grid; gap: 8px; }
+.device-account-list button { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px; min-height: 72px; border: 1px solid var(--line); border-radius: 16px; text-align: left; background: var(--surface); color: var(--text); }
+.device-account-list button:disabled { opacity: 1; background: color-mix(in srgb, var(--green) 50%, var(--surface)); }
+.device-account-list button > span:nth-child(2) { display: grid; flex: 1; gap: 5px; min-width: 0; }
+.device-account-list strong, .family-member-copy strong { font-size: 15px; overflow-wrap: anywhere; }
+.device-account-list small { font-size: 12px; color: var(--muted); }
+.account-add-form { display: grid; gap: 12px; margin-top: 24px; }
+.account-add-form label { font-size: 13px; font-weight: 850; color: var(--text); }
+.account-add-form input { width: 100%; min-width: 0; min-height: 52px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); color: var(--text); font-size: 16px; }
+.account-add-form input[aria-invalid=true] { border-color: #b63c51; }
+.account-primary { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; border-radius: 14px; padding: 12px 16px; font: 900 14px Nunito, sans-serif; background: var(--brand-lime); color: #172e13; }
+html[data-brand=option5] .account-primary { color: #fff; }
+.account-form-error { color: #a72c40; font-size: 13px; line-height: 1.5; }
+.account-local-note { color: var(--muted); font-size: 12px; line-height: 1.65; margin-top: 20px; }
+.account-dialog-notice { padding: 12px 16px; margin-top: 16px; border-radius: 12px; background: var(--green); color: var(--text); font-size: 13px; line-height: 1.6; }
+.family-welcome { display: flex; align-items: center; gap: 12px; padding: 20px; background: var(--green); border-radius: 20px; margin-bottom: 24px; }
+.family-welcome > div { flex: 1; min-width: 0; }
+.family-welcome > div > span { display: flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 900; letter-spacing: 1px; color: var(--text); }
+.family-welcome h3 { font: 900 22px/1.2 Nunito, sans-serif; color: var(--text); margin: 10px 0 8px; }
+.family-welcome p { font-size: 12px; color: var(--text); }
+.family-list-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.family-list-heading h3 { font-size: 15px; font-weight: 850; }
+.family-list-heading h3 span { display: inline-block; padding: 4px 8px; margin-left: 4px; border-radius: 8px; background: var(--green); color: var(--text); font-size: 12px; }
+.family-list-heading > span { color: var(--muted); font-size: 11px; }
+.family-member-list { display: grid; gap: 0; }
+.family-member-list li { display: flex; align-items: center; gap: 12px; min-height: 80px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.family-member-avatar { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 16px; background: var(--blue); color: var(--text); flex-shrink: 0; }
+.family-owner { background: var(--yellow); }
+.family-member-copy { display: grid; flex: 1; gap: 5px; min-width: 0; }
+.family-member-copy > span { font-size: 12px; color: var(--muted); }
+.family-member-copy strong small { font-weight: 500; font-size: 12px; }
+.family-member-tag { background: var(--green); color: var(--text); border-radius: 8px; padding: 6px 8px; font-size: 10px; flex-shrink: 0; }
+.family-remove { display: grid; place-items: center; min-width: 44px; min-height: 44px; color: var(--muted); border-radius: 12px; }
+.family-remove:hover { background: var(--pink); color: var(--text); }
+.family-empty-seat .family-member-avatar { background: transparent; border: 1px dashed var(--line); color: var(--muted); }
+.family-empty-seat strong { font-size: 13px; color: var(--muted); }
+.family-full { display: flex; gap: 8px; align-items: center; margin-top: 20px; font-size: 13px; font-weight: 750; color: var(--text); }
+.plans-family-members { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px; min-height: 48px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); color: var(--text); font: 800 13px Nunito, sans-serif; margin-top: 12px; }
+.auth-account-label { margin-top: 12px; color: var(--auth-ink); font-size: 13px; overflow-wrap: anywhere; }
+.auth-page .modal { background: var(--surface); color: var(--text); }
+@media (max-width: 360px) { .profile-account-actions button { padding-inline: 12px; font-size: 12px; }.family-welcome { padding: 16px; }.family-welcome h3 { font-size: 19px; }.family-welcome .buddy-avatar { width: 72px; height: 72px; }.family-member-tag { display: none; } }

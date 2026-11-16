@@ -1,5 +1,5 @@
 import { Suspense, lazy, useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
-import { Check, ChevronRight, Plus, Sparkles, Zap } from 'lucide-react';
+import { Check, Sparkles } from 'lucide-react';
 import { chapters, type Lesson, type Scenario } from './data';
 import { useCopy, useNarra, type Tab } from './state';
 import { Avatar } from './ui';
@@ -14,8 +14,8 @@ import WordWorkout from './WordWorkout';
 import LessonPreparation from './LessonPreparation';
 import LaunchScreen from './LaunchScreen';
 import CommunityHub from './CommunityHub';
-import { AvatarStudio, PlansPanel, ShareProfile } from './PlayerExtras';
-import { usePlayer } from './game';
+import { AvatarStudio, ShareProfile } from './PlayerExtras';
+import PlansPanel from './PlansPanel';
 import LanguageSwitch from './LanguageSwitch';
 import { CreateDialog, FlashcardsDialog, GoalDialog, SpeakingDialog, WritingDialog } from './Sessions';
 import './header-arena.css';
@@ -27,7 +27,7 @@ const Option5LaunchScreen = lazy(() => import('./Option5LaunchScreen'));
 const launchSessionKey = `narra-launch-${isOption5 ? 'v5' : 'v4'}:${brandVariant}`;
 
 type CommunitySection = 'league' | 'friends' | 'feed' | 'achievements';
-type Overlay = { kind: 'goal' | 'tutors' | 'pronunciation' | 'word-pronunciation' | 'workout' | 'shadowing' | 'writing' | 'create' | 'add' | 'talk' | 'avatar' | 'plans' | 'share' } | { kind: 'lesson' | 'lesson-speaking'; lesson: Lesson } | { kind: 'scenario'; scenario: Scenario } | { kind: 'flashcards'; collection?: string } | { kind: 'community'; section: CommunitySection };
+type Overlay = { kind: 'goal' | 'tutors' | 'pronunciation' | 'word-pronunciation' | 'workout' | 'shadowing' | 'writing' | 'create' | 'add' | 'talk' | 'avatar' | 'share' } | { kind: 'lesson' | 'lesson-speaking'; lesson: Lesson } | { kind: 'scenario'; scenario: Scenario } | { kind: 'flashcards'; collection?: string } | { kind: 'community'; section: CommunitySection };
 const tabs: Tab[] = ['Lesson', 'Practice', 'Dictionary', 'Profile'];
 
 function NavIcon({ tab }: { tab: Tab }) {
@@ -36,16 +36,18 @@ function NavIcon({ tab }: { tab: Tab }) {
 
 export default function App() {
   const { tab, navigate, profile, setProfile, toast } = useNarra();
-  const { xp } = usePlayer();
   const tr = useCopy();
   const labels: Record<Tab, string> = { Lesson: tr('Lesson', 'Bài học'), Practice: tr('Practice', 'Luyện nói'), Dictionary: tr('Dictionary', 'Từ điển'), Profile: tr('Profile', 'Hồ sơ') };
   const [overlay, setOverlay] = useState<Overlay | null>(null);
+  const [plansOpen, setPlansOpen] = useState(false);
+  const openPlans = useCallback(() => setPlansOpen(true), []);
+  const closePlans = useCallback(() => setPlansOpen(false), []);
   const [tutorPreview, setTutorPreview] = useState<string | null>(null);
   const [challenge, setChallenge] = useState<{ roomId?: string; friend?: { id: string; name: string } } | null>(() => { const roomId = new URL(location.href).searchParams.get('challenge'); return roomId ? { roomId } : null; });
-  const [communityExtra, setCommunityExtra] = useState<'share' | 'plans' | null>(null);
+  const [communityExtra, setCommunityExtra] = useState<'share' | null>(null);
   const communityExtraRef = useRef(communityExtra); communityExtraRef.current = communityExtra;
   const communityTrigger = useRef<HTMLElement | null>(null);
-  const openCommunityExtra = (kind: 'share' | 'plans') => { communityTrigger.current = document.activeElement as HTMLElement | null; setCommunityExtra(kind); };
+  const openCommunityExtra = (kind: 'share') => { communityTrigger.current = document.activeElement as HTMLElement | null; setCommunityExtra(kind); };
   const closeCommunityExtra = () => { setCommunityExtra(null); requestAnimationFrame(() => { if (communityTrigger.current?.isConnected) communityTrigger.current.focus({ preventScroll: true }); }); };
   const [launching, setLaunching] = useState(() => { try { return sessionStorage.getItem(launchSessionKey) !== 'seen'; } catch { return true; } });
   const finishLaunch = useCallback(() => { try { sessionStorage.setItem(launchSessionKey, 'seen'); } catch { /* Opening remains available without storage. */ } setLaunching(false); }, []);
@@ -56,41 +58,39 @@ export default function App() {
   const closeChallenge = () => { setChallenge(null); const url = new URL(location.href); url.searchParams.delete('challenge'); history.replaceState(null, '', url); };
   const close = () => { setCommunityExtra(null); setTutorPreview(null); closeChallenge(); setOverlay(null); }; const talk = () => setOverlay({ kind: 'talk' });
   const community = (section: CommunitySection) => setOverlay({ kind: 'community', section });
-  const subpage = overlay?.kind === 'tutors' || overlay?.kind === 'word-pronunciation' || overlay?.kind === 'workout' || overlay?.kind === 'community' || overlay?.kind === 'avatar' || overlay?.kind === 'plans';
+  const subpage = overlay?.kind === 'tutors' || overlay?.kind === 'word-pronunciation' || overlay?.kind === 'workout' || overlay?.kind === 'community' || overlay?.kind === 'avatar';
   function lessonScenario(lesson: Lesson): Scenario { const chapter = chapters.find(c => c.lessons.some(l => l.id === lesson.id))!; return { id: `lesson-${lesson.id}`, title: lesson.title, description: chapter.description, type: 'Roleplay', level: profile.level, minutes: lesson.minutes, tone: chapter.tone, asset: 'plant.webp' }; }
   function nextLesson(lesson: Lesson) { const all = chapters.flatMap(c => c.lessons); const next = all[all.findIndex(l => l.id === lesson.id) + 1]; if (next) setOverlay({ kind: 'lesson', lesson: next }); else close(); }
   return <><div className={`app app-refined ${tab === 'Profile' ? 'profile-background' : ''}`} inert={launching}>
     <a className="skip-link" href="#main">Skip to content</a>
-    <header className="topbar" inert={subpage || tutorPreview !== null || challenge !== null}><div className="topbar-inner"><button className="brand" onClick={() => navigate('Lesson')} aria-label="Narra home"><img src={brandAsset(`logo-${dark ? 'light' : 'dark'}.webp`)} alt="Narra" /></button><span className="topbar-title">{labels[tab]}</span><div className="topbar-actions"><LanguageSwitch />{tab === 'Dictionary' ? <button className="device-button purple" aria-label={tr('Add a word', 'Thêm từ mới')} onClick={() => setOverlay({ kind: 'add' })}><Plus size={26} /></button> : <button className="header-xp header-arena" onClick={() => community('league')} aria-label={tr(`Open Narra Arena, achievements and speaking challenges. ${xp} learning XP.`, `Mở đấu trường Narra, thành tích và thách đấu nói. ${xp} XP học tập.`)} title={tr('View progress, friends and speaking challenges', 'Xem tiến bộ, bạn bè và thách đấu nói')}><Zap size={17}/><span className="header-arena-copy"><strong>{tr('Arena', 'Đấu trường')}</strong><small>{xp} XP</small></span><ChevronRight size={15}/></button>}</div></div></header>
+    <header className="topbar" inert={subpage || tutorPreview !== null || challenge !== null}><div className="topbar-inner"><button className="brand" onClick={() => navigate('Lesson')} aria-label="Narra home"><img src={brandAsset(`logo-${dark ? 'light' : 'dark'}.webp`)} alt="Narra" /></button><span className="topbar-title">{labels[tab]}</span><div className="topbar-actions"><LanguageSwitch /><button type="button" className="header-plus" onClick={openPlans} aria-label={tr('Explore Narra Plus plans', 'Khám phá các gói Narra Plus')}><Sparkles size={17}/><span>Narra Plus</span></button></div></div></header>
     <main id="main" className="main-content" key={tab} inert={subpage || tutorPreview !== null || challenge !== null}>
-      {tab === 'Lesson' && <Learn onTutorPreview={setTutorPreview} onGoal={() => setOverlay({ kind: 'goal' })} onLesson={lesson => setOverlay({ kind: 'lesson', lesson })} onTalk={talk} onWord={() => navigate('Dictionary')} onPractice={() => navigate('Practice')} onOpenLeague={() => community('league')} onOpenAchievements={() => community('achievements')} />}
+      {tab === 'Lesson' && <Learn onPlans={openPlans} onTutorPreview={setTutorPreview} onGoal={() => setOverlay({ kind: 'goal' })} onLesson={lesson => setOverlay({ kind: 'lesson', lesson })} onTalk={talk} onWord={() => navigate('Dictionary')} onPractice={() => navigate('Practice')} onOpenLeague={() => community('league')} onOpenAchievements={() => community('achievements')} />}
       {tab === 'Practice' && <Practice onTutorPreview={setTutorPreview} onTutors={() => setOverlay({ kind: 'tutors' })} onScenario={scenario => setOverlay({ kind: 'scenario', scenario })} onCreate={() => setOverlay({ kind: 'create' })} onTalk={talk} />}
-      {tab === 'Dictionary' && <Words onReview={collection => setOverlay(collection === 'due' ? { kind: 'workout' } : { kind: 'flashcards', collection })} onPronunciation={() => setOverlay({ kind: 'word-pronunciation' })} onShadowing={() => setOverlay({ kind: 'shadowing' })} onReadAloud={() => setOverlay({ kind: 'pronunciation' })} onWriting={() => setOverlay({ kind: 'writing' })} />}
-      {tab === 'Profile' && <Profile onTutors={() => setOverlay({ kind: 'tutors' })} onWriting={() => setOverlay({ kind: 'writing' })} onLesson={() => navigate('Lesson')} onLeague={() => community('league')} onFriends={() => community('friends')} onFeed={() => community('feed')} onAchievements={() => community('achievements')} onAvatar={() => setOverlay({ kind: 'avatar' })} onPlans={() => setOverlay({ kind: 'plans' })} onShare={() => setOverlay({ kind: 'share' })} />}
+      {tab === 'Dictionary' && <Words onAdd={() => setOverlay({ kind: 'add' })} onReview={collection => setOverlay(collection === 'due' ? { kind: 'workout' } : { kind: 'flashcards', collection })} onPronunciation={() => setOverlay({ kind: 'word-pronunciation' })} onShadowing={() => setOverlay({ kind: 'shadowing' })} onReadAloud={() => setOverlay({ kind: 'pronunciation' })} onWriting={() => setOverlay({ kind: 'writing' })} />}
+      {tab === 'Profile' && <Profile onTutors={() => setOverlay({ kind: 'tutors' })} onWriting={() => setOverlay({ kind: 'writing' })} onLesson={() => navigate('Lesson')} onLeague={() => community('league')} onFriends={() => community('friends')} onFeed={() => community('feed')} onAchievements={() => community('achievements')} onAvatar={() => setOverlay({ kind: 'avatar' })} onPlans={openPlans} onShare={() => setOverlay({ kind: 'share' })} />}
     </main>
     <nav className="bottom-nav" inert={tutorPreview !== null || challenge !== null} aria-label="Main navigation" style={{ '--active-index': tabs.indexOf(tab) } as CSSProperties}>{tabs.map(t => <button key={t} className={`nav-item ${tab === t ? 'active' : ''}`} onClick={() => { close(); navigate(t); }} aria-current={tab === t ? 'page' : undefined}><NavIcon tab={t} /><span>{labels[t]}</span></button>)}</nav>
     <div className="desktop-signoff"><Sparkles size={12} /><span>Your voice. Your story.</span></div>
     {toast && <div className="toast" role="status"><Check size={18} />{toast}</div>}
     {overlay?.kind === 'goal' && <GoalDialog onClose={close} />}
     {overlay?.kind === 'lesson' && <LessonPreparation lesson={overlay.lesson} onClose={close} onStart={() => setOverlay({ kind: 'lesson-speaking', lesson: overlay.lesson })} />}
-    {overlay?.kind === 'lesson-speaking' && <Conversation scenario={lessonScenario(overlay.lesson)} lesson={overlay.lesson} onClose={close} onNextLesson={overlay.lesson.id === chapters.at(-1)?.lessons.at(-1)?.id ? undefined : () => nextLesson(overlay.lesson)} onReview={() => { close(); navigate('Dictionary'); }} />}
+    {overlay?.kind === 'lesson-speaking' && <Conversation onPlans={openPlans} scenario={lessonScenario(overlay.lesson)} lesson={overlay.lesson} onClose={close} onNextLesson={overlay.lesson.id === chapters.at(-1)?.lessons.at(-1)?.id ? undefined : () => nextLesson(overlay.lesson)} onReview={() => { close(); navigate('Dictionary'); }} />}
     {overlay?.kind === 'tutors' && <div inert={tutorPreview !== null}><Tutors onClose={() => { if (!tutorPreview) close(); }} onTalk={talk} onPreview={setTutorPreview} /></div>}
     {overlay?.kind === 'word-pronunciation' && <MyWords onClose={close} />}
     {overlay?.kind === 'workout' && <WordWorkout onClose={close} />}
     {overlay?.kind === 'flashcards' && <FlashcardsDialog collection={overlay.collection} onClose={close} />}
     {(overlay?.kind === 'pronunciation' || overlay?.kind === 'shadowing') && <SpeakingDialog shadowing={overlay.kind === 'shadowing'} onClose={close} />}
     {overlay?.kind === 'writing' && <WritingDialog onClose={close} />}
-    {overlay?.kind === 'talk' && <Conversation onClose={close} />}
-    {overlay?.kind === 'scenario' && <Conversation scenario={overlay.scenario} onClose={close} />}
+    {overlay?.kind === 'talk' && <Conversation onPlans={openPlans} onClose={close} />}
+    {overlay?.kind === 'scenario' && <Conversation onPlans={openPlans} scenario={overlay.scenario} onClose={close} />}
     {overlay?.kind === 'create' && <CreateDialog onClose={close} onCreate={scenario => setOverlay({ kind: 'scenario', scenario })} />}
     {overlay?.kind === 'add' && <AddWordDialog onClose={close} />}
-    {overlay?.kind === 'community' && <div inert={communityExtra !== null || challenge !== null}><CommunityHub section={overlay.section} onClose={() => { if (!communityExtraRef.current && !challenge) close(); }} onLesson={() => { close(); navigate('Lesson'); }} onChallenge={friend => setChallenge({ friend })} onShare={() => openCommunityExtra('share')} onPlans={() => openCommunityExtra('plans')} /></div>}
+    {overlay?.kind === 'community' && <div inert={communityExtra !== null || challenge !== null}><CommunityHub section={overlay.section} onClose={() => { if (!communityExtraRef.current && !challenge) close(); }} onLesson={() => { close(); navigate('Lesson'); }} onChallenge={friend => setChallenge({ friend })} onShare={() => openCommunityExtra('share')} onPlans={openPlans} /></div>}
     {overlay?.kind === 'avatar' && <AvatarStudio onClose={close} />}
-    {overlay?.kind === 'plans' && <PlansPanel onClose={close} />}
     {overlay?.kind === 'share' && <ShareProfile onClose={close} />}
     {communityExtra === 'share' && <ShareProfile onClose={closeCommunityExtra} />}
-    {communityExtra === 'plans' && <PlansPanel onClose={closeCommunityExtra} />}
     {tutorPreview && <Suspense fallback={<div className="feature-loading" role="status">{tr('Getting your tutor ready…', 'Gia sư đang đến nè…')}</div>}><TutorPreview name={tutorPreview} onClose={() => setTutorPreview(null)} onTalk={() => { setProfile({ ...profile, tutor: tutorPreview }); setTutorPreview(null); talk(); }} /></Suspense>}
     {challenge && <Suspense fallback={<div className="feature-loading" role="status">{tr('Opening your challenge…', 'Tớ đang mở thử thách…')}</div>}><ChallengeRoom roomId={challenge.roomId} friend={challenge.friend} onClose={closeChallenge} /></Suspense>}
-  </div>{launching && (isOption5 ? <Suspense fallback={<div className="feature-loading" role="status">Narra</div>}><Option5LaunchScreen onDone={finishLaunch}/></Suspense> : <LaunchScreen onDone={finishLaunch} />)}</>;
+  </div>{plansOpen && <PlansPanel onClose={closePlans} />}{launching && (isOption5 ? <Suspense fallback={<div className="feature-loading" role="status">Narra</div>}><Option5LaunchScreen onDone={finishLaunch}/></Suspense> : <LaunchScreen onDone={finishLaunch} />)}</>;
 }

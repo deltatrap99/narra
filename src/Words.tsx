@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react';
-import { ArrowRight, AudioLines, BookOpen, ChevronRight, Ellipsis, FileSearch, Headphones, Layers3, Mic, Search, Sparkles, Trash2 } from 'lucide-react';
+import { ArrowRight, AudioLines, BookOpen, ChevronRight, Ellipsis, FileSearch, Headphones, Layers3, Mic, Plus, Search, Sparkles, Trash2 } from 'lucide-react';
 import { initialWords, type Word, type WordStatus } from './data';
 import { useCopy, useNarra } from './state';
 import { Art, Empty, Modal } from './ui';
@@ -8,7 +8,7 @@ import BuddyCoach from './BuddyCoach';
 import WordDetails from './WordDetails';
 
 type Translate = (english: string, vietnamese: string) => string;
-type DictionaryProps = { onReview: (collection?: string) => void; onPronunciation: () => void; onShadowing: () => void; onReadAloud: () => void; onWriting: () => void };
+type DictionaryProps = { onAdd: () => void; onReview: (collection?: string) => void; onPronunciation: () => void; onShadowing: () => void; onReadAloud: () => void; onWriting: () => void };
 const collections = [{ name: 'Everyday essentials', art: 'house' }, { name: 'Travel smart', art: 'plane' }, { name: 'Work & career', art: 'briefcase' }];
 const careerWords: Word[] = [
   { id: 'career-feedback', word: 'feedback', definition: 'comments that help someone improve', example: 'Thank you for the helpful feedback.', status: 'New', collection: 'Work & career', due: true },
@@ -20,7 +20,7 @@ function collectionLabel(name: string, tr: Translate) { return name === 'Everyda
 function statusLabel(status: string, tr: Translate) { return status === 'All' ? tr('All', 'Tất cả') : status === 'New' ? tr('New', 'Mới') : status === 'Learning' ? tr('Learning', 'Đang học') : tr('Mastered', 'Đã nắm'); }
 function Status({ value }: { value: WordStatus }) { const tr = useCopy(); return <span className={`word-status status-${value.toLowerCase()}`}>{statusLabel(value, tr)}</span>; }
 
-export default function Words({ onReview, onPronunciation, onShadowing, onReadAloud, onWriting }: DictionaryProps) {
+export default function Words({ onAdd, onReview, onPronunciation, onShadowing, onReadAloud, onWriting }: DictionaryProps) {
   const { words, setWords, stats, notify } = useNarra(); const tr = useCopy();
   const [filter, setFilter] = useState('All'); const [query, setQuery] = useState(''); const [dueOnly, setDueOnly] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null); const [options, setOptions] = useState<string | null>(null); const [confirmRemove, setConfirmRemove] = useState(false);
@@ -33,7 +33,7 @@ export default function Words({ onReview, onPronunciation, onShadowing, onReadAl
   function closeOptions() { setOptions(null); setConfirmRemove(false); }
 
   return <div className="words-page dictionary-page">
-    <section className="word-overview"><h1>{tr('Dictionary', 'Từ vựng')}</h1><p>{tr('Found a word you like? Save it here. We’ll remember its meaning and try saying it together.', 'Gặp từ nào hay, bạn lưu vào đây nhé. Mình cùng nhớ nghĩa rồi thử nói thành tiếng.')}</p><div className="word-metrics"><div><strong>{words.length}</strong><span>{tr('saved words', 'từ đã lưu')}</span></div><div><strong>{due}</strong><span>{tr('due for review', 'từ đến hạn ôn')}</span></div><div><strong>{words.filter(word => word.status === 'Mastered').length}</strong><span>{tr('mastered', 'từ đã nắm')}</span></div></div></section>
+    <section className="word-overview"><h1>{tr('Dictionary', 'Từ vựng')}</h1><p>{tr('Found a word you like? Save it here. We’ll remember its meaning and try saying it together.', 'Gặp từ nào hay, bạn lưu vào đây nhé. Mình cùng nhớ nghĩa rồi thử nói thành tiếng.')}</p><button type="button" className="dictionary-add-word" onClick={onAdd}><Plus size={18} />{tr('Save a new word', 'Lưu thêm một từ hay')}</button><div className="word-metrics"><div><strong>{words.length}</strong><span>{tr('saved words', 'từ đã lưu')}</span></div><div><strong>{due}</strong><span>{tr('due for review', 'từ đến hạn ôn')}</span></div><div><strong>{words.filter(word => word.status === 'Mastered').length}</strong><span>{tr('mastered', 'từ đã nắm')}</span></div></div></section>
     <section className="dictionary-study-grid" aria-label={tr('Choose how to practise your words', 'Chọn cách luyện từ vựng')}>
       <button className="dictionary-study-card dictionary-review" onClick={() => onReview('due')}><span className="dictionary-study-icon"><BookOpen size={23} /></span><span><strong>{tr('Start Review', 'Ôn từ đến hạn')}</strong><small>{tr('Recall and use words that are due for review.', 'Gợi nhớ và sử dụng những từ đã đến hạn ôn.')}</small></span><ArrowRight size={19} /></button>
       <button className="dictionary-study-card dictionary-flashcards" onClick={() => onReview()}><span className="dictionary-study-icon"><Layers3 size={23} /></span><span><strong>{tr('Flashcards', 'Thẻ ghi nhớ')}</strong><small>{tr('Flip a card to remember the word’s meaning.', 'Lật thẻ để ghi nhớ nghĩa của từng từ.')}</small></span><ArrowRight size={19} /></button>

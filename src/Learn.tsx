@@ -8,10 +8,11 @@ import { DailyQuests, MotivationStrip } from './Motivation';
 import BuddyCoach from './BuddyCoach';
 import BuddyAvatar from './BuddyAvatar';
 import TutorSpotlight from './TutorSpotlight';
+import PlusTeaser from './PlusTeaser';
 
-type Props = { onGoal: () => void; onLesson: (lesson: Lesson) => void; onTalk: () => void; onWord: () => void; onPractice: () => void; onOpenLeague: () => void; onOpenAchievements: () => void; onTutorPreview: (name: string) => void };
+type Props = { onGoal: () => void; onLesson: (lesson: Lesson) => void; onTalk: () => void; onWord: () => void; onPractice: () => void; onOpenLeague: () => void; onOpenAchievements: () => void; onTutorPreview: (name: string) => void; onPlans: () => void };
 
-export default function Learn({ onGoal, onLesson, onWord, onPractice, onOpenLeague, onOpenAchievements, onTutorPreview }: Props) {
+export default function Learn({ onGoal, onLesson, onWord, onPractice, onOpenLeague, onOpenAchievements, onTutorPreview, onPlans }: Props) {
   const { profile, stats, notify } = useNarra();
   const tr = useCopy();
   const [view, setView] = useState<'List' | 'Journey'>('Journey');
@@ -41,6 +42,7 @@ export default function Learn({ onGoal, onLesson, onWord, onPractice, onOpenLeag
       <div className="lesson-unit-progress"><span>{tr('This unit', 'Chủ đề này')}</span><div className="progress-track" role="progressbar" aria-label={tr('Current unit progress', 'Tiến độ chủ đề hiện tại')} aria-valuemin={0} aria-valuemax={nextChapter.lessons.length} aria-valuenow={doneInUnit}><span style={{ width: `${doneInUnit / nextChapter.lessons.length * 100}%` }} /></div><strong>{doneInUnit}/{nextChapter.lessons.length} {tr('complete', 'đã hoàn thành')}</strong></div>
     </section>
     <div className="lesson-daily-strip" aria-label={tr('Your daily progress', 'Tiến độ hôm nay')}><span><Clock3 size={16} /><strong>{minutesToday}/{profile.dailyGoal}</strong> {tr('min today', 'phút hôm nay')}</span><span><Flame size={17} /><strong>{streak}</strong> {tr('day streak', 'ngày liên tiếp')}</span><button onClick={onGoal}>{tr('Change goal', 'Đổi mục tiêu')}</button></div>
+    <PlusTeaser onOpen={onPlans} />
     <TutorSpotlight compact onPreview={onTutorPreview} />
     <BuddyCoach compact mood={minutesToday >= profile.dailyGoal ? 'cheer' : 'guide'} title={tr('A little practice, with Buddy.', 'Cùng tớ nói một chút nhé?')} message={minutesToday >= profile.dailyGoal ? tr(`You’ve made ${minutesToday} minutes for English today. If you’d like one more little step, “${next.title}” is ready for you.`, `Bạn đã dành ${minutesToday} phút cho tiếng Anh hôm nay rồi. Nếu muốn học thêm một chút, “${next.title}” đang chờ mình nè.`) : tr(`No need to get it perfect. Let’s start “${next.title}” with one short sentence.`, `Chưa cần hoàn hảo đâu. Mình bắt đầu “${next.title}” bằng một câu ngắn nhé.`)} tip={tr('Listen once, then tap the big mic and tell the tutor one little thing. If you get stuck, replay the example and try again. There’s no rush.', 'Bạn nghe mẫu một lần, rồi chạm micro lớn và nói một ý nhỏ thôi. Nếu bí từ, mình nghe lại rồi thử tiếp nhé. Không cần vội.')} phrase={next.id === 'everyday-2' ? 'I usually start my day with a cup of coffee.' : undefined} actionLabel={tr('Open this lesson', 'Mở bài học này')} onAction={() => onLesson(next)} />
     <MotivationStrip onOpenLeague={onOpenLeague} onOpenAchievements={onOpenAchievements}/>

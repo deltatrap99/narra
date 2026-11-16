@@ -3,7 +3,8 @@ import { chapters, scenarios } from './data';
 import { localDateKey, useNarra } from './state';
 
 export type Appearance = { skin: string; hair: string; hairStyle: 'swoop' | 'curly' | 'short'; shirt: string; accessory: 'none' | 'glasses' | 'headphones' };
-export type Player = { handle: string; friendIds: string[]; likedPosts: string[]; dismissedFriends: string[]; appearance: Appearance; planInterest: 'free' | 'plus' | 'family'; shareId: string };
+export type PlanCycle = 'monthly' | 'annual';
+export type Player = { handle: string; friendIds: string[]; likedPosts: string[]; dismissedFriends: string[]; appearance: Appearance; planInterest: 'free' | 'plus' | 'family'; planInterestCycle: PlanCycle | null; shareId: string };
 export type DailyMission = { id: 'say-practice' | 'review-words' | 'daily-goal'; title: string; titleVi: string; progress: number; target: number; xp: number };
 export type Achievement = { id: string; title: string; titleVi: string; description: string; descriptionVi: string; unlocked: boolean; progress: number; target: number; icon: 'talk' | 'word' | 'streak' | 'lesson' };
 const defaultAppearance: Appearance = { skin: '#edb69b', hair: '#25313b', hairStyle: 'swoop', shirt: '#6dd9ff', accessory: 'none' };
@@ -13,6 +14,7 @@ function readPlayer(fallback: Player): Player {
     for (const key of ['handle', 'shareId'] as const) if (typeof raw[key] === 'string' && raw[key].length > 0) result[key] = raw[key].slice(0, 50);
     for (const key of ['friendIds', 'likedPosts', 'dismissedFriends'] as const) if (Array.isArray(raw[key])) result[key] = raw[key].filter((v): v is string => typeof v === 'string').slice(0, 100);
     if (['free', 'plus', 'family'].includes(String(raw.planInterest))) result.planInterest = raw.planInterest as Player['planInterest'];
+    if (raw.planInterestCycle === null || raw.planInterestCycle === 'monthly' || raw.planInterestCycle === 'annual') result.planInterestCycle = raw.planInterestCycle;
     if (raw.appearance && typeof raw.appearance === 'object') { const art = raw.appearance as Record<string, unknown>; for (const key of ['skin', 'hair', 'shirt'] as const) if (typeof art[key] === 'string' && /^#[\da-f]{6}$/i.test(art[key])) result.appearance[key] = art[key]; if (['swoop', 'curly', 'short'].includes(String(art.hairStyle))) result.appearance.hairStyle = art.hairStyle as Appearance['hairStyle']; if (['none', 'glasses', 'headphones'].includes(String(art.accessory))) result.appearance.accessory = art.accessory as Appearance['accessory']; }
     return result;
   } catch { return fallback; }
@@ -35,7 +37,7 @@ function bestHistoricalStreak(dates: string[]) {
 }
 function usePlayerState() {
   const { stats, words, profile } = useNarra();
-  const [player, setPlayer] = useState<Player>(() => readPlayer({ handle: `narra_${profile.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/gi, 'd').replace(/[^a-z0-9]/gi, '').toLowerCase()}`, friendIds: [], likedPosts: [], dismissedFriends: [], appearance: defaultAppearance, planInterest: 'free', shareId: crypto.randomUUID().slice(0, 8) }));
+  const [player, setPlayer] = useState<Player>(() => readPlayer({ handle: `narra_${profile.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/gi, 'd').replace(/[^a-z0-9]/gi, '').toLowerCase()}`, friendIds: [], likedPosts: [], dismissedFriends: [], appearance: defaultAppearance, planInterest: 'free', planInterestCycle: null, shareId: crypto.randomUUID().slice(0, 8) }));
   useEffect(() => { try { localStorage.setItem('narra-player-v1', JSON.stringify(player)); } catch { /* Local play remains available without storage. */ } }, [player]);
   useEffect(() => { const sync = (event: StorageEvent) => { if (event.key === 'narra-player-v1' && event.newValue) setPlayer(current => { const next = readPlayer(current); return JSON.stringify(next) === JSON.stringify(current) ? current : next; }); }; window.addEventListener('storage', sync); return () => window.removeEventListener('storage', sync); }, []);
   const today = stats.activity.filter(a => a.date === localDateKey());

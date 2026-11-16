@@ -30,7 +30,7 @@ function Medal({ kind = 'sapphire', small = false, icon = 'trophy', locked = fal
   return <span className={'community-medal medal-'+kind+(small ? ' medal-small' : '')+(locked ? ' medal-locked' : '')} aria-hidden="true"><span><Icon strokeWidth={2.4} /></span><i /></span>;
 }
 function EmptyBuddy({ title, text, action, onAction }: { title: string; text: string; action?: string; onAction?: () => void }) { return <div className="community-empty"><BuddyAvatar mood="curious" size={105} /><h3>{title}</h3><p>{text}</p>{action && onAction && <button className="community-text-button" onClick={onAction}>{action}<ArrowRight size={15} /></button>}</div>; }
-function PlansCard({ tr, onPlans }: { tr: Copy; onPlans: () => void }) { return <button className="community-plans-card" onClick={onPlans}><span className="community-plans-icon"><Crown size={24} /></span><span><strong>{tr('A little more room to grow', 'Thêm không gian để tiến bộ')}</strong><small>{tr('Explore Narra Plus & Family', 'Khám phá Narra Plus & Family')}</small></span><ChevronRight size={20} /></button>; }
+function PlansCard({ tr, onPlans }: { tr: Copy; onPlans: () => void }) { return <button className="community-plans-card" onClick={onPlans}><span className="community-plans-icon"><Crown size={24} /></span><span><strong>{tr('A little more room to grow', 'Thêm không gian để tiến bộ')}</strong><small>{tr('What’s in Narra Plus?', 'Narra Plus có gì hay?')}</small></span><ChevronRight size={20} /></button>; }
 function Arena({ onLesson, onFriends, onView }: { onLesson: () => void; onFriends: () => void; onView: (person: Person) => void }) {
   const tr = useCopy(); const { profile, stats } = useNarra(); const { xp, level, dailyMissions } = usePlayer();
   const [today,setToday] = useState(localDateKey);

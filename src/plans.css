@@ -88,6 +88,8 @@ html[data-brand='option5'] :is(.plans-dialog, .plus-discovery, .profile-plan-sta
 .plans-notice > svg { flex-shrink: 0; margin-top: 2px; }
 .plans-clear { display: block; padding: 12px 0; margin: 0 auto; min-height: 44px; border: 0; background: none; color: var(--plans-muted); text-decoration: underline; text-underline-offset: 3px; font: inherit; font-size: 12px; }
 .plans-comparison, .plans-faq { margin-top: 40px; }
+.plans-comparison > summary { min-height: 48px; padding: 14px 4px; color: var(--plans-ink); font-size: 18px; font-weight: 800; cursor: pointer; }
+.plans-comparison[open] > summary { margin-bottom: 14px; }
 .plans-section-heading h2, .plans-faq h2 { margin: 0 0 10px; color: var(--plans-ink); font-size: 23px; line-height: 1.35; }
 .plans-section-heading p { margin: 0 0 20px; max-width: 760px; color: var(--plans-muted); font-size: 13px; line-height: 1.7; }
 .plans-table-wrap { overflow-x: auto; border: 1px solid var(--plans-line); border-radius: 20px; background: var(--plans-paper); }

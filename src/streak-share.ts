@@ -33,8 +33,8 @@ export async function createStreakCard(milestone: StreakMilestone, copy: StreakC
   if (copy.tone === 'cheeky') { ctx.strokeStyle = '#fff'; ctx.lineWidth = 15; ctx.lineJoin = 'round'; ctx.strokeText(String(milestone.days), 540, 421); }
   ctx.fillStyle = palette.ink; ctx.fillText(String(milestone.days), 540, 421);
   ctx.font = '900 29px Nunito, sans-serif'; ctx.fillText(copy.days, 540, 474);
-  const scale = Math.min(760 / mascot.naturalWidth, 650 / mascot.naturalHeight), width = mascot.naturalWidth * scale, height = mascot.naturalHeight * scale;
-  ctx.drawImage(mascot, (1080 - width) / 2, 475 + (650 - height) / 2, width, height);
+  const scale = Math.min(760 / mascot.naturalWidth, 610 / mascot.naturalHeight), width = mascot.naturalWidth * scale, height = mascot.naturalHeight * scale;
+  ctx.drawImage(mascot, (1080 - width) / 2, 515 + (610 - height) / 2, width, height);
   let size = 67; do { ctx.font = `850 ${size}px Quicksand, sans-serif`; if (ctx.measureText(copy.caption).width <= 950) break; size--; } while (size > 28);
   ctx.fillStyle = palette.ink; ctx.fillText(copy.caption, 540, 1176);
   const letters = Array.from(copy.name), name = letters.slice(0, 28).join('') + (letters.length > 28 ? '…' : '');

@@ -24,6 +24,7 @@ import { brandAsset, brandVariant, isOption5 } from './brand-variant';
 const TutorPreview = lazy(() => import('./TutorPreview'));
 const ChallengeRoom = lazy(() => import('./ChallengeRoom'));
 const Option5LaunchScreen = lazy(() => import('./Option5LaunchScreen'));
+const launchSessionKey = `narra-launch-${isOption5 ? 'v5' : 'v4'}:${brandVariant}`;
 
 type CommunitySection = 'league' | 'friends' | 'feed' | 'achievements';
 type Overlay = { kind: 'goal' | 'tutors' | 'pronunciation' | 'word-pronunciation' | 'workout' | 'shadowing' | 'writing' | 'create' | 'add' | 'talk' | 'avatar' | 'plans' | 'share' } | { kind: 'lesson' | 'lesson-speaking'; lesson: Lesson } | { kind: 'scenario'; scenario: Scenario } | { kind: 'flashcards'; collection?: string } | { kind: 'community'; section: CommunitySection };
@@ -46,8 +47,8 @@ export default function App() {
   const communityTrigger = useRef<HTMLElement | null>(null);
   const openCommunityExtra = (kind: 'share' | 'plans') => { communityTrigger.current = document.activeElement as HTMLElement | null; setCommunityExtra(kind); };
   const closeCommunityExtra = () => { setCommunityExtra(null); requestAnimationFrame(() => { if (communityTrigger.current?.isConnected) communityTrigger.current.focus({ preventScroll: true }); }); };
-  const [launching, setLaunching] = useState(() => { try { return sessionStorage.getItem('narra-launch-v4:'+brandVariant) !== 'seen'; } catch { return true; } });
-  const finishLaunch = useCallback(() => { try { sessionStorage.setItem('narra-launch-v4:'+brandVariant, 'seen'); } catch { /* Opening remains available without storage. */ } setLaunching(false); }, []);
+  const [launching, setLaunching] = useState(() => { try { return sessionStorage.getItem(launchSessionKey) !== 'seen'; } catch { return true; } });
+  const finishLaunch = useCallback(() => { try { sessionStorage.setItem(launchSessionKey, 'seen'); } catch { /* Opening remains available without storage. */ } setLaunching(false); }, []);
   const [dark, setDark] = useState(() => profile.theme === 'dark' || profile.theme === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
   useEffect(() => { document.documentElement.lang = profile.uiLanguage === 'Tiếng Việt' ? 'vi' : 'en'; }, [profile.uiLanguage]);
   useEffect(() => { const media = matchMedia('(prefers-color-scheme: dark)'); const apply = () => { const next = profile.theme === 'dark' || profile.theme === 'system' && media.matches; setDark(next); document.documentElement.dataset.theme = next ? 'dark' : 'light'; document.documentElement.style.colorScheme = next ? 'dark' : 'light'; }; apply(); media.addEventListener('change', apply); return () => media.removeEventListener('change', apply); }, [profile.theme]);

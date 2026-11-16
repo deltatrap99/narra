@@ -278,12 +278,6 @@ html[data-brand="option5"] .challenge-timer { background: conic-gradient(var(--o
 html[data-brand="option5"] .challenge-last-seconds .challenge-timer { background: conic-gradient(var(--o5-orange) var(--challenge-progress), var(--line) 0); }
 html[data-brand="option5"] :is(.challenge-leave, .challenge-error, .conversation-voice-error, .tutor-preview-notice) { background: var(--peach); color: var(--text); border-color: color-mix(in srgb, var(--o5-orange) 40%, var(--line)); }
 html[data-brand="option5"] :is(.challenge-notice, .conversation-notice) { background: var(--lavender); color: var(--text); border-color: var(--line); }
-html[data-brand="option5"] .narra-launch { background: var(--background); color: var(--text); }
-html[data-brand="option5"] .narra-launch::before { background: radial-gradient(ellipse at 50% 48%, var(--surface) 0%, transparent 59%), radial-gradient(ellipse at 99% 99%, #e9d6ff66 0%, transparent 42%), radial-gradient(ellipse at 0% 0%, #ffdded55 0%, transparent 34%); }
-html[data-brand="option5"] :is(.narra-launch-skip, .narra-launch-skip > span, .narra-launch-tagline, .narra-launch-corner) { color: var(--muted); }
-html[data-brand="option5"] .narra-launch-skip { background: var(--o5-glass); }
-html[data-brand="option5"] .narra-launch-orbit.orbit-lime { border-color: #c8aff3; }
-html[data-brand="option5"] .narra-launch-orbit.orbit-cyan { border-color: #edb7d9; }
 
 /* Dark-only contrast corrections for legacy component ink. */
 html[data-brand="option5"][data-theme="dark"] :is(.dictionary-review, .dictionary-review strong, .dictionary-review small, .dictionary-review > svg, .dictionary-review .dictionary-study-icon, .primary-button, .player-extra-primary, .plan-family > .player-extra-primary, .nav-item.active, .player-level-pill) { color: #fff; }

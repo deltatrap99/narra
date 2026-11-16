@@ -27,9 +27,9 @@
     },
     {
       "brand": "option5",
-      "asset": "public/brand/option5/tutor-desk-sprites.png",
-      "reference": "public/brand/option5/excited.webp",
-      "generatedSource": "exec-095dd5f5-94cf-47d5-9445-c24d4f5f8240.png",
+      "asset": "public/brand/option5/tutor-mic-sprites.png",
+      "reference": "Existing Option 5 desk sprite and user-supplied armless speaking-flow board",
+      "generatedSource": "exec-fdb40e65-f88b-46fb-b539-a1df3199d993.png",
       "dimensions": [
         2172,
         724
@@ -44,8 +44,11 @@
         "laughing"
       ],
       "alpha": true,
-      "bytes": 1407942,
-      "sha256": "086eb8544d351de2ddb14f421c9a6b42db7648f43a153c449e68b447f8eb6342"
+      "bytes": 1318508,
+      "sha256": "af13a94630392f1ec7a6f8aac43fe6e47161c9c30e11f62baeab0265050f465b",
+      "previousAsset": "public/brand/option5/tutor-desk-sprites.png",
+      "prompts": "tools/option5-mic-prompts.md",
+      "direction": "No phone or held props, natural armless torso; separate HTML microphone button"
     }
   ]
 }

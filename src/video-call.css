@@ -688,3 +688,20 @@
   .video-call-mode .learner-pip { width: 86px; height: 110px; }
   .video-call-mode .learner-pip .personal-avatar { width: 58px; height: 63px; }
 }
+
+html[data-brand=option5] .video-call-mode .call-controls .conversation-primary-mic { display: flex; align-items: center; justify-content: center; flex: 0 0 clamp(116px, 35vw, 188px); gap: 10px; width: clamp(116px, 35vw, 188px); min-width: 0; border-radius: 24px; padding: 10px 16px; }
+.option5-mic-label { flex: 1; min-width: 0; font: 900 13px/1.25 Nunito, sans-serif; text-align: left; max-width: 100px; }
+@media (max-width: 720px) {
+  html[data-brand=option5] .video-call-mode .call-controls { gap: 8px; padding-inline: 10px; }
+  html[data-brand=option5] .video-call-mode .call-controls .conversation-primary-mic { height: 62px; padding-inline: 10px; gap: 8px; border-radius: 21px; }
+  html[data-brand=option5] .video-call-mode .call-controls .voice-side-control { width: 42px; height: 42px; }
+  html[data-brand=option5] .video-call-mode .call-end-button { min-width: 42px; }
+  .option5-mic-label { font-size: 12px; }
+}
+@media (max-width: 360px) {
+  html[data-brand=option5] .video-call-mode .call-controls { gap: 6px; padding-inline: 8px; }
+  html[data-brand=option5] .video-call-mode .call-controls .voice-side-control { width: 36px; height: 40px; }
+  html[data-brand=option5] .video-call-mode .call-controls .conversation-primary-mic { padding-inline: 8px; gap: 5px; }
+  html[data-brand=option5] .video-call-mode .call-controls .conversation-primary-mic > svg { width: 25px; height: 25px; }
+  html[data-brand=option5] .video-call-mode .call-end-button { min-width: 36px; padding-inline: 4px; }
+}

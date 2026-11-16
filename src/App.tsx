@@ -16,6 +16,7 @@ import LaunchScreen from './LaunchScreen';
 import CommunityHub from './CommunityHub';
 import { AvatarStudio, ShareProfile } from './PlayerExtras';
 import PlansPanel from './PlansPanel';
+import { StreakMilestoneCelebration } from './StreakJourney';
 import LanguageSwitch from './LanguageSwitch';
 import { CreateDialog, FlashcardsDialog, GoalDialog, SpeakingDialog, WritingDialog } from './Sessions';
 import './header-arena.css';
@@ -92,5 +93,5 @@ export default function App() {
     {communityExtra === 'share' && <ShareProfile onClose={closeCommunityExtra} />}
     {tutorPreview && <Suspense fallback={<div className="feature-loading" role="status">{tr('Getting your tutor ready…', 'Gia sư đang đến nè…')}</div>}><TutorPreview name={tutorPreview} onClose={() => setTutorPreview(null)} onTalk={() => { setProfile({ ...profile, tutor: tutorPreview }); setTutorPreview(null); talk(); }} /></Suspense>}
     {challenge && <Suspense fallback={<div className="feature-loading" role="status">{tr('Opening your challenge…', 'Tớ đang mở thử thách…')}</div>}><ChallengeRoom roomId={challenge.roomId} friend={challenge.friend} onClose={closeChallenge} /></Suspense>}
-  </div>{plansOpen && <PlansPanel onClose={closePlans} />}{launching && (isOption5 ? <Suspense fallback={<div className="feature-loading" role="status">Narra</div>}><Option5LaunchScreen onDone={finishLaunch}/></Suspense> : <LaunchScreen onDone={finishLaunch} />)}</>;
+  </div>{plansOpen && <PlansPanel onClose={closePlans} />}<StreakMilestoneCelebration paused={launching || !!overlay || plansOpen || !!tutorPreview || !!challenge} />{launching && (isOption5 ? <Suspense fallback={<div className="feature-loading" role="status">Narra</div>}><Option5LaunchScreen onDone={finishLaunch}/></Suspense> : <LaunchScreen onDone={finishLaunch} />)}</>;
 }

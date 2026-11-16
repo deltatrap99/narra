@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { initialWords, type Word } from './data';
+import { streakState } from './streaks';
 
 export type Tab = 'Lesson' | 'Practice' | 'Dictionary' | 'Profile';
 export type Activity = { date: string; minutes: number; label: string; score?: number };
@@ -36,9 +37,7 @@ function restoreWords(value: unknown): Word[] {
 }
 export function localDateKey(date = new Date()) { return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Bangkok', year: 'numeric', month: '2-digit', day: '2-digit' }).format(date); }
 export function activityStreak(activity: Activity[]) {
-  const dates = new Set(activity.map(a => a.date)); let streak = 0; const cursor = new Date();
-  while (streak < 366 && dates.has(localDateKey(cursor))) { streak++; cursor.setUTCDate(cursor.getUTCDate() - 1); }
-  return streak;
+  return streakState(activity.map(a => a.date), localDateKey()).current;
 }
 function useStored<T>(key: string, initial: T, restore: (value: unknown) => T) {
   const [value, setValue] = useState<T>(() => {
@@ -53,6 +52,8 @@ function useStored<T>(key: string, initial: T, restore: (value: unknown) => T) {
 }
 
 function useNarraState() {
+  const [today, setToday] = useState(localDateKey);
+  useEffect(() => { const timer = window.setInterval(() => setToday(localDateKey()), 60_000); return () => window.clearInterval(timer); }, []);
   const [profile, setProfile] = useStored('narra-profile-v1', defaultProfile, restoreProfile);
   const [stats, setStats] = useStored('narra-stats-v1', defaultStats, restoreStats);
   const [words, setWords] = useStored<Word[]>('narra-words-v1', initialWords, restoreWords);
@@ -68,7 +69,7 @@ function useNarraState() {
     const today = localDateKey();
     setStats(s => ({ ...s, minutes: s.minutes + minutes, activity: [{ date: today, label, minutes, score }, ...s.activity] }));
   }
-  return { profile, setProfile, stats, setStats, words, setWords, tab, navigate, toast, notify: setToast, logActivity };
+  return { profile, setProfile, stats, setStats, words, setWords, tab, navigate, toast, notify: setToast, logActivity, today };
 }
 const Context = createContext<ReturnType<typeof useNarraState> | null>(null);
 export function NarraProvider({ children }: { children: ReactNode }) { const value = useNarraState(); return <Context.Provider value={value}>{children}</Context.Provider>; }

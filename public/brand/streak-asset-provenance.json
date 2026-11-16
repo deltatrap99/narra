@@ -1,0 +1,9 @@
+{
+  "created": "2026-11-16",
+  "tool": "OpenAI image generation",
+  "purpose": "Narra streak celebration cards with a winking thumbs-up pose",
+  "assets": [
+    { "file": "/brand/streak-cheer.png", "reference": "/brand/mood-celebrate.webp", "identity": "Original blue fuzzy speech-bubble Buddy" },
+    { "file": "/brand/option5/streak-cheer.png", "reference": "/brand/option5/wink.webp", "identity": "Option 5 purple/cyan caterpillar Buddy with N headphones" }
+  ]
+}

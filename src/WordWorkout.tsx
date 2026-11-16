@@ -50,10 +50,10 @@ function wordType(word: Word) {
   return referenceTypes[word.word.toLocaleLowerCase('en')] ?? (word.word.includes(' ') ? 'phrase' : 'word');
 }
 
-function Feedback({ attempt, onHear }: { attempt: Attempt; onHear: () => void }) {
+function Feedback({ attempt, chain, onHear }: { attempt: Attempt; chain: number; onHear: () => void }) {
   const tr = useCopy();
   return <section className={`workout-feedback ${attempt.correct ? 'is-correct' : 'is-missed'}`} role="status">
-    <h3><BuddyAvatar mood={attempt.correct ? 'celebrate' : 'encourage'} size={64} /><span>{attempt.correct ? tr("That’s it, you remembered this one!", 'Đúng rồi, bạn nhớ từ này rồi.') : tr("Let’s try another way to remember this one.", "Từ này chưa khớp, mình thử cách khác nhé.")}</span></h3>
+    <h3><BuddyAvatar key={attempt.word.id} mood={attempt.revealed ? 'curious' : attempt.correct ? chain >= 3 ? 'proud' : 'celebrate' : chain >= 2 ? 'encourage' : 'curious'} size={80} /><span>{attempt.revealed ? tr('A little clue, then we can try it together!', 'Một gợi ý nhỏ, rồi mình thử cùng nhau nhé!') : attempt.correct ? chain >= 3 ? tr(`${chain} in a row, Buddy is so proud of your practice!`, `${chain} từ đúng liên tiếp, Buddy tự hào về bạn lắm nè!`) : tr("That’s it, you remembered this one!", 'Đúng rồi, bạn nhớ từ này rồi.') : chain >= 2 ? tr('These words need a little more time, and Buddy is cheering you on!', 'Những từ này cần thêm chút thời gian, Buddy đang cổ vũ bạn nè!') : tr("Let’s try another way to remember this one.", "Từ này chưa khớp, mình thử cách khác nhé.")}</span></h3>
     <strong>{attempt.word.word}</strong><p>{attempt.word.definition}</p><p className="workout-example">{attempt.word.example}</p>
     <p className="workout-saved-note">{attempt.correct ? tr('Saved to your review history.', 'Đã lưu vào lịch sử ôn tập.') : tr("Marked for another review so you can retry it after this workout.", "Đã đánh dấu để bạn có thể ôn lại sau lượt này nhé.")}</p>
     <div className="workout-feedback-buddy"><BuddyCoach compact showAvatar={false} title={tr(attempt.correct ? 'Try a sentence of your own' : 'Let’s hear it together', attempt.correct ? 'Mình thử đặt một câu nhé' : 'Mình cùng nghe lại nhé')} message={tr(attempt.correct ? "Now that you’ve got the word, how would you use it in your day?" : 'Let’s read the meaning, hear the example, and say it once together.', attempt.correct ? "Bạn nhớ từ này rồi, nếu dùng trong ngày của bạn thì câu sẽ thế nào nhỉ?" : 'Mình đọc nghĩa, nghe câu ví dụ rồi thử nói lại một lần nhé.')} tip={tr('Connect the word to something you do, know, or plan to try. A personal example gives you another way to remember it.', 'Gắn từ này với một điều bạn làm, biết hoặc muốn thử. Ví dụ của riêng bạn giúp bạn có thêm cách ghi nhớ.')} actionLabel={tr('Listen to the example', 'Nghe câu ví dụ')} onAction={onHear} mood={attempt.correct ? 'cheer' : 'focus'} /></div>
@@ -79,6 +79,8 @@ export default function WordWorkout({ onClose }: { onClose: () => void }) {
   const word = deck[index];
   const missed = attempts.filter(attempt => !attempt.correct).map(attempt => attempt.word);
   const correct = attempts.filter(attempt => attempt.correct).length;
+  let reactionChain = 0;
+  for (let i = attempts.length - 1; i >= 0 && attempts[i].correct === attempts.at(-1)?.correct; i--) reactionChain++;
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null;
     const oldOverflow = document.body.style.overflow;
@@ -144,7 +146,7 @@ export default function WordWorkout({ onClose }: { onClose: () => void }) {
           {!feedback && <div className="workout-question-buddy"><BuddyCoach compact key={mode+'-'+word.id} message={tr('One little clue, then it’s your turn.', 'Mình thử một gợi ý rồi đến lượt bạn nhé.')} tip={buddyWorkoutTip(mode, word.word.trim().split(/\s+/).length, tr)} actionLabel={tr(mode === 'Listening' ? 'Replay the word' : 'Try my answer', mode === 'Listening' ? 'Nghe lại từ' : 'Thử trả lời')} onAction={() => { if (mode === 'Listening') hear(word.word); else inputRef.current?.focus(); }} mood="focus" /></div>}
           <label className="workout-answer-label"><span className="workout-sr-only">{tr('Your English answer', 'Câu trả lời bằng tiếng Anh')}</span><input ref={inputRef} value={answer} onChange={event => setAnswer(event.target.value)} placeholder={tr('Type the English word or phrase', 'Nhập từ hoặc cụm từ tiếng Anh')} disabled={!!feedback} autoComplete="off" autoCorrect="off" spellCheck={false} aria-describedby="workout-answer-help" /></label>
           {!feedback && <button type="button" id="workout-answer-help" className="workout-show" onClick={() => checkAnswer(true)}>{tr('Show me the answer', 'Cho mình xem đáp án')}</button>}
-          {feedback && <Feedback attempt={feedback} onHear={() => hear(word.example)} />}
+          {feedback && <Feedback attempt={feedback} chain={reactionChain} onHear={() => hear(word.example)} />}
           <div className="workout-bottom"><button className="workout-primary" type="submit" disabled={!feedback && !answer.trim()}>{feedback ? index + 1 === deck.length ? tr('Finish workout', 'Hoàn thành lượt ôn') : tr('Next word', 'Từ tiếp theo') : tr('Check answer', 'Kiểm tra đáp án')}</button></div>
         </form>}
         {phase === 'complete' && <section className="workout-complete"><div style={{ display: 'flex', justifyContent: 'center', marginBottom: 14 }}><BuddyAvatar mood={correct === deck.length ? 'celebrate' : 'proud'} size={112} /></div><h2>{tr('That’s this round done.', 'Mình xong lượt này rồi.')}</h2><p>{tr('A little closer to making these words yours.', 'Thêm một bước để sử dụng những từ này tự tin hơn.')}</p>

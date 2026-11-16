@@ -12,6 +12,7 @@ import './readability.css';
 import './brand-option5.css';
 import './focus-layout.css';
 import './home-dashboard.css';
+import './home-chapter-path.css';
 import { initializeBrand } from './brand-variant';
 
 initializeBrand();

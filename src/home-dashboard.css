@@ -69,18 +69,6 @@ html[data-brand='option5'] .home-dashboard {
 .home-chapter header > div > span { font-size: 9px; font-weight: 850; letter-spacing: 1px; color: var(--muted); }
 .home-chapter h2 { margin: 5px 0 0; font-size: 17px; line-height: 1.4; font-weight: 750; color: var(--text); }
 .home-chapter-count { display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px; border: 1px solid var(--line); border-radius: 20px; color: var(--muted); font-size: 10px; font-weight: 800; white-space: nowrap; }
-.home-chapter-stops { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px; list-style: none; margin: 0; padding: 0; }
-.home-chapter-stops > li { position: relative; min-width: 0; }
-.home-chapter-stops > li:not(:last-child):after { content: ''; position: absolute; top: 28px; right: -19px; width: 14px; border-top: 2px dotted var(--line); }
-.home-chapter-stops button { display: flex; align-items: center; gap: 12px; min-height: 76px; width: 100%; padding: 12px; border: 1px solid var(--line); border-radius: 16px; background: var(--background); color: var(--text); font: inherit; text-align: left; cursor: pointer; }
-.home-chapter-stops button[aria-disabled='true'] { color: var(--muted); }
-.home-stop-marker { display: grid; place-items: center; flex-shrink: 0; width: 34px; height: 34px; border: 1px solid var(--line); border-radius: 50%; background: var(--surface); color: var(--muted); font-size: 12px; font-weight: 850; }
-.home-stop-copy { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-.home-stop-copy strong { font-size: 12px; font-weight: 800; line-height: 1.45; overflow-wrap: anywhere; }
-.home-stop-copy small { color: var(--muted); font-size: 9px; line-height: 1.4; }
-.home-chapter-stops .is-complete .home-stop-marker { background: var(--green); border-color: var(--green); color: var(--purple); }
-.home-chapter-stops .is-current button { border-color: var(--brand-lime); background: color-mix(in srgb,var(--brand-lime) 6%,var(--surface)); }
-.home-chapter-stops .is-current .home-stop-marker { border-color: var(--brand-lime); background: var(--brand-lime); color: var(--focus-on-accent); }
 .home-little-extras { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .home-little-extras > button { display: flex; align-items: center; gap: 16px; min-width: 0; min-height: 126px; padding: 20px; border: 1px solid var(--line); border-radius: 22px; background: var(--surface); color: var(--text); font: inherit; text-align: left; cursor: pointer; }
 .home-little-extras > button > svg:last-child { margin-left: auto; flex-shrink: 0; color: var(--muted); }
@@ -104,8 +92,6 @@ html[data-brand='option5'] .home-dashboard {
   .home-buddy-orbit { width: 205px; height: 205px; left: -8px; top: 42px; }
   .home-buddy-note { font-size: 10px; top: 14px; left: 2px; }
   .home-buddy-ground { left: 29px; width: 140px; bottom: 0; }
-  .home-chapter-stops button { flex-direction: column; align-items: flex-start; }
-  .home-chapter-stops > li:not(:last-child):after { top: 30px; }
 }
 @media(max-width:800px) {
   .home-feature-grid { grid-template-columns: 1fr; }
@@ -121,7 +107,6 @@ html[data-brand='option5'] .home-dashboard {
   .home-streak-next { grid-column: 2; }
   .home-streak-track { grid-column: 2; margin-bottom: 8px; }
   .home-streak-action { grid-column: 1 / -1; margin-top: 8px; }
-  .home-chapter-stops button { flex-direction: row; align-items: center; }
   .home-little-extras { gap: 16px; }
   .home-little-extras > button { padding: 16px; gap: 12px; }
   .home-extra-icon { width: 40px; height: 48px; }
@@ -166,12 +151,6 @@ html[data-brand='option5'] .home-dashboard {
   .home-chapter header > div > span { font-size: 8px; }
   .home-chapter h2 { font-size: 14px; }
   .home-chapter-count { font-size: 9px; padding: 4px 7px; }
-  .home-chapter-stops { gap: 12px; }
-  .home-chapter-stops button { height: 100%; min-height: 116px; flex-direction: column; align-items: flex-start; gap: 10px; padding: 9px 7px; border-radius: 12px; }
-  .home-chapter-stops > li:not(:last-child):after { right: -10px; width: 7px; top: 28px; }
-  .home-stop-marker { width: 28px; height: 28px; }
-  .home-stop-copy strong { font-size: 10px; line-height: 1.5; }
-  .home-stop-copy small { font-size: 8px; }
   .home-little-extras { grid-template-columns: 1fr; gap: 12px; }
   .home-little-extras > button { min-height: 104px; padding: 16px 18px; border-radius: 20px; }
   .home-extra-copy > small { font-size: 8px; }

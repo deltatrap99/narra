@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowRight, Award, BookOpen, Check, ChevronRight, Clock3, Flame, Headphones, LockKeyhole, Play, Sparkles } from 'lucide-react';
+import { ArrowRight, Award, BookOpen, ChevronRight, Clock3, Flame, Headphones, Sparkles } from 'lucide-react';
 import BuddyAvatar from './BuddyAvatar';
 import { Avatar } from './ui';
 import { useCopy, useNarra } from './state';
@@ -7,6 +7,7 @@ import { usePlayer } from './game';
 import { STREAK_MILESTONES, type StreakMilestone } from './streaks';
 import { StreakShareDialog } from './StreakJourney';
 import type { Chapter, Lesson } from './data';
+import HomeChapterPath from './HomeChapterPath';
 
 type Props = {
   lesson: Lesson;
@@ -30,7 +31,6 @@ export default function HomeToday({ lesson, chapter, unitIndex, journeyComplete,
   const latestEarned = [...STREAK_MILESTONES].reverse().find(m => streakJourney.earnedDates[m.days]);
   const dueWords = words.filter(word => word.due);
   const previewWords = (dueWords.length ? dueWords : words).slice(0, 3);
-  const unitDone = chapter.lessons.filter(item => stats.completed.includes(item.id)).length;
   const dayProgress = Math.min(100, minutesToday / Math.max(1, profile.dailyGoal) * 100);
   const streakProgress = nextMilestone ? Math.min(100, streakJourney.current / nextMilestone.days * 100) : 100;
 
@@ -65,15 +65,7 @@ export default function HomeToday({ lesson, chapter, unitIndex, journeyComplete,
       </section>
     </div>
 
-    <section className="home-chapter" aria-labelledby="home-chapter-title">
-      <header><div><span>{tr('MY CURRENT CHAPTER', 'CHẶNG NÀY CỦA MÌNH')}</span><h2 id="home-chapter-title">{chapter.title}</h2></div><span className="home-chapter-count">{unitDone}/{chapter.lessons.length}<Check size={13} /></span></header>
-      <ol className="home-chapter-stops">{chapter.lessons.map((item, index) => {
-        const completed = stats.completed.includes(item.id);
-        const available = completed || index === 0 || stats.completed.includes(chapter.lessons[index - 1].id);
-        const current = item.id === lesson.id;
-        return <li key={item.id} className={`${completed ? 'is-complete' : ''} ${current ? 'is-current' : ''}`}><button type="button" aria-disabled={!available} onClick={() => onLesson(item, available)} aria-label={`${item.title}, ${tr(completed ? 'completed, revisit' : current ? 'your next lesson' : available ? 'available' : 'finish the previous lesson first', completed ? 'đã hoàn thành, ôn lại' : current ? 'bài học tiếp theo' : available ? 'có thể học' : 'học xong bài trước để mở')}`}><span className="home-stop-marker" aria-hidden="true">{completed ? <Check size={17} /> : current ? <Play size={14} fill="currentColor" /> : available ? String(index + 1).padStart(2, '0') : <LockKeyhole size={15} />}</span><span className="home-stop-copy"><strong>{item.title}</strong><small>{tr(completed ? 'Nicely done!' : current ? 'You’re here' : available ? 'Ready for you' : 'Coming up', completed ? 'Xong rồi nè!' : current ? 'Mình đang ở đây' : available ? 'Sẵn sàng rồi' : 'Sắp tới nhé')}</small></span></button></li>;
-      })}</ol>
-    </section>
+    <HomeChapterPath chapter={chapter} completed={stats.completed} nextId={lesson.id} onLesson={onLesson} />
 
     <div className="home-little-extras">
       <button type="button" className="home-word-invite" onClick={onWord}><span className="home-extra-icon"><BookOpen size={25} /></span><span className="home-extra-copy"><small>{tr('A LITTLE WORD REUNION', 'HỘI NGỘ VÀI TỪ QUEN')}</small><strong>{dueWords.length ? tr(dueWords.length === 1 ? 'One word is calling you!' : `${dueWords.length} words are calling you!`, `${dueWords.length} từ đang réo bạn!`) : tr('Keep a little discovery', 'Góp nhặt một từ hay')}</strong><span className="home-word-tags">{previewWords.length ? previewWords.map(word => <span key={word.id}>{word.word}</span>) : tr('Your collection starts here', 'Bộ sưu tập bắt đầu từ đây')}</span></span><ChevronRight size={18} /></button>

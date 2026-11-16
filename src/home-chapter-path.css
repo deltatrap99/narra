@@ -1,0 +1,87 @@
+/* A compact chapter map; the full course remains in the learning-path disclosure. */
+.home-chapter-map { padding-bottom: 8px; overflow: hidden; }
+.home-chapter-map > header { margin-bottom: 12px; }
+.chapter-path-stage { container-type: inline-size; position: relative; height: 308px; isolation: isolate; border-radius: 20px; background-color: color-mix(in srgb,var(--brand-lime) 2%,var(--surface)); background-image: radial-gradient(color-mix(in srgb,var(--muted) 12%,transparent) .7px,transparent .7px); background-size: 20px 20px; }
+.chapter-path-meadow { position: absolute; z-index: -1; border-radius: 48% 52% 57% 43%; background: color-mix(in srgb,var(--brand-lime) 5%,var(--surface)); }
+.chapter-path-meadow.meadow-one { left: 3%; top: 18%; width: 29%; height: 52%; transform: rotate(-18deg); }
+.chapter-path-meadow.meadow-two { right: 2%; top: 28%; width: 34%; height: 53%; transform: rotate(13deg); }
+.chapter-path-road { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.chapter-path-road path { fill: none; vector-effect: non-scaling-stroke; stroke-linecap: round; stroke-linejoin: round; }
+.chapter-road-edge { stroke: var(--line); stroke-width: 19px; }
+.chapter-road-fill { stroke: color-mix(in srgb,var(--brand-lime) 7%,var(--surface)); stroke-width: 15px; }
+.chapter-road-fill.is-travelled { stroke: color-mix(in srgb,var(--brand-lime) 74%,var(--surface)); }
+.chapter-road-dashes { stroke: color-mix(in srgb,var(--purple) 24%,var(--surface)); stroke-width: 2px; stroke-dasharray: 2 9; }
+.road-mobile { display: none; }
+.chapter-path-landmark { position: absolute; left: 29%; top: 56%; width: 56px; height: 66px; pointer-events: none; }
+.chapter-path-landmark > .art { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 5px 4px #00000008); }
+.chapter-path-landmark > svg { position: absolute; top: 0; right: -12px; color: var(--purple); opacity: .6; }
+.chapter-path-sun { position: absolute; left: 76%; top: 8%; color: var(--brand-orange); opacity: .55; pointer-events: none; }
+.chapter-path-finish { position: absolute; left: 93.5%; top: 48.05%; width: 40px; height: 40px; transform: translate(-50%,-100%); color: var(--purple); pointer-events: none; }
+.chapter-path-finish > svg:first-child { position: absolute; bottom: 0; left: 9px; fill: color-mix(in srgb,var(--brand-lime) 15%,var(--surface)); }
+.chapter-path-finish > span { position: absolute; z-index: -1; bottom: -6px; left: 0; width: 44px; height: 13px; border-radius: 50%; background: var(--line); }
+.chapter-path-finish > svg:last-child:not(:first-child) { position: absolute; top: -10px; right: -17px; color: var(--brand-orange); }
+.chapter-path-stops { list-style: none; margin: 0; padding: 0; }
+.chapter-path-stop { position: absolute; z-index: 2; left: var(--path-x); top: var(--path-y); width: 0; height: 0; }
+.chapter-path-stop > button { position: absolute; display: flex; flex-direction: column; align-items: center; width: 190px; min-height: 108px; top: -32px; left: -95px; gap: 13px; padding: 0; border: 0; background: transparent; font: inherit; color: var(--text); cursor: pointer; }
+.chapter-stop-mark { position: relative; display: grid; place-items: center; width: 64px; height: 64px; flex-shrink: 0; border: 2px solid var(--line); border-radius: 50%; background: var(--surface); box-shadow: 0 5px 0 var(--line),0 9px 12px #00000007; color: var(--muted); transition: transform .18s,box-shadow .18s; }
+.chapter-stop-mark > strong { font-family: Quicksand,sans-serif; font-weight: 850; font-size: 20px; }
+.chapter-stop-mark > i { display: grid; place-items: center; position: absolute; right: -2px; bottom: -2px; width: 22px; height: 22px; border: 2px solid var(--surface); border-radius: 50%; background: var(--line); color: var(--muted); font-style: normal; }
+.chapter-stop-copy { display: flex; flex-direction: column; align-items: center; gap: 5px; max-width: 100%; text-align: center; }
+.chapter-stop-copy > strong { max-width: 100%; font-size: 13px; font-weight: 800; line-height: 1.45; text-wrap: balance; }
+.chapter-stop-copy > small { color: var(--muted); font-size: 10px; line-height: 1.5; }
+.chapter-path-stop.is-done .chapter-stop-mark { background: var(--green); border-color: color-mix(in srgb,var(--brand-lime) 25%,var(--line)); color: var(--purple); box-shadow: 0 5px 0 color-mix(in srgb,var(--brand-lime) 24%,var(--line)),0 9px 12px #00000007; }
+.chapter-path-stop.is-current { z-index: 3; }
+.chapter-path-stop.is-current .chapter-stop-mark { background: var(--brand-lime); border-color: var(--brand-lime); color: var(--focus-on-accent); box-shadow: 0 5px 0 var(--purple-deep),0 10px 20px color-mix(in srgb,var(--brand-lime) 16%,transparent); }
+.chapter-path-stop.is-current .chapter-stop-mark:before { content: ''; position: absolute; inset: -9px; border: 1px dashed color-mix(in srgb,var(--brand-lime) 55%,transparent); border-radius: 50%; }
+.chapter-path-stop.is-current .chapter-stop-mark > i { background: var(--surface); color: var(--purple); }
+.chapter-path-stop.is-current .chapter-stop-copy > small { padding: 3px 9px; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); color: var(--purple); font-weight: 800; }
+.chapter-path-stop.is-locked .chapter-stop-copy > strong { color: var(--muted); }
+.chapter-path-stop > button:hover .chapter-stop-mark { transform: translateY(-3px); }
+.chapter-path-stop > button:focus-visible { outline: 0; }
+.home-dashboard .chapter-path-stop > button:focus-visible .chapter-stop-mark { outline: 3px solid var(--purple); outline-offset: 8px; }
+.chapter-path-buddy { position: absolute; z-index: 4; left: 0; bottom: 28px; transform: translateX(-50%); width: 88px; height: 88px; pointer-events: none; }
+.chapter-path-buddy > .buddy-avatar { display: block; width: 88px; height: 88px; object-fit: contain; filter: drop-shadow(0 4px 4px #0000000a); }
+.chapter-path-buddy.buddy-at-finish { left: 85%; bottom: calc(35.06% + 28px); }
+@media(max-width:800px) and (min-width:601px) {
+  .chapter-path-stage { height: 300px; }
+  .chapter-path-stop > button { width: 160px; left: -80px; }
+  .chapter-stop-copy > strong { font-size: 12px; }
+  .chapter-path-landmark { left: 28%; width: 44px; height: 55px; }
+}
+@media(max-width:600px) {
+  .home-chapter-map { padding: 18px 16px 12px; }
+  .home-chapter-map > header { margin-bottom: 12px; }
+  .chapter-path-stage { height: 432px; border-radius: 18px; background-size: 18px 18px; }
+  .road-desktop { display: none; }
+  .road-mobile { display: block; }
+  .chapter-road-edge { stroke-width: 17px; }
+  .chapter-road-fill { stroke-width: 13px; }
+  .chapter-path-stop { left: var(--path-mobile-x); top: var(--path-mobile-y); }
+  .chapter-path-stop > button { min-height: 64px; width: 64px; left: -32px; top: -32px; gap: 0; }
+  .chapter-stop-copy { position: absolute; left: 82px; top: 32px; width: 42cqw; max-width: 160px; align-items: flex-start; text-align: left; transform: translateY(-50%); }
+  .chapter-stop-copy > strong { font-size: 13px; line-height: 1.5; text-wrap: pretty; }
+  .chapter-stop-copy > small { font-size: 10px; }
+  .chapter-path-stop:nth-child(2) .chapter-stop-copy { left: auto; right: 82px; align-items: flex-end; text-align: right; }
+  .chapter-path-buddy { width: 72px; height: 72px; }
+  .chapter-path-buddy > .buddy-avatar { width: 72px!important; height: 72px!important; }
+  .chapter-path-meadow.meadow-one { left: 1%; top: 8%; width: 61%; height: 32%; }
+  .chapter-path-meadow.meadow-two { right: 0; top: 43%; width: 67%; height: 35%; }
+  .chapter-path-landmark { left: 10%; top: 43%; width: 40px; height: 50px; }
+  .chapter-path-landmark > svg { width: 12px; right: -6px; }
+  .chapter-path-sun { left: 82%; top: 7%; width: 21px; }
+  .chapter-path-finish { left: 7%; top: 86%; width: 24px; height: 30px; }
+  .chapter-path-finish > svg:first-child { left: 0; width: 23px; }
+  .chapter-path-finish > span { width: 26px; left: -4px; height: 9px; }
+  .chapter-path-buddy.buddy-at-finish { left: 24%; bottom: 22%; }
+}
+@media(max-width:360px) {
+  .home-chapter-map { padding-inline: 12px; }
+  .chapter-stop-mark { width: 58px; height: 58px; }
+  .chapter-path-stop > button { width: 58px; min-height: 58px; left: -29px; top: -29px; }
+  .chapter-stop-copy { left: 72px; top: 29px; width: 42cqw; }
+  .chapter-path-stop:nth-child(2) .chapter-stop-copy { right: 72px; }
+  .chapter-stop-copy > strong { font-size: 12px; }
+  .chapter-stop-copy > small { font-size: 9px; }
+  .chapter-path-stop.is-current .chapter-stop-copy > small { padding-inline: 6px; }
+}
+@media(prefers-reduced-motion:reduce) { .chapter-stop-mark { transition: none; } .chapter-path-stop > button:hover .chapter-stop-mark { transform: none; } }

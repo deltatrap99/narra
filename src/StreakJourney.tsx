@@ -3,10 +3,10 @@ import { Award, Check, Crown, Download, Eye, Flame, LockKeyhole, Share2, Sparkle
 import { useCopy, useNarra } from './state';
 import { usePlayer } from './game';
 import BuddyAvatar from './BuddyAvatar';
-import { brandAsset } from './brand-variant';
+import { brandAsset, isOption5 } from './brand-variant';
 import { Modal } from './ui';
 import { STREAK_MILESTONES, type StreakMilestone } from './streaks';
-import { createStreakCard } from './streak-share';
+import { createStreakCard, streakMascotAsset } from './streak-share';
 import './streak-journey.css';
 
 function milestoneStyle(milestone: StreakMilestone): CSSProperties { return { '--streak-color': milestone.color } as CSSProperties; }
@@ -47,7 +47,7 @@ export function StreakShareDialog({ milestone, onClose }: { milestone: StreakMil
         <header><img src={brandAsset('logo-dark.webp')} alt="Narra" /><span>NARRA STREAK CLUB</span></header>
         <p className="streak-share-kicker">{tr('MY ENGLISH STREAK', 'CHUỖI NGÀY HỌC CỦA MÌNH')}</p>
         <div className="streak-share-count"><strong>{milestone.days}</strong><span>{tr('DAYS TOGETHER', 'NGÀY CÙNG NHAU')}</span></div>
-        <div className="streak-share-art" data-effect={milestone.effect}><span /><img src={brandAsset('streak-cheer.png')} alt={tr('Buddy winking with a happy thumbs-up', 'Buddy nháy mắt và giơ tay like thật vui')} /></div>
+        <div className="streak-share-art" data-effect={milestone.effect}><span /><img src={streakMascotAsset} alt={isOption5 ? tr('Buddy winking with a goofy head tilt and curled body', 'Buddy nháy mắt, nghiêng đầu và uốn người ngố ngố') : tr('Buddy winking with a happy thumbs-up', 'Buddy nháy mắt và giơ tay like thật vui')} /></div>
         <h3>{title}</h3><p className="streak-share-name">{profile.name}</p><p className="streak-share-date">{earnedLabel}</p><p className="streak-share-encouragement">{encouragement}</p>
         <footer><strong lang="en">Your voice, your story!</strong><span>#NarraStreak · #YourVoiceYourStory</span></footer>
         {preview && <span className="streak-share-watermark">{preview}</span>}

@@ -1,6 +1,8 @@
 import { brandAsset, isOption5 } from './brand-variant';
 import type { StreakMilestone } from './streaks';
 
+export const streakMascotAsset = brandAsset(isOption5 ? 'streak-goofy.png' : 'streak-cheer.png');
+
 export type StreakCardCopy = { name: string; title: string; days: string; streak: string; earned: string; preview: string; encouragement: string };
 function loadImage(source: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => { const image = new Image(); image.onload = () => resolve(image); image.onerror = () => reject(new Error('The celebration artwork could not load')); image.src = source; });
@@ -9,7 +11,7 @@ function loadImage(source: string): Promise<HTMLImageElement> {
 /** The downloaded card uses the same original brand art as the visible card. */
 export async function createStreakCard(milestone: StreakMilestone, copy: StreakCardCopy): Promise<File> {
   await document.fonts.ready;
-  const [logo, mascot] = await Promise.all([loadImage(brandAsset('logo-dark.webp')), loadImage(brandAsset('streak-cheer.png'))]);
+  const [logo, mascot] = await Promise.all([loadImage(brandAsset('logo-dark.webp')), loadImage(streakMascotAsset)]);
   const canvas = document.createElement('canvas'); canvas.width = 1080; canvas.height = 1350;
   const context = canvas.getContext('2d'); if (!context) throw new Error('Image export is unavailable');
   const ctx = context;

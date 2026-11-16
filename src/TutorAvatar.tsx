@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { SpeechPlayback } from './speech';
-import { brandAsset } from './brand-variant';
+import { brandAsset, isOption5 } from './brand-variant';
 import { useCopy } from './state';
 import { TutorArtwork } from './TutorArtwork';
 import { tutorPose, type TutorMode } from './tutor-art';
@@ -46,6 +46,7 @@ export default function TutorAvatar(props: TutorAvatarProps) {
 
   const pose = tutorPose(props.mode, beat, welcoming && !reduced);
   return <div className="tutor-avatar-render mascot-tutor" data-state={status} data-mode={props.mode} data-reduced={reduced}>
+    {isOption5 && status === 'ready' && <span className="option5-voice-halo" aria-hidden="true"><span className="option5-voice-bars option5-voice-bars-left"><i /><i /><i /><i /><i /></span><span className="option5-voice-bars option5-voice-bars-right"><i /><i /><i /><i /><i /></span></span>}
     {status !== 'error' ? <TutorArtwork key={attempt} pose={pose} name={props.tutor} onLoad={() => { setStatus('ready'); live.current.onReady?.(); }} onError={() => { setStatus('error'); live.current.onError?.('Mascot illustration could not load'); }} /> : <div className="mascot-tutor-fallback"><img src={brandAsset('mascot.webp')} alt={tr(`${props.tutor}, your Buddy companion`, `${props.tutor}, người bạn Buddy`)} /><p>{tr('The desk scene could not load, your conversation still works.', 'Cảnh bàn học chưa tải được, mình vẫn trò chuyện được nhé.')}<button type="button" onClick={() => { setStatus('loading'); setAttempt(value => value + 1); }}>{tr('Reload mascot', 'Tải lại mascot')}</button></p></div>}
     {status === 'loading' && <div className="call-model-loading" role="status"><span className="avatar-load-ring" /><strong>{tr(`${props.tutor} is getting comfy at the desk…`, `${props.tutor} đang vào bàn, hóng chuyện bạn nè…`)}</strong></div>}
   </div>;

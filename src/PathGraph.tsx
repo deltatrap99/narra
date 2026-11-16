@@ -72,7 +72,7 @@ export default function PathGraph({ chapters, completed, nextId, onLesson }: Pro
   function findNext() { const index = chapters.findIndex(unit => unit.lessons.some(lesson => lesson.id === current?.id)); chooseChapter(index < 0 ? 0 : index); }
   if (!chapter || !selected) return null;
   const markerStyle = (point: typeof stops[number]): CSSProperties => ({ '--stop-x': `${point.x}%`, '--stop-y': `${point.y}%`, '--stop-mobile-x': `${point.mobileX}%`, '--stop-mobile-y': `${point.mobileY}%` } as CSSProperties);
-  const unlockNote = selectedState === 'locked' && previousLesson ? tr(`Finish “${previousLesson.title}” first. You can still explore this stop.`, `Bạn hoàn thành “${previousLesson.title}” trước nhé. Mình vẫn có thể xem trước bài này.`) : '';
+  const unlockNote = selectedState === 'locked' && previousLesson ? tr(`Finish “${previousLesson.title}” first, and feel free to explore this stop in the meantime.`, `Bạn hoàn thành “${previousLesson.title}” trước nhé, mình vẫn có thể xem trước bài này.`) : '';
 
   return <div className="journey-map" style={{ '--journey-travel-ms': `${TRAVEL_MS}ms` } as CSSProperties}>
     <div className="journey-overview"><div><span className="journey-eyebrow"><Route size={15} />{tr('YOUR ENGLISH, ONE LITTLE STOP AT A TIME', 'TỪNG ĐIỂM DỪNG, THÊM MỘT CHÚT TIẾNG ANH')}</span><h3>{complete ? tr('Look how far you’ve come.', 'Mình đã đi một chặng đường rồi nè.') : tr('Where shall we go next?', 'Mình ghé đâu tiếp theo nhỉ?')}</h3></div><div className="journey-overview-progress"><strong>{done.size}<span>/{all.length}</span></strong><small>{complete ? tr("Journey complete, let’s revisit a lesson!", "Đã hoàn thành rồi, mình ôn bài nào cũng được nhé!") : tr('lessons completed', 'bài đã hoàn thành')}</small></div></div>

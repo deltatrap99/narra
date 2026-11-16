@@ -30,7 +30,7 @@ function preparationFor(lesson: Lesson): Preparation {
   };
   const chapter = chapters.find(item => item.lessons.some(item => item.id === lesson.id));
   return {
-    context: [chapter?.description ?? 'A short everyday conversation', 'Một cuộc trò chuyện ngắn trong đời sống'], mission: [`Talk about “${lesson.title}”. Share your view, give one example, and ask a follow-up question.`, `Trò chuyện về “${lesson.title}”. Chia sẻ ý kiến, nêu một ví dụ và hỏi thêm để tiếp tục câu chuyện.`], learner: ['Sharing your own experience', 'Chia sẻ trải nghiệm của bạn'], tutor: ['Your conversation partner', 'Người cùng trò chuyện'],
+    context: [chapter?.description ?? 'A short everyday conversation', 'Một cuộc trò chuyện ngắn trong đời sống'], mission: [`Talk about “${lesson.title}” by sharing your view, giving one example and asking a follow-up question.`, `Mình trò chuyện về “${lesson.title}” bằng cách chia sẻ ý kiến, nêu một ví dụ và hỏi thêm để tiếp tục câu chuyện nhé.`], learner: ['Sharing your own experience', 'Chia sẻ trải nghiệm của bạn'], tutor: ['Your conversation partner', 'Người cùng trò chuyện'],
     phrases: [{ english: 'In my experience, it helps to plan ahead.', vietnamese: 'Theo kinh nghiệm của tôi, lên kế hoạch trước rất hữu ích.' }, { english: 'Could you tell me a little more?', vietnamese: 'Bạn có thể kể thêm một chút không?' }, { english: 'What do you think about that?', vietnamese: 'Bạn nghĩ sao về điều đó?' }], vocabulary: [{ word: 'perspective', meaning: ['a way of thinking about something', 'cách nhìn nhận về một vấn đề'] }, { word: 'explain', meaning: ['to make an idea clear', 'giải thích để một ý tưởng dễ hiểu hơn'] }],
   };
 }

@@ -71,7 +71,7 @@ export default function App() {
       {tab === 'Profile' && <Profile onTutors={() => setOverlay({ kind: 'tutors' })} onWriting={() => setOverlay({ kind: 'writing' })} onLesson={() => navigate('Lesson')} onLeague={() => community('league')} onFriends={() => community('friends')} onFeed={() => community('feed')} onAchievements={() => community('achievements')} onAvatar={() => setOverlay({ kind: 'avatar' })} onPlans={openPlans} onShare={() => setOverlay({ kind: 'share' })} />}
     </main>
     <nav className="bottom-nav" inert={tutorPreview !== null || challenge !== null} aria-label="Main navigation" style={{ '--active-index': tabs.indexOf(tab) } as CSSProperties}>{tabs.map(t => <button key={t} className={`nav-item ${tab === t ? 'active' : ''}`} onClick={() => { close(); navigate(t); }} aria-current={tab === t ? 'page' : undefined}><NavIcon tab={t} /><span>{labels[t]}</span></button>)}</nav>
-    <div className="desktop-signoff"><Sparkles size={12} /><span>Your voice. Your story.</span></div>
+    <div className="desktop-signoff"><Sparkles size={12} /><span>Your voice, your story!</span></div>
     {toast && <div className="toast" role="status"><Check size={18} />{toast}</div>}
     {overlay?.kind === 'goal' && <GoalDialog onClose={close} />}
     {overlay?.kind === 'lesson' && <LessonPreparation lesson={overlay.lesson} onClose={close} onStart={() => setOverlay({ kind: 'lesson-speaking', lesson: overlay.lesson })} />}

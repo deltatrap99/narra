@@ -373,7 +373,7 @@ export const scenarios: Scenario[] = [
     id: 'remote',
     type: 'Debate',
     title: 'Is working from home better?',
-    description: 'Pick a side. Make your point. Find your voice.',
+    description: "Pick a side, make your point and find your voice!",
     level: 'B1-B2',
     minutes: 10,
     tone: 'green',

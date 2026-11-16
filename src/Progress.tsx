@@ -114,7 +114,7 @@ function VietnamMap() {
           </button>)}</div>}
     {selected && <div className="province-detail tone-lavender" role="status"><div><span className="eyebrow">{tr('DEMO COMPARISON', 'SO SÁNH MINH HỌA')}</span><h3>{selected}</h3></div>
       <strong>{demoValue(selectedIndex, metric)} <small>{metricLabel(metric).toLowerCase()}</small></strong></div>}
-    <p className="muted map-caption">{tr('Each province has its own colour. Tap one to see its figures.', 'Mỗi tỉnh thành có một màu riêng. Chạm để xem số liệu.')}</p>
+    <p className="muted map-caption">{tr("Tap a province to explore its colour and figures.", "Bạn chạm vào màu của một tỉnh thành để xem số liệu nhé.")}</p>
     <p className="muted map-disclaimer">{tr('Demo comparison · sample figures for exploring the interface.', 'So sánh minh họa · số liệu mẫu để trải nghiệm giao diện.')}</p>
     <a className="map-attribution" href="https://github.com/TaliaCao/Vietnam-Shape-Map" target="_blank" rel="noreferrer">Map geometry: TaliaCao · MIT</a>
   </section>;
@@ -192,7 +192,7 @@ export default function Progress({ stats, words, onWriting }: Props) {
       {stats.activity.length ? stats.activity.map((item, index) => <div className="list-row" key={`${item.date}-${index}`}>
         <span className="badge">{item.score !== undefined ? tr('Read aloud', 'Đọc thành tiếng') : tr('Practice', 'Luyện tập')}</span><span className="log-label">{item.label}</span>
         <strong>{item.score !== undefined ? item.score : `${item.minutes} ${tr('min', 'phút')}`}</strong><time className="muted" dateTime={item.date}>{new Date(`${item.date.slice(0, 10)}T12:00:00`).toLocaleDateString(tr('en-GB', 'vi-VN'), { day: 'numeric', month: 'short' })}</time>
-      </div>) : <p className="muted">{tr('Your practice will appear here. A little every day adds up.', 'Các buổi luyện tập sẽ xuất hiện ở đây. Mỗi ngày một chút, tiến bộ thật nhiều.')}</p>}
+      </div>) : <p className="muted">{tr("Your practice will appear here as each little step adds up.", "Các buổi luyện tập sẽ xuất hiện ở đây để mình nhìn lại những bước tiến nhỏ mỗi ngày nhé.")}</p>}
     </div></section>
   </div>;
 }

@@ -147,6 +147,6 @@ export default function TutorAvatar(props: TutorAvatarProps) {
   return <div className="tutor-avatar-render" data-state={status}>
     <div className="tutor-avatar-host" ref={host}/>
     {status==='loading'&&<div className="call-model-loading" role="status"><span className="avatar-load-ring"/><strong>{tr(`${props.tutor} is getting ready…`,`${props.tutor} đang chuẩn bị một chút nhé…`)}</strong></div>}
-    {status==='error'&&<div className="call-model-fallback"><img src={`/assets/${props.tutor.toLowerCase()}-body.webp`} alt={props.tutor}/><div className="call-fallback-message"><p>{tr('The 3D view couldn’t load here. Your voice practice still works.','Khung 3D chưa tải được. Mình vẫn có thể luyện nói với nhau nhé.')}</p><button type="button" onClick={()=>setAttempt(n=>n+1)}>{tr('Try the 3D view again','Thử tải lại khung 3D')}</button></div></div>}
+    {status==='error'&&<div className="call-model-fallback"><img src={`/assets/${props.tutor.toLowerCase()}-body.webp`} alt={props.tutor}/><div className="call-fallback-message"><p>{tr("Your voice practice still works even though the 3D view couldn’t load here.","Khung 3D chưa tải được, mình vẫn có thể luyện nói với nhau nhé.")}</p><button type="button" onClick={()=>setAttempt(n=>n+1)}>{tr('Try the 3D view again','Thử tải lại khung 3D')}</button></div></div>}
   </div>;
 }

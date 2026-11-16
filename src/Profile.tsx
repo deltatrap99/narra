@@ -59,7 +59,7 @@ export default function Profile({ onTutors, onWriting, onLesson, onLeague, onFri
       {details && <section id="profile-progress-details" className="profile-progress-details" aria-label={tr('Detailed learning progress', 'Chi tiết tiến độ học tập')}><Progress stats={stats} words={words} onWriting={onWriting} /></section>}
       <section className="card profile-current-tutor"><Avatar name={tutor.name} /><div><p className="eyebrow">{tr('YOUR AI TUTOR', 'GIA SƯ AI CỦA BẠN')}</p><h2>{tutor.name}</h2><p>{tr(tutor.accent, tutor.id === 'henry' ? 'Tiếng Anh, giọng Anh' : 'Tiếng Anh, giọng Mỹ')}</p></div><button className="profile-tutor-button" onClick={onTutors}>{tr('Choose tutor', 'Chọn gia sư')}<ChevronRight size={16} /></button></section>
       <CommunityShortcuts onLeague={onLeague} onFriends={onFriends} onFeed={onFeed} onAchievements={onAchievements} onAvatar={onAvatar} onPlans={onPlans}/>
-      <div className="profile-footer"><img src={brandAsset('logo-dark.webp')} alt="Narra" /><span>Your voice. Your story.</span></div>
+      <div className="profile-footer"><img src={brandAsset('logo-dark.webp')} alt="Narra" /><span>Your voice, your story!</span></div>
     </div>
     {settings && <Settings onClose={() => setSettings(false)} onTutors={onTutors} />}
   </>;

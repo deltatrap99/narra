@@ -29,7 +29,7 @@ export default function Learn({ onGoal, onLesson, onWord, onPractice, onOpenLeag
   const description = next.id === 'everyday-2'
     ? tr('Talk about the habits that make you feel good.', 'Trò chuyện về những thói quen giúp bạn cảm thấy tốt hơn.')
     : next.id === 'everyday-3' ? tr('Order a coffee and make a little small talk.', 'Gọi một ly cà phê và bắt đầu cuộc trò chuyện ngắn.')
-      : tr('A short conversation. One little step forward.', 'Một cuộc trò chuyện ngắn. Thêm một bước tiến nhỏ.');
+      : tr("A short conversation, one little step forward!", "Một cuộc trò chuyện ngắn, thêm một bước tiến nhỏ!");
   function openLesson(lesson: Lesson, available: boolean) {
     if (available || stats.completed.includes(lesson.id)) onLesson(lesson);
     else notify(tr('One little step first: finish the previous lesson, then this one will open.', 'Bạn học xong bài trước nhé, rồi mình sẽ mở được bài này.'));
@@ -49,7 +49,7 @@ export default function Learn({ onGoal, onLesson, onWord, onPractice, onOpenLeag
     <DailyQuests onLesson={() => onLesson(next)} onDictionary={onWord} onPractice={onPractice}/>
     {recent.length > 0 && <section className="lesson-recent"><h2>{tr('Keep it fresh', 'Ôn lại một chút')}</h2><div>{recent.map(lesson => <button key={lesson.id} onClick={() => onLesson(lesson)}><span className="lesson-recent-check"><Check size={15} /></span><span>{lesson.title}</span><small>{tr('Revisit', 'Ôn lại')}</small></button>)}</div></section>}
     <section className="learning-path" id="learning-path">
-      <div className="page-intro"><h2 className="section-title">{tr('Your learning path', 'Lộ trình bài học')}</h2><p className="page-description">{tr('Choose a topic and tap a stop. Buddy will meet you there.', 'Bạn chọn chủ đề rồi chạm vào một bài nhé. Buddy sẽ ghé cùng bạn nè.')}</p></div>
+      <div className="page-intro"><h2 className="section-title">{tr('Your learning path', 'Lộ trình bài học')}</h2><p className="page-description">{tr("Choose a topic and tap a stop, and Buddy will meet you there.", "Bạn chọn chủ đề rồi chạm vào một bài nhé, Buddy sẽ ghé cùng bạn nè.")}</p></div>
       <div className="path-progress"><div className="progress-track"><span style={{ width: `${completedCount / allLessons.length * 100}%` }} /></div><span>{completedCount}/{allLessons.length} {tr('complete', 'đã hoàn thành')}</span></div>
       <div className="view-row"><span className="eyebrow muted">{tr('Explore', 'Cùng khám phá')}</span><div className="view-options"><button type="button" className={`pill-button ${view === 'Journey' ? 'active' : ''}`} onClick={() => setView('Journey')} aria-pressed={view === 'Journey'}><Route size={19} />{tr('Roadmap', 'Bản đồ')}</button><button type="button" className={`pill-button ${view === 'List' ? 'active' : ''}`} onClick={() => setView('List')} aria-pressed={view === 'List'}><List size={19} />{tr('List', 'Danh sách')}</button></div></div>
       {view === 'List' ? <div className="chapters-grid">{chapters.map(chapter => {

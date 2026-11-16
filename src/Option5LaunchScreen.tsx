@@ -89,6 +89,6 @@ export default function Option5LaunchScreen({ onDone }: { onDone: () => void }) 
       <h1 className="option5-launch-wordmark"><img src={brandAsset('logo-dark.webp')} alt="Narra" width="524" height="121" fetchPriority="high" decoding="sync" draggable={false} /></h1>
       <p className="option5-launch-slogan" lang="en">Your voice, your story</p>
     </div>
-    <span className="option5-launch-corner">{tr('One little hello. Then we begin.', 'Chào nhau một chút, rồi mình bắt đầu nhé.')}</span>
+    <span className="option5-launch-corner">{tr("One little hello, then we begin!", 'Chào nhau một chút, rồi mình bắt đầu nhé.')}</span>
   </section>;
 }

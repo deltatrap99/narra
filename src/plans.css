@@ -53,6 +53,8 @@ html[data-brand='option5'] :is(.plans-dialog, .plus-discovery, .profile-plan-sta
 .plans-cycle > div { display: inline-flex; gap: 4px; padding: 4px; border: 1px solid var(--plans-line); border-radius: 16px; background: var(--plans-paper); }
 .plans-cycle button { min-width: 124px; min-height: 44px; padding: 10px 16px; border: 0; border-radius: 11px; background: transparent; color: var(--plans-muted); font: inherit; font-size: 13px; font-weight: 800; }
 .plans-cycle button[aria-pressed='true'] { background: var(--plans-accent); color: var(--plans-on-accent); }
+.plans-cycle-saving { display: inline-block; margin-left: 6px; padding: 2px 4px; border-radius: 5px; background: color-mix(in srgb, var(--plans-accent) 15%, var(--plans-paper)); color: var(--plans-ink); font-size: 10px; line-height: 1.2; white-space: nowrap; }
+.plans-cycle button[aria-pressed='true'] .plans-cycle-saving { background: var(--plans-paper); color: var(--plans-ink); }
 .plans-cycle > p { margin: 0; color: var(--plans-muted); font-size: 11px; text-align: center; line-height: 1.5; }
 .plans-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 24px; align-items: stretch; }
 .plans-card { display: flex; flex-direction: column; min-width: 0; padding: 28px; border: 1px solid var(--plans-line); border-radius: 26px; background: var(--plans-paper); }
@@ -65,7 +67,9 @@ html[data-brand='option5'] :is(.plans-dialog, .plus-discovery, .profile-plan-sta
 .plans-card-description { margin: 18px 0 0; color: var(--plans-muted); font-size: 13px; line-height: 1.65; }
 .plans-price { display: flex; flex-direction: column; gap: 5px; margin: 22px 0; }
 .plans-price strong { color: var(--plans-ink); font-size: 28px; line-height: 1.2; letter-spacing: -.5px; }
+.plans-price strong small { display: inline-block; margin-left: 4px; color: var(--plans-muted); font-size: 14px; font-weight: 650; letter-spacing: 0; }
 .plans-price > span { color: var(--plans-muted); font-size: 12px; line-height: 1.5; }
+.plans-price > .plans-price-saving { color: var(--plans-ink); font-weight: 750; }
 .plans-feature-label { margin: 0 0 16px; color: var(--plans-muted); font-size: 10px; font-weight: 850; letter-spacing: .2px; }
 .plans-card ul { display: flex; flex-direction: column; gap: 14px; padding: 0; margin: 0 0 26px; list-style: none; }
 .plans-card li { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; line-height: 1.6; }

@@ -1,1 +1,29 @@
-.tutor-avatar-render,.tutor-avatar-host{width:100%;height:100%;position:relative;min-height:0}.tutor-avatar-host{position:absolute;inset:0}.tutor-avatar-host canvas{width:100%;height:100%;display:block;outline:none}.avatar-load-ring{width:38px;height:38px;border:3px solid #78bdd440;border-top-color:#37798a;border-radius:50%;animation:avatar-load 1s linear infinite}.call-model-loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;color:#315967;text-align:center;padding:28px}.call-model-loading strong{max-width:240px;font-size:14px;line-height:1.5}.call-model-fallback{height:100%;display:flex;align-items:center;justify-content:center;position:relative}.call-model-fallback>img{max-height:94%;max-width:85%;object-fit:contain}.call-fallback-message{position:absolute;bottom:30%;left:12%;right:12%;padding:13px;border-radius:15px;background:#fffffff2;font-size:13px;color:#243c40;text-align:center}.call-fallback-message button{margin-top:8px;color:#32661a;font-weight:800;text-decoration:underline}.call-model-loading[hidden]{display:none}@keyframes avatar-load{to{transform:rotate(360deg)}}[data-theme=dark] .call-model-loading{color:#c4e7f1}@media(prefers-reduced-motion:reduce){.avatar-load-ring{animation:none}}
+.tutor-avatar-render { width: 100%; height: 100%; min-height: 0; position: relative; }
+.mascot-tutor { display: grid; place-items: center; container-type: size; }
+.tutor-artwork { display: block; position: relative; overflow: hidden; width: 100%; aspect-ratio: 1; flex-shrink: 0; }
+.tutor-artwork-sheet { display: block; width: 300%; max-width: none; height: 100%; object-fit: fill; pointer-events: none; }
+.tutor-artwork-fallback { width: 100%; height: 100%; object-fit: contain; }
+.tutor-artwork[data-pose=speaking] .tutor-artwork-sheet { transform: translateX(-33.333333%); }
+.tutor-artwork[data-pose=laughing] .tutor-artwork-sheet { transform: translateX(-66.666667%); }
+.mascot-tutor > .tutor-artwork { width: min(96cqw, 96cqh, 580px); }
+.mascot-tutor[data-state=loading] > .tutor-artwork { visibility: hidden; }
+.mascot-tutor[data-state=ready][data-mode=speaking] > .tutor-artwork { animation: tutor-chat-bob 1.7s ease-in-out infinite; transform-origin: 50% 80%; }
+.mascot-tutor[data-mode=listening] > .tutor-artwork { transform: rotate(-2deg); }
+.avatar.tutor-portrait { display: inline-block; position: relative; overflow: hidden; flex-shrink: 0; background: var(--blue); border-radius: 50%; }
+.tutor-portrait-crop { position: absolute; width: 132%; aspect-ratio: 1; top: -7%; left: -15%; }
+.tutor-portrait-crop > img { display: block; width: 300%; max-width: none; height: 100%; }
+.tutor-portrait > img { width: 100%; height: 100%; object-fit: contain; }
+.avatar-load-ring { width: 38px; height: 38px; border: 3px solid #78bdd440; border-top-color: #37798a; border-radius: 50%; animation: avatar-load 1s linear infinite; }
+.call-model-loading { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; color: var(--muted); text-align: center; padding: 28px; }
+.call-model-loading strong { max-width: 240px; font-size: 14px; line-height: 1.5; }
+.mascot-tutor-fallback { display: grid; place-items: center; align-content: center; height: 100%; width: 100%; gap: 12px; padding: 16px; }
+.mascot-tutor-fallback > img { width: min(65%, 240px); max-height: 65%; object-fit: contain; }
+.mascot-tutor-fallback p { font-size: 12px; line-height: 1.5; color: var(--text); max-width: 300px; text-align: center; }
+.mascot-tutor-fallback button { display: block; padding: 8px; margin: 4px auto 0; text-decoration: underline; font-weight: 800; }
+.tutor-body-preview > .tutor-artwork { width: 100%; }
+.tutors-subpage .tutor-body-frame { width: clamp(90px, 18vw, 150px); min-height: 0; aspect-ratio: 1; }
+.tutor-preview-page .tutor-preview-model { inset: 52px 12px 58px; width: auto; height: auto; }
+@keyframes avatar-load { to { transform: rotate(360deg); } }
+@keyframes tutor-chat-bob { 0%, 100% { transform: rotate(-.5deg) translateY(0); } 50% { transform: rotate(.5deg) translateY(-3px); } }
+.mascot-tutor[data-reduced=true] > .tutor-artwork { animation: none !important; transform: none !important; }
+@media (prefers-reduced-motion: reduce) { .mascot-tutor > .tutor-artwork, .avatar-load-ring { animation: none !important; transform: none !important; } }

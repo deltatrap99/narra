@@ -1,6 +1,6 @@
 /** Preview access only, never an identity or an authorization boundary. */
 export const ENTRY_SESSION_KEY = 'narra-preview-entry-v1';
-export type EntrySession = { method: 'preview_code'; createdAt: number };
+export type EntrySession = { method: 'preview_code'; createdAt: number; accountId: string };
 const PREVIEW_CODES = new Set(['TUANBO99', 'NARRA123']);
 export function acceptsPreviewCode(value: string): boolean {
   return PREVIEW_CODES.has(value.trim().toUpperCase());
@@ -8,17 +8,17 @@ export function acceptsPreviewCode(value: string): boolean {
 export function isAppleMobileDevice(userAgent: string, platform: string, maxTouchPoints: number): boolean {
   return /iPhone|iPad|iPod/i.test(userAgent) || platform === 'MacIntel' && maxTouchPoints > 1;
 }
-export function readEntrySession(): EntrySession | null {
+export function readEntrySession(accountId = 'primary'): EntrySession | null {
   try {
     const value: unknown = JSON.parse(sessionStorage.getItem(ENTRY_SESSION_KEY) || 'null');
     if (!value || typeof value !== 'object') return null;
     const session = value as Partial<EntrySession>;
-    return session.method === 'preview_code' && typeof session.createdAt === 'number' && Number.isFinite(session.createdAt) && session.createdAt <= Date.now() && Date.now() - session.createdAt < 86400000
-      ? session as EntrySession : null;
+    return (session.accountId ?? 'primary') === accountId && session.method === 'preview_code' && typeof session.createdAt === 'number' && Number.isFinite(session.createdAt) && session.createdAt <= Date.now() && Date.now() - session.createdAt < 86400000
+      ? { ...session, accountId } as EntrySession : null;
   } catch { return null; }
 }
-export function createEntrySession(): EntrySession {
-  const session: EntrySession = { method: 'preview_code', createdAt: Date.now() };
+export function createEntrySession(accountId = 'primary'): EntrySession {
+  const session: EntrySession = { method: 'preview_code', createdAt: Date.now(), accountId };
   try { sessionStorage.setItem(ENTRY_SESSION_KEY, JSON.stringify(session)); } catch { /* The current in-memory visit still works. */ }
   return session;
 }

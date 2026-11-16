@@ -14,7 +14,12 @@ import './focus-layout.css';
 import './home-dashboard.css';
 import './home-chapter-path.css';
 import { initializeBrand } from './brand-variant';
+import { AccountProvider, useAccounts } from './AccountContext';
 
 initializeBrand();
 
-createRoot(document.getElementById('root')!).render(<React.StrictMode><NarraProvider><PlayerProvider><App /></PlayerProvider></NarraProvider></React.StrictMode>);
+function AccountApp() {
+  const { activeAccount } = useAccounts();
+  return <NarraProvider key={activeAccount.id}><PlayerProvider><App /></PlayerProvider></NarraProvider>;
+}
+createRoot(document.getElementById('root')!).render(<React.StrictMode><AccountProvider><AccountApp /></AccountProvider></React.StrictMode>);

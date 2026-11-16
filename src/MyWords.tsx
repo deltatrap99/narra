@@ -3,16 +3,19 @@ import { ArrowLeft, ArrowRight, Mic, Square, Volume2 } from 'lucide-react';
 import { speak, useCopy, useNarra } from './state';
 import { Empty } from './ui';
 import './subpages.css';
+import { useAccounts } from './AccountContext';
 
 type PracticeCounts = Record<string, number>;
 export default function MyWords({ onClose }: { onClose: () => void }) {
+  const { storageKey } = useAccounts();
+  const countsKey = storageKey('narra-word-speaking-v1');
   const { words, setStats, logActivity, notify } = useNarra(); const tr = useCopy();
   const [index, setIndex] = useState(0); const [sentence, setSentence] = useState(false); const [recording, setRecording] = useState(false); const [pending, setPending] = useState(false); const [audio, setAudio] = useState(''); const [error, setError] = useState('');
-  const [counts, setCounts] = useState<PracticeCounts>(() => { try { const value = JSON.parse(localStorage.getItem('narra-word-speaking-v1') ?? '{}'); return value && typeof value === 'object' && !Array.isArray(value) ? Object.fromEntries(Object.entries(value).filter(([, v]) => typeof v === 'number' && Number.isFinite(v) && v >= 0)) as PracticeCounts : {}; } catch { return {}; } });
+  const [counts, setCounts] = useState<PracticeCounts>(() => { try { const value = JSON.parse(localStorage.getItem(countsKey) ?? '{}'); return value && typeof value === 'object' && !Array.isArray(value) ? Object.fromEntries(Object.entries(value).filter(([, v]) => typeof v === 'number' && Number.isFinite(v) && v >= 0)) as PracticeCounts : {}; } catch { return {}; } });
   const recorder = useRef<MediaRecorder | null>(null); const stream = useRef<MediaStream | null>(null); const audioRef = useRef<HTMLAudioElement>(null); const url = useRef(''); const generation = useRef(0); const busy = useRef(false); const timer = useRef<number | null>(null); const back = useRef<HTMLButtonElement>(null);
   const word = words[index % Math.max(1, words.length)]; const phrase = word ? sentence && word.example ? word.example : word.word : '';
   useEffect(() => { back.current?.focus({ preventScroll: true }); return () => { generation.current++; if (timer.current !== null) clearTimeout(timer.current); if (recorder.current) { recorder.current.onstop = null; recorder.current.ondataavailable = null; recorder.current.onerror = null; if (recorder.current.state !== 'inactive') recorder.current.stop(); } stream.current?.getTracks().forEach(t => t.stop()); audioRef.current?.pause(); if (url.current) URL.revokeObjectURL(url.current); window.speechSynthesis?.cancel(); }; }, []);
-  useEffect(() => { try { localStorage.setItem('narra-word-speaking-v1', JSON.stringify(counts)); } catch { /* Practice remains available without storage. */ } }, [counts]);
+  useEffect(() => { try { localStorage.setItem(countsKey, JSON.stringify(counts)); } catch { /* Practice remains available without storage. */ } }, [counts, countsKey]);
   function clearAudio() { audioRef.current?.pause(); if (url.current) URL.revokeObjectURL(url.current); url.current = ''; setAudio(''); setError(''); window.speechSynthesis?.cancel(); }
   function stopRecording() {
     const active = recorder.current;

@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { initialWords, type Word } from './data';
 import { streakState } from './streaks';
+import { useAccounts } from './AccountContext';
 
 export type Tab = 'Lesson' | 'Practice' | 'Dictionary' | 'Profile';
 export type Activity = { date: string; minutes: number; label: string; score?: number };
@@ -52,11 +53,12 @@ function useStored<T>(key: string, initial: T, restore: (value: unknown) => T) {
 }
 
 function useNarraState() {
+  const { activeAccount, storageKey } = useAccounts();
   const [today, setToday] = useState(localDateKey);
   useEffect(() => { const timer = window.setInterval(() => setToday(localDateKey()), 60_000); return () => window.clearInterval(timer); }, []);
-  const [profile, setProfile] = useStored('narra-profile-v1', defaultProfile, restoreProfile);
-  const [stats, setStats] = useStored('narra-stats-v1', defaultStats, restoreStats);
-  const [words, setWords] = useStored<Word[]>('narra-words-v1', initialWords, restoreWords);
+  const [profile, setProfile] = useStored(storageKey('narra-profile-v1'), { ...defaultProfile, name: activeAccount.name }, restoreProfile);
+  const [stats, setStats] = useStored(storageKey('narra-stats-v1'), activeAccount.id === 'primary' ? defaultStats : { ...defaultStats, minutes: 0, conversations: 0, speakingTries: 0, completed: [] }, restoreStats);
+  const [words, setWords] = useStored<Word[]>(storageKey('narra-words-v1'), activeAccount.id === 'primary' ? initialWords : [], restoreWords);
   const [tab, setTab] = useState<Tab>(() => {
     const name = location.hash.slice(1).split('?')[0];
     const legacy: Record<string, Tab> = { learn: 'Lesson', words: 'Dictionary', progress: 'Profile' };

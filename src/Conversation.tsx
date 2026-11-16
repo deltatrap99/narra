@@ -8,6 +8,7 @@ import { speak, useCopy, useNarra } from './state';
 import { useVoiceInput } from './useVoiceInput';
 import { Avatar, Modal } from './ui';
 import BuddyCoach from './BuddyCoach';
+import { useAccounts } from './AccountContext';
 import CallCamera from './CallCamera';
 import { cancelSpeech, useSpeechPlayback } from './speech';
 import { Video, PhoneOff } from 'lucide-react';
@@ -124,7 +125,8 @@ export default function Conversation({ scenario, lesson, onClose, onNextLesson, 
   const { profile, words: savedWords, setStats, logActivity, notify } = useNarra();
   const tr = useCopy();
   const kind = kindFor(scenario);
-  const draftKey = `narra-conversation-v1:${profile.tutor}:${scenario?.id ?? 'free'}`;
+  const { storageKey } = useAccounts();
+  const draftKey = storageKey(`narra-conversation-v1:${profile.tutor}:${scenario?.id ?? 'free'}`);
   const [messages, setMessages] = useState<Message[]>(() => restoreDraft(draftKey, openingFor(kind)));
   const [input, setInput] = useState('');
   const [view, setView] = useState<'chat' | 'avatar'>('avatar');

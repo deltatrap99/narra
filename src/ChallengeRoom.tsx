@@ -8,13 +8,14 @@ import { cancelSpeech } from './speech';
 import { useCopy, useNarra } from './state';
 import { useVoiceInput } from './useVoiceInput';
 import './challenge-room.css';
+import { useAccounts } from './AccountContext';
 
 type Props = { roomId?: string; friend?: { id: string; name: string }; onClose: () => void };
 type Phase = 'choose' | 'loading' | 'join' | 'waiting' | 'ready' | 'countdown' | 'active' | 'saving' | 'save-error' | 'results' | 'expired';
 type FinishPayload = { wordCount: number; elapsedMs: number };
 const sessionKey = (id: string) => `narra-challenge-pass-v1:${id}`;
-function readSession(id: string): ChallengeSession | null {
-  try { const saved = JSON.parse(localStorage.getItem(sessionKey(id)) ?? 'null'); return saved?.roomId === id && typeof saved?.participantId === 'string' && typeof saved?.token === 'string' ? saved : null; } catch { return null; }
+function readSession(id: string, key: string): ChallengeSession | null {
+  try { const saved = JSON.parse(localStorage.getItem(key) ?? 'null'); return saved?.roomId === id && typeof saved?.participantId === 'string' && typeof saved?.token === 'string' ? saved : null; } catch { return null; }
 }
 function invitationUrl(id: string) { const url = new URL(location.href); url.search = ''; url.searchParams.set('challenge', id); url.hash = ''; return url.toString(); }
 class RoomRequestError extends Error { constructor(public code: string, message: string) { super(message); } }
@@ -26,10 +27,11 @@ async function requestRoom(roomId: string, action?: Record<string, unknown>, tok
 }
 
 export default function ChallengeRoom({ roomId: suppliedRoomId, friend, onClose }: Props) {
+  const { storageKey } = useAccounts();
   const tr = useCopy(); const { profile, logActivity, setStats } = useNarra(); const inputId = useId();
   const dialog = useRef<HTMLDialogElement>(null); const closeButton = useRef<HTMLButtonElement>(null); const mounted = useRef(true);
   const [roomId, setRoomId] = useState(suppliedRoomId ?? ''); const [room, setRoom] = useState<ChallengeRoomView | null>(null);
-  const [session, setSession] = useState<ChallengeSession | null>(() => suppliedRoomId ? readSession(suppliedRoomId) : null); const sessionRef = useRef(session); sessionRef.current = session;
+  const [session, setSession] = useState<ChallengeSession | null>(() => suppliedRoomId ? readSession(suppliedRoomId, storageKey(sessionKey(suppliedRoomId))) : null); const sessionRef = useRef(session); sessionRef.current = session;
   const [phase, setPhase] = useState<Phase>(suppliedRoomId ? 'loading' : 'choose'); const phaseRef = useRef(phase);
   const [name, setName] = useState(profile.name.slice(0, 40)); const [duration, setDuration] = useState<ChallengeDuration>(30); const [promptId, setPromptId] = useState(challengePrompts[0].id);
   const [busy, setBusy] = useState(false); const [error, setError] = useState(''); const [notice, setNotice] = useState(''); const [offline, setOffline] = useState(false); const [leaving, setLeaving] = useState(false);
@@ -104,17 +106,17 @@ export default function ChallengeRoom({ roomId: suppliedRoomId, friend, onClose 
     event.preventDefault(); if (busy || !name.trim()) return; setBusy(true); setError('');
     try {
       const response = await requestRoom('', { action: 'create', name: name.trim(), duration, promptId }); if (!mounted.current) return;
-      const pass = response.session!; sessionRef.current = pass; setSession(pass); try { localStorage.setItem(sessionKey(pass.roomId), JSON.stringify(pass)); } catch { setNotice(tr('Keep this tab open; this browser cannot save your room pass.', 'Bạn giữ tab này mở nhé; trình duyệt chưa lưu được vé vào phòng.')); }
+      const pass = response.session!; sessionRef.current = pass; setSession(pass); try { localStorage.setItem(storageKey(sessionKey(pass.roomId)), JSON.stringify(pass)); } catch { setNotice(tr('Keep this tab open; this browser cannot save your room pass.', 'Bạn giữ tab này mở nhé; trình duyệt chưa lưu được vé vào phòng.')); }
       accept(response, pass); setRoomId(pass.roomId); const url = new URL(location.href); url.searchParams.set('challenge', pass.roomId); history.replaceState(null, '', url);
     } catch (value) { if (mounted.current) showError(value); } finally { if (mounted.current) setBusy(false); }
   }
   async function joinRoom(event: React.FormEvent) {
     event.preventDefault(); if (busy || !name.trim() || !room) return; setBusy(true); setError('');
-    const nonceKey = `narra-challenge-join-v1:${room.id}`; let nonce: string;
+    const nonceKey = storageKey(`narra-challenge-join-v1:${room.id}`); let nonce: string;
     try { nonce = localStorage.getItem(nonceKey) ?? crypto.randomUUID(); localStorage.setItem(nonceKey, nonce); } catch { nonce = crypto.randomUUID(); }
     try {
       const response = await requestRoom(room.id, { action: 'join', roomId: room.id, name: name.trim(), nonce }); if (!mounted.current) return;
-      const pass = response.session!; sessionRef.current = pass; setSession(pass); try { localStorage.setItem(sessionKey(pass.roomId), JSON.stringify(pass)); } catch { setNotice(tr('Keep this tab open; this browser cannot save your room pass.', 'Bạn giữ tab này mở nhé; trình duyệt chưa lưu được vé vào phòng.')); } accept(response, pass);
+      const pass = response.session!; sessionRef.current = pass; setSession(pass); try { localStorage.setItem(storageKey(sessionKey(pass.roomId)), JSON.stringify(pass)); } catch { setNotice(tr('Keep this tab open; this browser cannot save your room pass.', 'Bạn giữ tab này mở nhé; trình duyệt chưa lưu được vé vào phòng.')); } accept(response, pass);
     } catch (value) { if (mounted.current) showError(value); } finally { if (mounted.current) setBusy(false); }
   }
   async function startTurn() {
@@ -136,7 +138,7 @@ export default function ChallengeRoom({ roomId: suppliedRoomId, friend, onClose 
       const response = await requestRoom(snapshot.id, { action: 'finish', roomId: snapshot.id, ...payload }, pass.token); if (!mounted.current) return;
       const result = response.room.participants.find(p => p.id === pass.participantId)?.result;
       if (result) {
-        const key = `narra-challenge-logged-v1:${snapshot.id}:${pass.participantId}`; let logged = false; try { logged = !!localStorage.getItem(key); localStorage.setItem(key, '1'); } catch { /* A live result is only saved once by this component. */ }
+        const key = storageKey(`narra-challenge-logged-v1:${snapshot.id}:${pass.participantId}`); let logged = false; try { logged = !!localStorage.getItem(key); localStorage.setItem(key, '1'); } catch { /* A live result is only saved once by this component. */ }
         if (!logged) { logActivity(tr('Speaking challenge', 'Thử thách nói'), Math.round(result.elapsedMs / 600) / 100); setStats(previous => ({ ...previous, speakingTries: previous.speakingTries + 1 })); }
       }
       setError(''); accept(response);

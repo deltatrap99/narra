@@ -4,6 +4,7 @@ import BuddyAvatar from './BuddyAvatar';
 import { usePlayer, type PlanCycle } from './game';
 import { useCopy } from './state';
 import './plans.css';
+import FamilyMembers from './FamilyMembers';
 
 const MONTHLY_PRICE = 99_000;
 const YEARLY_DISCOUNT = 20;
@@ -18,6 +19,7 @@ export default function PlansPanel({ onClose }: { onClose: () => void }) {
   const { player, setPlayer } = usePlayer();
   const [cycle, setCycle] = useState<PlanCycle>(() => player.planInterestCycle ?? 'monthly');
   const [notice, setNotice] = useState('');
+  const [familyOpen, setFamilyOpen] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const titleId = useId();
   const saved = player.planInterest === 'plus' && player.planInterestCycle === cycle;
@@ -105,6 +107,7 @@ export default function PlansPanel({ onClose }: { onClose: () => void }) {
           <p className="plans-feature-label">{tr('What we’re planning for Family', 'Những điều đang được chuẩn bị cho Family')}</p><ul>{familyFeatures.map(feature => <li key={feature}><Check size={17} /><span>{feature}</span></li>)}</ul>
           <button type="button" className="plans-interest" aria-pressed={familySaved} onClick={() => saveInterest('family')}>{familySaved ? <><CheckCircle2 size={19} />{tr('Buddy’s got it!', 'Buddy ghi lại rồi nhé!')}</> : <>{tr('Let’s learn together!', 'Rủ nhà mình cùng học')}<ArrowRight size={18} /></>}</button>
           <p className="plans-action-note">{tr('A little preview for your group, with no payment today.', 'Mình xem trước cho cả nhóm nhé, chưa thu phí đâu.')}</p>
+          <button type="button" className="plans-family-members" onClick={() => setFamilyOpen(true)}><Users size={18} />{tr('View Family members', 'Xem thành viên gia đình')}<ArrowRight size={17} /></button>
         </article>
         <article className="plans-card plans-card-free"><div className="plans-card-heading"><span className="plans-card-icon"><Heart size={23} /></span><div><span className="plans-badge">{tr('Your current plan', 'Gói bạn đang dùng')}</span><h3>Narra Free</h3></div></div><p className="plans-card-description">{tr("One little conversation, a lovely place to begin!", 'Từng cuộc trò chuyện nhỏ, một khởi đầu thật vui.')}</p><div className="plans-price"><strong>{tr('Free', 'Miễn phí')}</strong><span>{tr('Your experience today', 'Trải nghiệm hiện tại của bạn')}</span></div><p className="plans-feature-label">{tr('Already here for you', 'Đã có để mình cùng khám phá')}</p><ul>{freeFeatures.map(feature => <li key={feature}><Check size={17} /><span>{feature}</span></li>)}</ul><div className="plans-free-status"><ShieldCheck size={18} />{tr('You’re right at home here', 'Bạn vẫn đang học cùng Free')}</div></article>
       </div>
@@ -114,5 +117,6 @@ export default function PlansPanel({ onClose }: { onClose: () => void }) {
       <section className="plans-faq" aria-labelledby="plans-faq-title"><h2 id="plans-faq-title">{tr('A few things you might wonder', 'Bạn đang thắc mắc chút gì không?')}</h2>{faqs.map(([question, answer]) => <details key={question}><summary>{question}</summary><p>{answer}</p></details>)}</section>
       <p className="plans-footnote"><ShieldCheck size={16} /><span>{tr("Your choice stays on this device without creating a subscription or payment, and your current plan remains Narra Free.", "Lựa chọn chỉ được lưu trên thiết bị này, chưa tạo đăng ký hay thanh toán và gói hiện tại của bạn vẫn là Narra Free nhé.")}</span></p>
     </div>
+    {familyOpen && <FamilyMembers onClose={() => setFamilyOpen(false)} />}
   </dialog>;
 }

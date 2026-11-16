@@ -1,0 +1,38 @@
+{
+  "name": "Narry",
+  "generatedWith": "Built-in Imagegen",
+  "generatedOn": "2026-11-16",
+  "grid": {
+    "columns": 3,
+    "rows": 3,
+    "cellPixels": 418,
+    "poseOrder": [
+      "welcome",
+      "focus",
+      "curious",
+      "encourage",
+      "celebrate",
+      "proud",
+      "thinking",
+      "listening",
+      "oops"
+    ]
+  },
+  "promptSet": "tools/narry-emotion-prompts.md",
+  "assets": [
+    {
+      "path": "public/brand/narry-emotions.png",
+      "sha256": "771ff6f7d7b0d3d10855286c337606f4b8fc89ca16ad2f092af7478f8d758016",
+      "width": 1254,
+      "height": 1254,
+      "alpha": true
+    },
+    {
+      "path": "public/brand/option5/narry-emotions.png",
+      "sha256": "70408e41d6b461bb3ebfd236993897a24e4ca20cd413717f78ef9f6e93de6a72",
+      "width": 1254,
+      "height": 1254,
+      "alpha": true
+    }
+  ]
+}

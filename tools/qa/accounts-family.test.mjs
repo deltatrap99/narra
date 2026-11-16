@@ -19,7 +19,7 @@ function reset() { globalThis.localStorage = storage(); globalThis.sessionStorag
 
 test('existing learner keys and saved data remain intact while additional profiles are isolated', () => {
   reset();
-  for (const key of ['narra-profile-v1', 'narra-stats-v1', 'narra-words-v1', 'narra-player-v1', 'narra-word-speaking-v1', 'narra-conversation-v1:Skye:free', 'narra-challenge-pass-v1:room']) {
+  for (const key of ['narra-profile-v1', 'narra-stats-v1', 'narra-words-v1', 'narra-player-v1', 'narra-word-speaking-v1', 'narra-sessions-v1', 'narra-conversation-v1:Skye:free', 'narra-challenge-pass-v1:room']) {
     assert.equal(accounts.accountStorageKey(key, 'primary'), key);
     localStorage.setItem(key, 'original');
     localStorage.setItem(accounts.accountStorageKey(key, learnerId), 'another learner');

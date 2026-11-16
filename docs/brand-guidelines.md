@@ -84,13 +84,13 @@ Maintain short headlines, readable line heights and a clear hierarchy. Body text
 
 ## Imagery and components
 
-Use clean light backgrounds, tactile 3D details, subtle glass navigation and tutor imagery where it serves selection. The Narra mascot is a fuzzy cyan-blue speech-bubble character with large white eyes, cobalt arms and legs, and a small cyan star tuft. It should feel encouraging and curious. The brief opening animation introduces Buddy and the wordmark; provide Skip, reduced-motion behavior and replay through Settings.
+Use clean light backgrounds, tactile 3D details, subtle glass navigation and tutor imagery where it serves selection. The Narra mascot is a fuzzy cyan-blue speech-bubble character with large white eyes, cobalt arms and legs, and a small cyan star tuft. It should feel encouraging and curious. The brief opening animation introduces Narry and the wordmark; provide Skip, reduced-motion behavior and replay through Settings.
 
 Avoid reintroducing purple as an app theme. Source tutor photographs or reference images may contain incidental colors; use the new palette for their surrounding UI. Favor lime primary buttons with dark text, cyan conversation surfaces, orange streak accents, rounded white cards, and restrained shadows.
 
 Keep controls recognizable at all sizes. Use consistent corner radii around controls, cards, sheets and pills. The newer motivational/avatar components use modest lower-edge shadows to suggest physical buttons; shadows must not obscure labels or become heavy decoration. Use a 4 px spacing grid. Focus outlines use Green ink with a clearly visible offset.
 
-The personalized learner avatar is an original React SVG human character with selectable hair, skin, shirt and accessories. It is separate from Narra Buddy and the reference tutor characters. Its changes are saved locally only when the learner presses Save; Cancel preserves the previous appearance.
+The personalized learner avatar is an original React SVG human character with selectable hair, skin, shirt and accessories. It is separate from Narra Narry and the reference tutor characters. Its changes are saved locally only when the learner presses Save; Cancel preserves the previous appearance.
 
 ### Themes
 
@@ -131,3 +131,7 @@ The product owner applies these tokens to app source styles. Generated color art
 - Logo source crop and metadata: `public/brand/asset-provenance.json`.
 - Mascot: generated using the built-in image_gen tool, with the supplied board as a style reference. Prompt recorded in `tools/asset-prompts.md`.
 
+
+## Mascot name and expression
+
+The mascot is named **Narry**. Refer to the learner as “bạn” and let Narry use its name and “tớ” in friendly Vietnamese guidance. Current emotion atlases have nine different body poses and emotions, selected by actual UI state. See `tools/narry-emotion-prompts.md` and `public/brand/narry-emotions-provenance.json`. Blue Narry has arms and legs; Option 5 remains an armless caterpillar.

@@ -50,7 +50,7 @@ export function StreakShareDialog({ milestone, onClose }: { milestone: StreakMil
       <article className={`streak-share-card ${earned ? '' : 'is-preview'}`} style={posterStyle} data-tone={tone} data-digits={String(milestone.days).length} aria-label={tr(`${milestone.days}-day Narra streak card${earned ? '' : ', preview only'}`, `Thẻ thành tích ${milestone.days} ngày Narra${earned ? '' : ', chỉ xem trước'}`)}>
         <header><img src={brandAsset('logo-dark.webp')} alt="Narra" /><span>STREAK</span></header>
         <div className="streak-share-count"><strong>{milestone.days}</strong><span>{daysLabel}</span></div>
-        <div className="streak-share-art" data-effect={milestone.effect}><span /><i /><i /><img src={streakMascotAsset} alt={isOption5 ? tr('Buddy winking with a goofy head tilt and curled body', 'Buddy nháy mắt, nghiêng đầu và uốn người ngố ngố') : tr('Buddy winking with a happy thumbs-up', 'Buddy nháy mắt và giơ tay like thật vui')} /></div>
+        <div className="streak-share-art" data-effect={milestone.effect}><span /><i /><i /><img src={streakMascotAsset} alt={isOption5 ? tr('Narry winking with a goofy head tilt and curled body', 'Narry nháy mắt, nghiêng đầu và uốn người ngố ngố') : tr('Narry winking with a happy thumbs-up', 'Narry nháy mắt và giơ tay like thật vui')} /></div>
         <h3>{title}</h3>
         <footer><span className="streak-poster-name">{profile.name}</span><strong lang="en">Your voice, your story!</strong></footer>
         {preview && <span className="streak-share-watermark">{preview}</span>}

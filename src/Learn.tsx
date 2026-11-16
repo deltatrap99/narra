@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { Check, Clock3, Flame, List, LockKeyhole, Play, Route, Sparkles, Users } from 'lucide-react';
+import { Check, List, LockKeyhole, Play, Route, Sparkles, Users } from 'lucide-react';
 import { chapters, type Lesson } from './data';
-import { activityStreak, localDateKey, useCopy, useNarra } from './state';
+import { localDateKey, useCopy, useNarra } from './state';
 import PathGraph from './PathGraph';
 import './lesson-uat.css';
 import { DailyQuests, MotivationStrip } from './Motivation';
 import TutorSpotlight from './TutorSpotlight';
-import { FocusHero, QuietSection } from './FocusLayout';
+import { QuietSection } from './FocusLayout';
+import HomeToday from './HomeToday';
 
 type Props = { onGoal: () => void; onLesson: (lesson: Lesson) => void; onTalk: () => void; onWord: () => void; onPractice: () => void; onOpenLeague: () => void; onOpenAchievements: () => void; onTutorPreview: (name: string) => void; onPlans: () => void };
 
@@ -21,19 +22,13 @@ export default function Learn({ onGoal, onLesson, onWord, onPractice, onOpenLeag
   const completedCount = allLessons.filter(lesson => stats.completed.includes(lesson.id)).length;
   const journeyComplete = completedCount === allLessons.length;
   const minutesToday = stats.activity.filter(activity => activity.date === localDateKey()).reduce((sum, activity) => sum + activity.minutes, 0);
-  const streak = activityStreak(stats.activity);
   const recent = allLessons.filter(lesson => stats.completed.includes(lesson.id)).slice(-2).reverse();
-  const description = next.id === 'everyday-2'
-    ? tr('Talk about the habits that make you feel good.', 'Trò chuyện về những thói quen giúp bạn cảm thấy tốt hơn.')
-    : next.id === 'everyday-3' ? tr('Order a coffee and make a little small talk.', 'Gọi một ly cà phê và bắt đầu cuộc trò chuyện ngắn.')
-      : tr("A short conversation, one little step forward!", "Một cuộc trò chuyện ngắn, thêm một bước tiến nhỏ!");
   function openLesson(lesson: Lesson, available: boolean) {
     if (available || stats.completed.includes(lesson.id)) onLesson(lesson);
     else notify(tr('One little step first: finish the previous lesson, then this one will open.', 'Bạn học xong bài trước nhé, rồi mình sẽ mở được bài này.'));
   }
-  return <div className="learn-page lesson-uat focus-page">
-    <FocusHero eyebrow={journeyComplete ? tr('A LITTLE REVISIT', 'MÌNH ÔN LẠI MỘT CHÚT') : tr('TODAY’S LITTLE LESSON', 'BÀI HỌC NHỎ HÔM NAY')} title={next.title} description={description} action={journeyComplete ? tr('Revisit with Buddy', 'Ôn lại cùng Buddy') : tr('Continue with Buddy', 'Học tiếp cùng Buddy')} onAction={() => onLesson(next)} mood={minutesToday >= profile.dailyGoal ? 'proud' : 'welcome'} meta={<><Clock3 size={15} /><span>{next.minutes} {tr('min', 'phút')}</span><span className="focus-meta-dot">·</span><span>{tr('Unit', 'Chủ đề')} {unitIndex + 1}</span></>} />
-    <div className="focus-daily-row" aria-label={tr('Today’s progress', 'Tiến độ hôm nay')}><button type="button" onClick={onGoal} aria-label={tr('Today’s minutes, change daily goal', 'Số phút hôm nay, đổi mục tiêu học')}><Clock3 size={17} /><span>{minutesToday}/{profile.dailyGoal} {tr('min today', 'phút hôm nay')}</span></button><button type="button" onClick={onOpenAchievements}><Flame size={17} /><span>{streak} {tr('day streak', 'ngày liên tiếp')}</span></button></div>
+  return <div className="learn-page lesson-uat focus-page home-dashboard">
+    <HomeToday lesson={next} chapter={nextChapter} unitIndex={unitIndex} journeyComplete={journeyComplete} minutesToday={minutesToday} onLesson={openLesson} onGoal={onGoal} onAchievements={onOpenAchievements} onWord={onWord} onTutorPreview={onTutorPreview} />
     <div className="focus-disclosures">
     <QuietSection icon={<Route size={20} />} title={tr('My learning path', 'Lộ trình của mình')} summary={tr(`${completedCount}/${allLessons.length} lessons`, `${completedCount}/${allLessons.length} bài học`)}>
     {recent.length > 0 && <section className="lesson-recent"><h2>{tr('Keep it fresh', 'Ôn lại một chút')}</h2><div>{recent.map(lesson => <button key={lesson.id} onClick={() => onLesson(lesson)}><span className="lesson-recent-check"><Check size={15} /></span><span>{lesson.title}</span><small>{tr('Revisit', 'Ôn lại')}</small></button>)}</div></section>}
